@@ -142,6 +142,7 @@ public class GamePanel extends JPanel implements KeyListener{
       ball.moveBall(ball.getBallSpeed());
       return ball.y + ball.size < 0;
     });
+    // update particles (queens effect)
     particles.removeIf(particle -> {
       particle.moveParticle(particle.getParticleSpeed());
       particle.decay++;
@@ -155,7 +156,7 @@ public class GamePanel extends JPanel implements KeyListener{
   protected void paintComponent(Graphics g) {
     super.paintComponent(g);
     Graphics2D g2d = (Graphics2D)g;
-    // --- Draw tiled background, scaled 10x ---
+    //  Draw tiled background, scaled 10x
     if (tileImage != null) {
       int sw = tileImage.getWidth() * SCALE;
       int sh = tileImage.getHeight() * SCALE;
@@ -166,14 +167,14 @@ public class GamePanel extends JPanel implements KeyListener{
       }
     }
 
-    // --- Draw selectedPiece at current position ---
+    // Draw selectedPiece at current position
     if (selectedPiece != null) {
       int rw = selectedPiece.getWidth() * SCALE;
       int rh = selectedPiece.getHeight() * SCALE;
       g2d.drawImage(selectedPiece, rookX, rookY, rw, rh, this);
     }
 
-    // --- Draw all cannon balls ---
+    // Draw all cannon balls
     g2d.setColor(Color.WHITE);
     for (CannonBall b : balls) {
       g2d.fillRect(b.x, b.y, b.size, b.size);
@@ -192,6 +193,7 @@ public class GamePanel extends JPanel implements KeyListener{
   @Override
   public void keyPressed(KeyEvent e) {
     int key = e.getKeyCode();
+    // rook has his own pattern, because i dont want him to move diagonally
     if (selectedPieceType == PieceType.ROOK) {
       switch (key) {
       case KeyEvent.VK_W -> {
@@ -221,9 +223,6 @@ public class GamePanel extends JPanel implements KeyListener{
       case KeyEvent.VK_SPACE -> performAttack();
       case KeyEvent.VK_1 -> selectPiece(PieceType.ROOK);
       case KeyEvent.VK_2 -> selectPiece(PieceType.QUEEN);
-      case KeyEvent.VK_3 -> selectPiece(PieceType.KNIGHT);
-      case KeyEvent.VK_4 -> selectPiece(PieceType.KING);
-      case KeyEvent.VK_5 -> selectPiece(PieceType.BISHOP);
       }
     } else {
       switch (key) {
@@ -242,9 +241,6 @@ public class GamePanel extends JPanel implements KeyListener{
       case KeyEvent.VK_SPACE -> performAttack();
       case KeyEvent.VK_1 -> selectPiece(PieceType.ROOK);
       case KeyEvent.VK_2 -> selectPiece(PieceType.QUEEN);
-      case KeyEvent.VK_3 -> selectPiece(PieceType.KNIGHT);
-      case KeyEvent.VK_4 -> selectPiece(PieceType.KING);
-      case KeyEvent.VK_5 -> selectPiece(PieceType.BISHOP);
       }
     }
   }
@@ -262,15 +258,11 @@ public class GamePanel extends JPanel implements KeyListener{
   // Unused but required
   @Override
   public void keyTyped(KeyEvent e) {}
-
+  // gets called when space is pressed
   private void performAttack() {
     switch (selectedPieceType) {
     case ROOK -> spawnCannonBall();
     case QUEEN -> spawnQueenParticles();
-    case KNIGHT -> spawnKnightParticles();
-    case BISHOP -> spawnCannonBall();
-    case KING -> spawnKingParticles();
-    case PAWN -> spawnPawnParticles();
     }
   }
   // Yeah this could get its own class later
@@ -301,7 +293,7 @@ public class GamePanel extends JPanel implements KeyListener{
       playClip(shootClip);
     }
   }
-
+  //TODO make it so that movespeed return to normal after a second (dash stopped)
   private void spawnQueenParticles() {
     if (queenImage != null) {
       int size = 140; // size of the cannonball
@@ -331,12 +323,6 @@ public class GamePanel extends JPanel implements KeyListener{
       playClip(sliceClip);
     }
   }
-
-  private void spawnKingParticles() {}
-
-  private void spawnKnightParticles() {}
-
-  private void spawnPawnParticles() {}
 
   public static void main(String[] args) {
     JFrame frame = new JFrame("ChessBrawl");
