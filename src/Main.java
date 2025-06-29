@@ -2,9 +2,9 @@ import javax.swing.JFrame;
 
 public class Main{
 
-    public static final int WIDTH = 1600;
+    public static final int WIDTH = 1920;
 
-    public static final int HEIGHT = 900;
+    public static final int HEIGHT = 1080;
 
     public static void openWindow() {
         // Create a new JFrame (window)

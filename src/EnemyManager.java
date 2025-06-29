@@ -3,7 +3,7 @@ import java.awt.image.BufferedImage;
 public class EnemyManager {
     GamePanel gamePanel;
     private int lastSpawnCounter;
-    private int spawnCoolDown = 200;
+    private int spawnCoolDown = 180;
     public EnemyManager(GamePanel gamePanel){
         this.gamePanel = gamePanel;
     }
@@ -17,9 +17,9 @@ public class EnemyManager {
             lastSpawnCounter++;
         } else {
             lastSpawnCounter = 0;
-            int randomX = (int) ((Math.random() * Main.WIDTH / 2) + Main.WIDTH / 2);
+            int X = Main.WIDTH;
             int randomY = (int) (Math.random() * Main.HEIGHT);
-            spawnEnemy(randomX,randomY,80, 80, gamePanel.enemyPawnImage);
+            spawnEnemy(X,randomY,80, 80, gamePanel.enemyPawnImage);
         }
     }
 }
