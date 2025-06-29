@@ -18,6 +18,13 @@ public class GamePanel extends JPanel{
   BufferedImage kingImage;
   BufferedImage queenImage;
   BufferedImage pawnImage;
+
+  BufferedImage enemyRookImage;
+  BufferedImage enemyKnightImage;
+  BufferedImage enemyBishopImage;
+  BufferedImage enemyKingImage;
+  BufferedImage enemyQueenImage;
+  BufferedImage enemyPawnImage;
   // uses the enum
   PieceType selectedPieceType;
   int pieceWidth;
@@ -35,7 +42,7 @@ public class GamePanel extends JPanel{
   private BufferedImage selectedPiece;
 
   // Im scaling 32x32 Textures so that they look nicer
-  final int SCALE = 10;
+  final int SCALE = 8;
 
   // List to track cannon balls
   final List<CannonBall> balls = new ArrayList<>();
@@ -87,6 +94,18 @@ public class GamePanel extends JPanel{
           ImageIO.read(new File("res/chess-pieces-png/color/white/queen.png"));
       pawnImage =
           ImageIO.read(new File("res/chess-pieces-png/color/white/pawn.png"));
+      enemyRookImage=
+              ImageIO.read(new File("res/chess-pieces-png/color/black/rook.png"));
+      enemyKnightImage=
+              ImageIO.read(new File("res/chess-pieces-png/color/black/knight.png"));
+      enemyBishopImage=
+              ImageIO.read(new File("res/chess-pieces-png/color/black/bishop.png"));
+      enemyKingImage=
+              ImageIO.read(new File("res/chess-pieces-png/color/black/king.png"));
+      enemyQueenImage=
+              ImageIO.read(new File("res/chess-pieces-png/color/black/queen.png"));
+      enemyPawnImage =
+              ImageIO.read(new File("res/chess-pieces-png/color/black/pawn.png"));
 
     } catch (IOException e) {
       e.printStackTrace();

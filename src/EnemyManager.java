@@ -17,9 +17,9 @@ public class EnemyManager {
             lastSpawnCounter++;
         } else {
             lastSpawnCounter = 0;
-            int randomX = (int) (Math.random() * Main.WIDTH);
+            int randomX = (int) ((Math.random() * Main.WIDTH / 2) + Main.WIDTH / 2);
             int randomY = (int) (Math.random() * Main.HEIGHT);
-            spawnEnemy(randomX,randomY,80, 80, gamePanel.rookImage);
+            spawnEnemy(randomX,randomY,80, 80, gamePanel.enemyPawnImage);
         }
     }
 }

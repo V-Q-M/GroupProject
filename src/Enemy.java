@@ -11,9 +11,9 @@ public class Enemy {
     int invulnerableCounter = 0;
 
     int health = 100;
-    final int DEFAULT_CANNON_BALL_DMG = 15;
-    final int DEFAULT_SLICE_DMG= 35;
-    int speed;
+    final int DEFAULT_CANNON_BALL_DMG = 35;
+    final int DEFAULT_SLICE_DMG= 50;
+    int speed = 3;
     int damage;
 
     BufferedImage skin;
@@ -30,6 +30,7 @@ public class Enemy {
 
     public void update(){
         checkAlive();
+        move();
         checkCollision();
         updateCooldowns();
     }
@@ -37,6 +38,21 @@ public class Enemy {
     private void checkAlive(){
         if (health <= 0){
             this.dead = true;
+        }
+    }
+
+
+    private void move(){
+        if (x < 0){
+            health = 0;
+        } else {
+            x -= speed;
+        }
+
+        if (y < 100){
+            y += speed;
+        } else if (y > Main.HEIGHT - height - 100){
+            y -= speed;
         }
     }
 
