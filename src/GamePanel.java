@@ -12,12 +12,12 @@ import javax.swing.*;
 public class GamePanel extends JPanel implements KeyListener{
 
   // Textures of the pieces
-  private BufferedImage rookImage;
-  private BufferedImage knightImage;
-  private BufferedImage bishopImage;
-  private BufferedImage kingImage;
-  private BufferedImage queenImage;
-  private BufferedImage pawnImage;
+  BufferedImage rookImage;
+  BufferedImage knightImage;
+  BufferedImage bishopImage;
+  BufferedImage kingImage;
+  BufferedImage queenImage;
+  BufferedImage pawnImage;
   // uses the enum
   private PieceType selectedPieceType;
 
@@ -27,32 +27,35 @@ public class GamePanel extends JPanel implements KeyListener{
   // This will hold the actual Player piece
   private BufferedImage selectedPiece;
 
-  private Clip shootClip;
-  private Clip sliceClip;
+
+  Clip shootClip;
+  Clip sliceClip;
 
   // Start Position
-  private int playerX = 100;
-  private int playerY = 100;
+  int playerX = 100;
+  int playerY = 100;
 
-  private boolean queenDashing = false;
+  boolean queenDashing = false;
   private int queenDashingCounter = 0;
 
   // Im scaling 32x32 Textures so that they look nicer
-  private final int SCALE = 10;
+  final int SCALE = 10;
 
   // Movespeed. Might create a PieceClass and move it there
-  private int BASE_MOVE_SPEED = 5;
-  private int DASH_SPEED = 18;
-  private int moveSpeed;
+  final int BASE_MOVE_SPEED = 5;
+  final int DASH_SPEED = 18;
+  int moveSpeed;
 
 
   // List to track cannon balls
   // Might expand that to carry other projectiles
-  private final List<CannonBall> balls = new ArrayList<>();
+  final List<CannonBall> balls = new ArrayList<>();
   // carries particle effects
-  private final List<Particle> particles = new ArrayList<>();
+  final List<Particle> particles = new ArrayList<>();
   // carries enemies
-  private final List<Enemy>  enemies = new ArrayList<>();
+  final List<Enemy>  enemies = new ArrayList<>();
+
+  EntityManager entityManager = new EntityManager(this);
 
   public GamePanel() {
     // Window size
@@ -73,7 +76,7 @@ public class GamePanel extends JPanel implements KeyListener{
   }
 
   // Might move to specialised class if Soundlogic gets more complicated
-  private void playClip(Clip clip) {
+  protected void playClip(Clip clip) {
     if (clip == null) return;
     if (clip.isRunning()) clip.stop();  // Stop current sound if needed
     clip.setFramePosition(0);           // Rewind to the beginning
@@ -122,7 +125,6 @@ public class GamePanel extends JPanel implements KeyListener{
 
   // SelectPiece. Should prompt the user to pick one eventually
   private void selectPiece(PieceType changePiece) {
-    //
     selectedPieceType = changePiece;
     switch (changePiece) {
     case PieceType.ROOK -> selectedPiece = rookImage;
@@ -171,7 +173,6 @@ public class GamePanel extends JPanel implements KeyListener{
     if (goingRight)
       playerX += speed;
 
-
     if (queenDashing && queenDashingCounter <= 20){
       queenDashingCounter ++;
     } else {
@@ -181,13 +182,19 @@ public class GamePanel extends JPanel implements KeyListener{
     }
   }
 
-
-
   // Carefull. Render method
   @Override
   protected void paintComponent(Graphics g) {
     super.paintComponent(g);
     Graphics2D g2d = (Graphics2D)g;
+
+    drawBackground(g2d);
+    drawPlayer(g2d);
+    drawEnemies(g2d);
+    drawEntities(g2d);
+  }
+
+  private void drawBackground(Graphics2D g2d){
     //  Draw tiled background, scaled 10x
     if (tileImage != null) {
       int sw = tileImage.getWidth() * SCALE;
@@ -198,10 +205,6 @@ public class GamePanel extends JPanel implements KeyListener{
         }
       }
     }
-
-    drawPlayer(g2d);
-    drawEnemies(g2d);
-    drawEntities(g2d);
   }
 
   private void drawPlayer(Graphics2D g2d){
@@ -229,7 +232,6 @@ public class GamePanel extends JPanel implements KeyListener{
       g2d.drawImage(enemy.skin, enemy.x, enemy.y, enemy.size, enemy.size, this);
     }
   }
-  // Yes ik. Scuffed logic
   boolean goingRight = false;
   boolean goingLeft = false;
   boolean goingUp = false;
@@ -306,67 +308,11 @@ public class GamePanel extends JPanel implements KeyListener{
   // gets called when space is pressed
   private void performAttack() {
     switch (selectedPieceType) {
-    case ROOK -> spawnCannonBall();
-    case QUEEN -> spawnQueenParticles();
+    case ROOK -> entityManager.spawnCannonBall();
+    case QUEEN -> entityManager.spawnQueenParticles();
     }
   }
-  int CANNON_BALL_SIZE = 80;
-  // Yeah this could get its own class later
-  private void spawnCannonBall() {
-    if (rookImage != null) {
-      int size = CANNON_BALL_SIZE; // size of the cannonball
-      int rookWidth = rookImage.getWidth() * SCALE;
-      // spawn at top‐center of the rook
-      int bx = playerX + (rookWidth - size) / 2;
-      int by = playerY;
-      String direction = "right";
-      if (goingDown) {
-        direction = "down";
-      }
-      if (goingUp) {
-        direction = "up";
-      }
-      if (goingLeft) {
-        direction = "left";
-      }
-      if (goingRight) {
-        direction = "right";
-      }
-      // Append balls to the list of balls
-      balls.add(new CannonBall(bx, by, size, direction));
-      // this should move to a variable
-      playClip(shootClip);
-    }
-  }
-  private void spawnQueenParticles() {
-    if (queenImage != null) {
-      int size = 140; // size of the cannonball
-      int queenWidth= queenImage.getWidth() * SCALE;
-      int queenHeight = queenImage.getHeight() * SCALE;
-      moveSpeed = DASH_SPEED;
-      queenDashing = true;
 
-      // spawn at top‐center of the rook
-      int bx = playerX + (queenWidth - size) / 2;
-      int by = playerY + (queenHeight - size) / 2;
-      String direction = "right";
-      if (goingDown) {
-        direction = "down";
-      }
-      if (goingUp) {
-        direction = "up";
-      }
-      if (goingLeft) {
-        direction = "left";
-      }
-      if (goingRight) {
-        direction = "right";
-      }
-      // Append balls to the list of balls
-      particles.add(new Particle(bx, by, size, direction));
-      // this should move to a variable
-      playClip(sliceClip);
-    }
-  }
+
 
 }

@@ -13,7 +13,7 @@ public class Main{
         // Set default close operation so the app exits when window is closed
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        // Create your GamePanel instance
+        // Create GamePanel instance
         GamePanel gamePanel = new GamePanel();
 
         frame.add(gamePanel);
@@ -22,7 +22,6 @@ public class Main{
         // Set the window size (width, height)
         frame.setSize(WIDTH, HEIGHT);
         
-        // Optional: center the window on the screen
         frame.setLocationRelativeTo(null);
         
         // Make the window visible
