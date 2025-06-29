@@ -116,6 +116,7 @@ public class GamePanel extends JPanel{
   // SelectPiece. Should prompt the user to pick one eventually
   void selectPiece(PieceType changePiece) {
     selectedPieceType = changePiece;
+    player.swapCounter = 0;
     switch (changePiece) {
       case PieceType.ROOK -> {
         selectedPiece = rookImage;

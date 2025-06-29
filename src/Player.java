@@ -15,6 +15,8 @@ public class Player {
     private int queenDashingCounter = 0;
     public int health = 100;
 
+    int swapCounter = 0;
+
     String facingDirection = "right";
 
     private boolean hasAttacked = false;
@@ -35,6 +37,17 @@ public class Player {
         checkCollision();
         coolDowns();
         checkAlive();
+        forceSwap();
+    }
+    private void forceSwap(){
+        if (swapCounter >= 600){
+            switch(gamePanel.selectedPieceType){
+                case QUEEN -> gamePanel.selectPiece(PieceType.ROOK);
+                case ROOK -> gamePanel.selectPiece(PieceType.QUEEN);
+            }
+        } else {
+            swapCounter++;
+        }
     }
 
     private boolean notReachedBorder(){
