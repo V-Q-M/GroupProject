@@ -1,5 +1,4 @@
 import java.awt.*;
-import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -53,7 +52,7 @@ public class GamePanel extends JPanel{
     setPreferredSize(new Dimension(Main.WIDTH, Main.HEIGHT));
     setFocusable(true);
     requestFocusInWindow();
-    addKeyListener((KeyListener) keyHandler);
+    addKeyListener(keyHandler);
 
     this.loadImages();
     soundManager.loadSounds();
@@ -129,6 +128,7 @@ public class GamePanel extends JPanel{
     });
   }
 
+
   // Carefull. Render method
   @Override
   protected void paintComponent(Graphics g) {
@@ -179,14 +179,4 @@ public class GamePanel extends JPanel{
       g2d.drawImage(enemy.skin, enemy.x, enemy.y, enemy.size, enemy.size, this);
     }
   }
-
-
-  // gets called when space is pressed
-  void performAttack() {
-    switch (selectedPieceType) {
-      case ROOK -> entityManager.spawnCannonBall();
-      case QUEEN -> entityManager.spawnQueenParticles();
-    }
-  }
-
 }

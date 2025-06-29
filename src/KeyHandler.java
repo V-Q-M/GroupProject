@@ -7,6 +7,7 @@ public class KeyHandler implements KeyListener {
     boolean goingLeft = false;
     boolean goingUp = false;
     boolean goingDown = false;
+    boolean spacePressed = false;
 
     public KeyHandler(GamePanel gamePanel){
         this.gamePanel = gamePanel;
@@ -42,7 +43,8 @@ public class KeyHandler implements KeyListener {
                     goingLeft = false;
                     goingUp = false;
                 }
-                case KeyEvent.VK_SPACE -> gamePanel.performAttack();
+                //case KeyEvent.VK_SPACE -> gamePanel.performAttack();
+                case KeyEvent.VK_SPACE -> spacePressed = true;
                 case KeyEvent.VK_1 -> gamePanel.selectPiece(PieceType.ROOK);
                 case KeyEvent.VK_2 -> gamePanel.selectPiece(PieceType.QUEEN);
             }
@@ -60,7 +62,8 @@ public class KeyHandler implements KeyListener {
                 case KeyEvent.VK_D -> {
                     goingRight = true;
                 }
-                case KeyEvent.VK_SPACE -> gamePanel.performAttack();
+                //case KeyEvent.VK_SPACE -> gamePanel.performAttack();
+                case KeyEvent.VK_SPACE -> spacePressed = true;
                 case KeyEvent.VK_1 -> gamePanel.selectPiece(PieceType.ROOK);
                 case KeyEvent.VK_2 -> gamePanel.selectPiece(PieceType.QUEEN);
             }

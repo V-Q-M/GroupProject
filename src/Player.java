@@ -19,14 +19,22 @@ public class Player {
     void playerUpdate(){
         int speed = moveSpeed;
 
-        if (keyHandler.goingUp)
+        if (keyHandler.goingUp) {
             playerY -= speed;
-        if (keyHandler.goingDown)
+        }
+        if (keyHandler.goingDown) {
             playerY += speed;
-        if (keyHandler.goingLeft)
+        }
+        if (keyHandler.goingLeft) {
             playerX -= speed;
-        if (keyHandler.goingRight)
+        }
+        if (keyHandler.goingRight) {
             playerX += speed;
+        }
+        if (keyHandler.spacePressed) {
+            keyHandler.spacePressed = false;
+            performAttack();
+        }
 
         if (queenDashing && queenDashingCounter <= 20){
             queenDashingCounter ++;
@@ -34,6 +42,14 @@ public class Player {
             queenDashing = false;
             queenDashingCounter = 0;
             moveSpeed = BASE_MOVE_SPEED;
+        }
+    }
+
+    void performAttack() {
+        switch (gamePanel.selectedPieceType) {
+            // Add new characters here
+            case ROOK -> gamePanel.entityManager.spawnCannonBall();
+            case QUEEN -> gamePanel.entityManager.spawnQueenParticles();
         }
     }
 }
