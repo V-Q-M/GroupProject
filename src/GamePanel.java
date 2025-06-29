@@ -51,6 +51,8 @@ public class GamePanel extends JPanel implements KeyListener{
   private final List<CannonBall> balls = new ArrayList<>();
   // carries particle effects
   private final List<Particle> particles = new ArrayList<>();
+  // carries enemies
+  private final List<Enemy>  enemies = new ArrayList<>();
 
   public GamePanel() {
     // Window size
@@ -61,7 +63,10 @@ public class GamePanel extends JPanel implements KeyListener{
 
     loadImages();
     loadSounds();
+    // Default piece
     selectPiece(PieceType.ROOK);
+
+    enemies.add(new Enemy(200, 200, 80, rookImage));
     // Refreshrate. Might have to improve that
     new Timer(16, e -> update()).start(); // ~60 FPS
                                           //
@@ -74,7 +79,6 @@ public class GamePanel extends JPanel implements KeyListener{
     clip.setFramePosition(0);           // Rewind to the beginning
     clip.start();
   }
-
 
   private void loadSounds() {
     shootClip = loadClip("res/shoot.wav");
@@ -92,8 +96,6 @@ public class GamePanel extends JPanel implements KeyListener{
       return null;
     }
   }
-
-
 
   // Image loader. Very simple. Might expand to ImageAtlas
   private void loadImages() {
@@ -131,19 +133,19 @@ public class GamePanel extends JPanel implements KeyListener{
     }
   }
 
-  // Movement logic is abit weird. Idk wether I should fix it
   public void update() {
-    int speed = moveSpeed;
+    // Self-explanatory
+    playerUpdate();
+    entityUpdate();
 
-    if (goingUp)
-      playerY -= speed;
-    if (goingDown)
-      playerY += speed;
-    if (goingLeft)
-      playerX -= speed;
-    if (goingRight)
-      playerX += speed;
+    // Update every enemy
+    for (Enemy enemy : enemies){
+      enemy.update();
+    }
+    repaint();
+  }
 
+  private void entityUpdate(){
     // Update cannon balls
     balls.removeIf(ball -> {
       ball.moveBall(ball.getBallSpeed());
@@ -155,6 +157,20 @@ public class GamePanel extends JPanel implements KeyListener{
       particle.decay++;
       return particle.decay > 20;
     });
+  }
+
+  private void playerUpdate(){
+    int speed = moveSpeed;
+
+    if (goingUp)
+      playerY -= speed;
+    if (goingDown)
+      playerY += speed;
+    if (goingLeft)
+      playerX -= speed;
+    if (goingRight)
+      playerX += speed;
+
 
     if (queenDashing && queenDashingCounter <= 20){
       queenDashingCounter ++;
@@ -163,9 +179,9 @@ public class GamePanel extends JPanel implements KeyListener{
       queenDashingCounter = 0;
       moveSpeed = BASE_MOVE_SPEED;
     }
-
-    repaint();
   }
+
+
 
   // Carefull. Render method
   @Override
@@ -183,13 +199,21 @@ public class GamePanel extends JPanel implements KeyListener{
       }
     }
 
+    drawPlayer(g2d);
+    drawEnemies(g2d);
+    drawEntities(g2d);
+  }
+
+  private void drawPlayer(Graphics2D g2d){
     // Draw selectedPiece at current position
     if (selectedPiece != null) {
-      int rw = selectedPiece.getWidth() * SCALE;
-      int rh = selectedPiece.getHeight() * SCALE;
-      g2d.drawImage(selectedPiece, playerX, playerY, rw, rh, this);
+      int pieceWidth = selectedPiece.getWidth() * SCALE;
+      int pieceHeight = selectedPiece.getHeight() * SCALE;
+      g2d.drawImage(selectedPiece, playerX, playerY, pieceWidth, pieceHeight, this);
     }
+  }
 
+  private void drawEntities(Graphics2D g2d){
     // Draw all cannon balls
     g2d.setColor(Color.WHITE);
     for (CannonBall b : balls) {
@@ -200,6 +224,11 @@ public class GamePanel extends JPanel implements KeyListener{
     }
   }
 
+  private void drawEnemies(Graphics2D g2d){
+    for (Enemy enemy : enemies) {
+      g2d.drawImage(enemy.skin, enemy.x, enemy.y, enemy.size, enemy.size, this);
+    }
+  }
   // Yes ik. Scuffed logic
   boolean goingRight = false;
   boolean goingLeft = false;
@@ -309,7 +338,6 @@ public class GamePanel extends JPanel implements KeyListener{
       playClip(shootClip);
     }
   }
-  //TODO make it so that movespeed return to normal after a second (dash stopped)
   private void spawnQueenParticles() {
     if (queenImage != null) {
       int size = 140; // size of the cannonball
@@ -339,15 +367,6 @@ public class GamePanel extends JPanel implements KeyListener{
       // this should move to a variable
       playClip(sliceClip);
     }
-  }
-
-  public static void main(String[] args) {
-    JFrame frame = new JFrame("ChessBrawl");
-    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    frame.add(new GamePanel());
-    frame.pack();
-    frame.setLocationRelativeTo(null);
-    frame.setVisible(true);
   }
 
 }

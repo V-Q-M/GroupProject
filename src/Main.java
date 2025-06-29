@@ -8,7 +8,7 @@ public class Main{
 
     public static void openWindow() {
         // Create a new JFrame (window)
-        JFrame frame = new JFrame("ChessFighter");
+        JFrame frame = new JFrame("ChessBrawl");
         
         // Set default close operation so the app exits when window is closed
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
