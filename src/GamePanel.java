@@ -163,6 +163,7 @@ public class GamePanel extends JPanel{
     drawPlayer(g2d);
     drawEnemies(g2d);
     drawEntities(g2d);
+    drawHealthBars(g2d);
   }
 
   private void drawBackground(Graphics2D g2d){
@@ -178,7 +179,7 @@ public class GamePanel extends JPanel{
     }
   }
 
-  private void drawHealthBar(Graphics2D g2d, int x, int y, int width, int height, int health){
+  private void createHealthBar(Graphics2D g2d, int x, int y, int width, int height, int health){
     g2d.setColor(Color.red);
     g2d.fillRect(x, y - height * 2, width, height);
     int greenWidth= (int) (width * health / 100);
@@ -192,10 +193,6 @@ public class GamePanel extends JPanel{
       int x = player.playerX;
       int y = player.playerY;
       g2d.drawImage(selectedPiece, x, y, pieceWidth, pieceHeight, this);
-      // Personal choice - only show healthbar when not at full health
-      if (player.health != 100) {
-        drawHealthBar(g2d, x, y, pieceWidth, 20, player.health);
-      }
       // Draw hitbox
       if (DEBUG_MODE) {
         g2d.setColor(Color.red);
@@ -221,9 +218,6 @@ public class GamePanel extends JPanel{
     for (Enemy enemy : enemies) {
       if (!enemy.dead) {
         g2d.drawImage(enemy.skin, enemy.x, enemy.y, enemy.width, enemy.height, this);
-        if (enemy.health != 100) {
-          drawHealthBar(g2d, enemy.x, enemy.y, enemy.width, 15, enemy.health);
-        }
         if (DEBUG_MODE){
           g2d.setColor(Color.red);
           g2d.drawRect(enemy.x, enemy.y, enemy.width, enemy.height);
@@ -231,6 +225,22 @@ public class GamePanel extends JPanel{
       }
     }
   }
+
+  void drawHealthBars(Graphics2D g2d){
+    // Personal choice - only show health-bar when not at full health
+    for (Enemy enemy : enemies) {
+      if (!enemy.dead && enemy.health != 100) {
+        createHealthBar(g2d, enemy.x, enemy.y, enemy.width, 15, enemy.health);
+      }
+    }
+    // Player health-bar always on top
+    if (player.health != 100) {
+      createHealthBar(g2d, player.playerX, player.playerY, pieceWidth, 20, player.health);
+    }
+  }
+
+
+
 
 
 
