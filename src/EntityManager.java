@@ -1,7 +1,9 @@
 public class EntityManager {
     GamePanel gamePanel;
-    public EntityManager(GamePanel gamePanel) {
+    SoundManager soundManager;
+    public EntityManager(GamePanel gamePanel, SoundManager soundManager) {
        this.gamePanel = gamePanel;
+       this.soundManager = soundManager;
     }
 
     int CANNON_BALL_SIZE = 80;
@@ -29,7 +31,7 @@ public class EntityManager {
             // Append balls to the list of balls
             gamePanel.balls.add(new CannonBall(bx, by, size, direction));
             // this should move to a variable
-            gamePanel.playClip(gamePanel.shootClip);
+            soundManager.playClip(soundManager.shootClip);
         }
     }
     protected void spawnQueenParticles() {
@@ -59,7 +61,7 @@ public class EntityManager {
             // Append balls to the list of balls
             gamePanel.particles.add(new Particle(bx, by, size, direction));
             // this should move to a variable
-            gamePanel.playClip(gamePanel.sliceClip);
+            soundManager.playClip(soundManager.sliceClip);
         }
     }
 }

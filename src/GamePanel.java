@@ -28,8 +28,6 @@ public class GamePanel extends JPanel implements KeyListener{
   private BufferedImage selectedPiece;
 
 
-  Clip shootClip;
-  Clip sliceClip;
 
   // Start Position
   int playerX = 100;
@@ -55,7 +53,10 @@ public class GamePanel extends JPanel implements KeyListener{
   // carries enemies
   final List<Enemy>  enemies = new ArrayList<>();
 
-  EntityManager entityManager = new EntityManager(this);
+  SoundManager soundManager = new SoundManager(this);
+  EntityManager entityManager = new EntityManager(this, soundManager);
+  EnemyManager enemyManager = new EnemyManager(this);
+
 
   public GamePanel() {
     // Window size
@@ -64,41 +65,19 @@ public class GamePanel extends JPanel implements KeyListener{
     requestFocusInWindow();
     addKeyListener((KeyListener) this);
 
-    loadImages();
-    loadSounds();
+    this.loadImages();
+    soundManager.loadSounds();
     // Default piece
     selectPiece(PieceType.ROOK);
-
-    enemies.add(new Enemy(200, 200, 80, rookImage));
+    // Test enemy
+    enemyManager.spawnEnemy(200,200,80,rookImage);
+    enemyManager.spawnEnemy(400,200,80,rookImage);
+    enemyManager.spawnEnemy(600,200,80,rookImage);
     // Refreshrate. Might have to improve that
     new Timer(16, e -> update()).start(); // ~60 FPS
                                           //
   }
 
-  // Might move to specialised class if Soundlogic gets more complicated
-  protected void playClip(Clip clip) {
-    if (clip == null) return;
-    if (clip.isRunning()) clip.stop();  // Stop current sound if needed
-    clip.setFramePosition(0);           // Rewind to the beginning
-    clip.start();
-  }
-
-  private void loadSounds() {
-    shootClip = loadClip("res/shoot.wav");
-    sliceClip = loadClip("res/slice1.wav");
-  }
-
-  private Clip loadClip(String path) {
-    try {
-      AudioInputStream audioIn = AudioSystem.getAudioInputStream(new File(path));
-      Clip clip = AudioSystem.getClip();
-      clip.open(audioIn);
-      return clip;
-    } catch (Exception e) {
-      e.printStackTrace();
-      return null;
-    }
-  }
 
   // Image loader. Very simple. Might expand to ImageAtlas
   private void loadImages() {
