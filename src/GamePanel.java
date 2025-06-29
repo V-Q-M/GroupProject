@@ -66,10 +66,6 @@ public class GamePanel extends JPanel{
     soundManager.loadSounds();
     // Default piece
     selectPiece(PieceType.ROOK);
-    // Test enemy
-    enemyManager.spawnEnemy(200,200,80, 80, rookImage);
-    enemyManager.spawnEnemy(400,200,80, 80, rookImage);
-    enemyManager.spawnEnemy(600,200,80, 80, rookImage);
     // Refreshrate. Might have to improve that
     new Timer(16, e -> update()).start(); // ~60 FPS
                                           //
@@ -135,6 +131,7 @@ public class GamePanel extends JPanel{
         enemy.update();
       }
     }
+    enemyManager.updateSpawner();
     repaint();
   }
 
