@@ -23,6 +23,10 @@ java src/Main.java
 
 also works when run from root.
 
+# Compatibility
+
+Game was tested on Windows at 1080p and 60hz. It is recommended to use these settings for the best experience.
+
 # License
 
 This project is released under the MIT License.
