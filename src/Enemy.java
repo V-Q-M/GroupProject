@@ -6,9 +6,12 @@ public class Enemy {
     public int x, y;
     public int width;
     public int height;
-    boolean dead = false;
+    boolean isDead = false;
     boolean isInvulnerable = false;
     int invulnerableCounter = 0;
+    boolean hasAttacked = false;
+    int attackCoolDownCounter;
+    final int attackCoolDown = 80;
 
     int health = 100;
     final int DEFAULT_CANNON_BALL_DMG = 35;
@@ -37,7 +40,7 @@ public class Enemy {
 
     private void checkAlive(){
         if (health <= 0){
-            this.dead = true;
+            this.isDead = true;
         }
     }
 
@@ -62,6 +65,13 @@ public class Enemy {
         } else {
            isInvulnerable = false;
            invulnerableCounter = 0;
+        }
+
+        if (hasAttacked && attackCoolDownCounter < attackCoolDown){
+            attackCoolDownCounter++;
+        } else {
+            hasAttacked = false;
+            attackCoolDownCounter = 0;
         }
     }
 

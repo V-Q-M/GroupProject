@@ -1,7 +1,10 @@
 public class Player {
     GamePanel gamePanel;
     KeyHandler keyHandler;
+    boolean isDead = false;
     CollisionHandler collisionHandler;
+    boolean isInvulnerable;
+    private int invulnerableCounter;
     int playerX;
     int playerY;
     final int BASE_MOVE_SPEED = 5;
@@ -9,12 +12,13 @@ public class Player {
     int moveSpeed;
     boolean queenDashing = false;
     private int queenDashingCounter = 0;
-    public int health = 60;
+    public int health = 100;
 
     String facingDirection = "right";
 
-    private boolean onCoolDown = false;
-    private int coolDownCounter = 0;
+    private boolean hasAttacked = false;
+    private int attackCoolDownCounter = 0;
+
 
     public Player(GamePanel gamePanel, KeyHandler keyHandler,  CollisionHandler collisionHandler, int startPositionX, int startPositionY){
         this.gamePanel = gamePanel;
@@ -26,44 +30,46 @@ public class Player {
 
     void playerUpdate(){
         movement();
+        checkCollision();
         coolDowns();
+        checkAlive();
     }
 
-    private boolean playerNotColliding(){
-        return !collisionHandler.playerCollision(playerX, playerY, gamePanel.pieceWidth, gamePanel.pieceHeight, moveSpeed, facingDirection);
+    private boolean notReachedBorder(){
+        return !collisionHandler.borderCollision(playerX, playerY, gamePanel.pieceWidth, gamePanel.pieceHeight, moveSpeed, facingDirection);
     }
 
     private void movement(){
 
         if (keyHandler.goingUp) {
             facingDirection = "up";
-            if (playerNotColliding()) {
+            if (notReachedBorder()) {
                 playerY -= moveSpeed;
             }
         }
         if (keyHandler.goingDown) {
             facingDirection = "down";
-            if (playerNotColliding()) {
+            if (notReachedBorder()) {
                 playerY += moveSpeed;
             }
         }
         if (keyHandler.goingLeft) {
             facingDirection = "left";
-            if (playerNotColliding()) {
+            if (notReachedBorder()) {
                 playerX -= moveSpeed;
             }
         }
         if (keyHandler.goingRight) {
             facingDirection = "right";
-            if (playerNotColliding()) {
+            if (notReachedBorder()) {
                 playerX += moveSpeed;
             }
         }
         if (keyHandler.spacePressed) {
             keyHandler.spacePressed = false;
-            if (!onCoolDown){
+            if (!hasAttacked){
                 performAttack();
-                onCoolDown = true;
+                hasAttacked = true;
             }
         }
     }
@@ -74,16 +80,42 @@ public class Player {
         } else {
             queenDashing = false;
             queenDashingCounter = 0;
+            isInvulnerable = false;
             moveSpeed = BASE_MOVE_SPEED;
         }
 
-        if (onCoolDown && coolDownCounter < gamePanel.abilityCoolDown){
-            coolDownCounter++;
+        if (hasAttacked && attackCoolDownCounter < gamePanel.abilityCoolDown){
+            attackCoolDownCounter++;
         } else {
-            onCoolDown = false;
-            coolDownCounter = 0;
+            hasAttacked = false;
+            attackCoolDownCounter = 0;
+        }
+        if (isInvulnerable && invulnerableCounter<30){
+            invulnerableCounter++;
+        } else {
+            isInvulnerable = false;
+            invulnerableCounter = 0;
         }
     }
+
+    private void checkCollision(){
+        if (!isInvulnerable) {
+            for (Enemy enemy : gamePanel.enemies) {
+                if (collisionHandler.enemyCollision(enemy, this) && !enemy.hasAttacked) {
+                    enemy.hasAttacked = true;
+                    health -= 10;
+                    isInvulnerable = true;
+                }
+            }
+        }
+    }
+
+    private void checkAlive(){
+        if (health <= 0){
+            this.isDead = true;
+        }
+    }
+
 
     void performAttack() {
         switch (gamePanel.selectedPieceType) {

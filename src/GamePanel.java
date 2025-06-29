@@ -140,13 +140,15 @@ public class GamePanel extends JPanel{
   }
 
   public void update() {
-    // Self-explanatory
-    player.playerUpdate();
+    if (!player.isDead){
+      player.playerUpdate();
+    }
+
     entityUpdate();
 
     // Update every enemy
     for (Enemy enemy : enemies){
-      if (!enemy.dead){
+      if (!enemy.isDead){
         enemy.update();
       }
     }
@@ -208,7 +210,7 @@ public class GamePanel extends JPanel{
 
   private void drawPlayer(Graphics2D g2d){
     // Draw selectedPiece at current position
-    if (selectedPiece != null) {
+    if (selectedPiece != null && !player.isDead) {
       int x = player.playerX;
       int y = player.playerY;
       g2d.drawImage(selectedPiece, x, y, pieceWidth, pieceHeight, this);
@@ -235,7 +237,7 @@ public class GamePanel extends JPanel{
 
   private void drawEnemies(Graphics2D g2d){
     for (Enemy enemy : enemies) {
-      if (!enemy.dead) {
+      if (!enemy.isDead) {
         g2d.drawImage(enemy.skin, enemy.x, enemy.y, enemy.width, enemy.height, this);
         if (DEBUG_MODE){
           g2d.setColor(Color.red);
@@ -248,12 +250,12 @@ public class GamePanel extends JPanel{
   void drawHealthBars(Graphics2D g2d){
     // Personal choice - only show health-bar when not at full health
     for (Enemy enemy : enemies) {
-      if (!enemy.dead && enemy.health != 100) {
+      if (!enemy.isDead && enemy.health != 100) {
         createHealthBar(g2d, enemy.x, enemy.y, enemy.width, 15, enemy.health);
       }
     }
     // Player health-bar always on top
-    if (player.health != 100) {
+    if (!player.isDead && player.health != 100) {
       createHealthBar(g2d, player.playerX, player.playerY, pieceWidth, 20, player.health);
     }
   }

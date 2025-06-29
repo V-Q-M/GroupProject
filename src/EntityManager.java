@@ -35,6 +35,7 @@ public class EntityManager {
             int queenHeight = gamePanel.queenImage.getHeight() * gamePanel.SCALE;
             player.moveSpeed = player.DASH_SPEED;
             player.queenDashing = true;
+            player.isInvulnerable = true;
 
             // spawn at top‐center of the rook
             int bx = player.playerX + (queenWidth - size) / 2;
