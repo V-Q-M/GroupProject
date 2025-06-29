@@ -23,4 +23,17 @@ public class CollisionHandler {
 
         return false;
     }
+
+    boolean projectileCollision(Enemy enemy, CannonBall ball) {
+        int speed = ball.getBallSpeed();
+
+        if (ball.x + ball.size + speed > enemy.x &&
+                ball.x - speed < enemy.x + enemy.width &&
+                ball.y + ball.size + speed > enemy.y &&
+                ball.y - speed < enemy.y + enemy.height) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

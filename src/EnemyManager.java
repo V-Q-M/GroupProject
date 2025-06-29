@@ -7,6 +7,6 @@ public class EnemyManager {
     }
 
     void spawnEnemy(int x, int y, int width, int height, BufferedImage skin){
-        gamePanel.enemies.add(new Enemy(x, y, width, height, skin));
+        gamePanel.enemies.add(new Enemy(gamePanel, gamePanel.collisionHandler, x, y, width, height, skin));
     }
 }

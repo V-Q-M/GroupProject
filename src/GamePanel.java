@@ -127,7 +127,9 @@ public class GamePanel extends JPanel{
 
     // Update every enemy
     for (Enemy enemy : enemies){
-      enemy.update();
+      if (!enemy.dead){
+        enemy.update();
+      }
     }
     repaint();
   }
@@ -144,6 +146,7 @@ public class GamePanel extends JPanel{
       particle.decay++;
       return particle.decay > 20;
     });
+
   }
 
 
@@ -205,8 +208,10 @@ public class GamePanel extends JPanel{
 
   private void drawEnemies(Graphics2D g2d){
     for (Enemy enemy : enemies) {
-      g2d.drawImage(enemy.skin, enemy.x, enemy.y, enemy.width, enemy.height, this);
-      g2d.drawRect(enemy.x, enemy.y, enemy.width, enemy.height);
+      if (!enemy.dead) {
+        g2d.drawImage(enemy.skin, enemy.x, enemy.y, enemy.width, enemy.height, this);
+        g2d.drawRect(enemy.x, enemy.y, enemy.width, enemy.height);
+      }
     }
   }
 }
