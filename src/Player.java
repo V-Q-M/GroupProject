@@ -103,7 +103,7 @@ public class Player {
     private void checkCollision(){
         if (!isInvulnerable) {
             for (Enemy enemy : gamePanel.enemies) {
-                if (collisionHandler.enemyCollision(enemy, this) && !enemy.hasAttacked) {
+                if (collisionHandler.enemyCollision(enemy, this) && !enemy.hasAttacked && !enemy.isDead) {
                     enemy.hasAttacked = true;
                     health -= 10;
                     isInvulnerable = true;
