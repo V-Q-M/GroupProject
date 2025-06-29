@@ -2,13 +2,16 @@ import javax.swing.JFrame;
 
 public class Main{
 
+    public static final int WIDTH = 1600;
+
+    public static final int HEIGHT = 900;
+
     public static void openWindow() {
         // Create a new JFrame (window)
-        JFrame frame = new JFrame("My Swing Window");
+        JFrame frame = new JFrame("ChessFighter");
         
         // Set default close operation so the app exits when window is closed
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
 
         // Create your GamePanel instance
         GamePanel gamePanel = new GamePanel();
@@ -17,7 +20,7 @@ public class Main{
         frame.pack();
 
         // Set the window size (width, height)
-        frame.setSize(400, 300);
+        frame.setSize(WIDTH, HEIGHT);
         
         // Optional: center the window on the screen
         frame.setLocationRelativeTo(null);

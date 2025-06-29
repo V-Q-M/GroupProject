@@ -33,11 +33,18 @@ public class GamePanel extends JPanel implements KeyListener{
   // Start Position
   private int rookX = 100;
   private int rookY = 100;
+
+  private boolean queenDashing = false;
+  private int queenDashingCounter = 0;
+
   // Im scaling 32x32 Textures so that they look nicer
   private final int SCALE = 10;
 
   // Rook movespeed. Might create a PieceClass and move it there
-  private int MOVE_SPEED = 5;
+  private int BASE_MOVE_SPEED = 5;
+  private int DASH_SPEED = 18;
+  private int moveSpeed;
+
 
   // List to track cannon balls
   // Might expand that to carry other projectiles
@@ -47,7 +54,7 @@ public class GamePanel extends JPanel implements KeyListener{
 
   public GamePanel() {
     // Window size
-    setPreferredSize(new Dimension(800, 800));
+    setPreferredSize(new Dimension(Main.WIDTH, Main.HEIGHT));
     setFocusable(true);
     requestFocusInWindow();
     addKeyListener((KeyListener) this);
@@ -126,7 +133,7 @@ public class GamePanel extends JPanel implements KeyListener{
 
   // Movement logic is abit weird. Idk wether I should fix it
   public void update() {
-    int speed = MOVE_SPEED;
+    int speed = moveSpeed;
 
     if (goingUp)
       rookY -= speed;
@@ -148,6 +155,15 @@ public class GamePanel extends JPanel implements KeyListener{
       particle.decay++;
       return particle.decay > 20;
     });
+
+    if (queenDashing && queenDashingCounter <= 20){
+      queenDashingCounter ++;
+    } else {
+      queenDashing = false;
+      queenDashingCounter = 0;
+      moveSpeed = BASE_MOVE_SPEED;
+    }
+
     repaint();
   }
 
@@ -299,7 +315,8 @@ public class GamePanel extends JPanel implements KeyListener{
       int size = 140; // size of the cannonball
       int rw = queenImage.getWidth() * SCALE;
       int rh = queenImage.getHeight() * SCALE;
-      MOVE_SPEED = 18;
+      moveSpeed = DASH_SPEED;
+      queenDashing = true;
 
       // spawn at top‐center of the rook
       int bx = rookX + (rw - size) / 2;
