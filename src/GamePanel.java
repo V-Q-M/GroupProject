@@ -43,14 +43,15 @@ public class GamePanel extends JPanel{
   final List<Enemy>  enemies = new ArrayList<>();
 
   KeyHandler keyHandler = new KeyHandler(this);
+  CollisionHandler collisionHandler = new CollisionHandler(this);
   SoundManager soundManager = new SoundManager(this);
 
   int startX = 100;
   int startY = 100;
-  Player player = new Player(this, keyHandler, startX, startY);
+
+  Player player = new Player(this, keyHandler, collisionHandler, startX, startY);
   EnemyManager enemyManager = new EnemyManager(this);
   EntityManager entityManager = new EntityManager(this, keyHandler, soundManager, player);
-  CollisionHandler collisionHandler = new CollisionHandler(this, player);
 
   public GamePanel() {
     // Window size
@@ -171,11 +172,14 @@ public class GamePanel extends JPanel{
     }
   }
 
+  int pieceWidth;
+  int pieceHeight;
+
   private void drawPlayer(Graphics2D g2d){
     // Draw selectedPiece at current position
     if (selectedPiece != null) {
-      int pieceWidth = selectedPiece.getWidth() * SCALE;
-      int pieceHeight = selectedPiece.getHeight() * SCALE;
+      pieceWidth = selectedPiece.getWidth() * SCALE;
+      pieceHeight = selectedPiece.getHeight() * SCALE;
       g2d.drawImage(selectedPiece, player.playerX, player.playerY, pieceWidth, pieceHeight, this);
       // Draw hitbox
       if (DEBUG_MODE) {

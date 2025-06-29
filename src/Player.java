@@ -1,6 +1,7 @@
 public class Player {
     GamePanel gamePanel;
     KeyHandler keyHandler;
+    CollisionHandler collisionHandler;
     int playerX;
     int playerY;
     final int BASE_MOVE_SPEED = 5;
@@ -14,9 +15,10 @@ public class Player {
     private boolean onCoolDown = false;
     private int coolDownCounter = 0;
 
-    public Player(GamePanel gamePanel, KeyHandler keyHandler, int startPositionX, int startPositionY){
+    public Player(GamePanel gamePanel, KeyHandler keyHandler,  CollisionHandler collisionHandler, int startPositionX, int startPositionY){
         this.gamePanel = gamePanel;
         this.keyHandler = keyHandler;
+        this.collisionHandler = collisionHandler;
         this.playerX = startPositionX;
         this.playerY = startPositionY;
     }
@@ -26,24 +28,35 @@ public class Player {
         coolDowns();
     }
 
+    private boolean playerNotColliding(){
+        return !collisionHandler.playerCollision(playerX, playerY, gamePanel.pieceWidth, gamePanel.pieceHeight, moveSpeed, facingDirection);
+    }
+
     private void movement(){
-        int speed = moveSpeed;
 
         if (keyHandler.goingUp) {
-            playerY -= speed;
             facingDirection = "up";
+            if (playerNotColliding()) {
+                playerY -= moveSpeed;
+            }
         }
         if (keyHandler.goingDown) {
-            playerY += speed;
             facingDirection = "down";
+            if (playerNotColliding()) {
+                playerY += moveSpeed;
+            }
         }
         if (keyHandler.goingLeft) {
-            playerX -= speed;
             facingDirection = "left";
+            if (playerNotColliding()) {
+                playerX -= moveSpeed;
+            }
         }
         if (keyHandler.goingRight) {
-            playerX += speed;
             facingDirection = "right";
+            if (playerNotColliding()) {
+                playerX += moveSpeed;
+            }
         }
         if (keyHandler.spacePressed) {
             keyHandler.spacePressed = false;
