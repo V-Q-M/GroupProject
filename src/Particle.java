@@ -1,30 +1,15 @@
-public class Particle {
-  public int x, y;
-  public final int size;
+public class Particle extends Projectile{
   public final String direction;
-  private int particleSpeed = 20;
   public int decay = 0;
 
   // Specialized constructor
-  public Particle(int x, int y, int size, String direction) {
+  public Particle(int x, int y, int size, int speed, String direction) {
     this.x = x;
     this.y = y;
-    this.size = size;
+    this.height = size;
+    this.width = size;
     this.direction = direction;
-  }
-  // Say no to null values
-  public int getParticleSpeed() {
-    if (particleSpeed != 0) {
-      return particleSpeed;
-    }
-    return 1;
-  }
-
-  // yeah, we ain't doin negative speed...
-  public void setParticleSpeed(int newParticleSpeed) {
-    if (newParticleSpeed >= 0) {
-      particleSpeed = newParticleSpeed;
-    }
+    this.speed = speed;
   }
 
   // Moves the ball

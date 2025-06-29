@@ -4,7 +4,8 @@ public class EntityManager {
     KeyHandler keyHandler;
     Player player;
     String direction = "right";
-
+    int DEFAULT_CANNONBALL_SPEED = 10;
+    int DEFAULT_QUEEN_PARTICLE_SPEED = 20;
     public EntityManager(GamePanel gamePanel, KeyHandler keyHandler, SoundManager soundManager, Player player) {
        this.gamePanel = gamePanel;
        this.soundManager = soundManager;
@@ -22,7 +23,7 @@ public class EntityManager {
             int bx = player.playerX + (rookWidth - size) / 2;
             int by = player.playerY;
             // Append balls to the list of balls
-            gamePanel.balls.add(new CannonBall(bx, by, size, player.facingDirection));
+            gamePanel.balls.add(new CannonBall(bx, by, size, DEFAULT_CANNONBALL_SPEED, player.facingDirection));
             // this should move to a variable
             soundManager.playClip(soundManager.shootClip);
         }
@@ -39,7 +40,7 @@ public class EntityManager {
             int bx = player.playerX + (queenWidth - size) / 2;
             int by = player.playerY + (queenHeight - size) / 2;
             // Append balls to the list of balls
-            gamePanel.particles.add(new Particle(bx, by, size, player.facingDirection));
+            gamePanel.particles.add(new Particle(bx, by, size, DEFAULT_QUEEN_PARTICLE_SPEED,player.facingDirection));
             // this should move to a variable
             soundManager.playClip(soundManager.sliceClip);
         }

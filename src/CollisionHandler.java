@@ -24,16 +24,25 @@ public class CollisionHandler {
         return false;
     }
 
-    boolean projectileCollision(Enemy enemy, CannonBall ball) {
-        int speed = ball.getBallSpeed();
-
-        if (ball.x + ball.size + speed > enemy.x &&
-                ball.x - speed < enemy.x + enemy.width &&
-                ball.y + ball.size + speed > enemy.y &&
-                ball.y - speed < enemy.y + enemy.height) {
-            return true;
+    boolean projectileCollision(Enemy enemy, Projectile projectile) {
+        boolean returnValue = false;
+        if (gamePanel.selectedPieceType == PieceType.ROOK) {
+            int speed = projectile.speed;
+            if (projectile.x + projectile.width + speed > enemy.x &&
+                    projectile.x - speed < enemy.x + enemy.width &&
+                    projectile.y + projectile.height + speed > enemy.y &&
+                    projectile.y - speed < enemy.y + enemy.height) {
+                returnValue = true;
+            }
         } else {
-            return false;
+            int speed = projectile.speed;
+            if (projectile.x + projectile.width + speed > enemy.x &&
+                    projectile.x - speed < enemy.x + enemy.width &&
+                    projectile.y + projectile.height + speed > enemy.y &&
+                    projectile.y - speed < enemy.y + enemy.height) {
+                returnValue = true;
+            }
         }
+        return returnValue;
     }
 }

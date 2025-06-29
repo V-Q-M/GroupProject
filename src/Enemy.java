@@ -11,6 +11,8 @@ public class Enemy {
     int invulnerableCounter = 0;
 
     int health = 100;
+    final int DEFAULT_CANNON_BALL_DMG = 15;
+    final int DEFAULT_SLICE_DMG= 35;
     int speed;
     int damage;
 
@@ -49,11 +51,20 @@ public class Enemy {
 
     private void checkCollision(){
         if (!isInvulnerable) {
-            for (CannonBall ball : gamePanel.balls) {
-                if (collisionHandler.projectileCollision(this, ball)) {
-                    health -= 50;
-                    isInvulnerable = true;
-                    ball.hasHit = true;
+            if(gamePanel.selectedPieceType == PieceType.ROOK) {
+                for (CannonBall ball : gamePanel.balls) {
+                    if (collisionHandler.projectileCollision(this, ball)) {
+                        health -= DEFAULT_CANNON_BALL_DMG;
+                        isInvulnerable = true;
+                        ball.hasHit = true;
+                    }
+                }
+            } else {
+                for (Particle particle: gamePanel.particles) {
+                    if ( collisionHandler.projectileCollision(this, particle)){
+                        health -= DEFAULT_SLICE_DMG;
+                        isInvulnerable = true;
+                    }
                 }
             }
         }

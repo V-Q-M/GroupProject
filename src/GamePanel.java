@@ -141,12 +141,15 @@ public class GamePanel extends JPanel{
   private void entityUpdate(){
     // Update cannon balls
     balls.removeIf(ball -> {
-      ball.moveBall(ball.getBallSpeed());
-      return ball.hasHit || ball.y + ball.size < 0;
+      ball.moveBall(ball.speed);
+      return ball.hasHit || ball.y + ball.height < 0
+                         || ball.y - ball.height >= Main.HEIGHT
+                         || ball.x + ball.width < 0
+                         || ball.x - ball.width >= Main.WIDTH;
     });
     // update particles (queens effect)
     particles.removeIf(particle -> {
-      particle.moveParticle(particle.getParticleSpeed());
+      particle.moveParticle(particle.speed);
       particle.decay++;
       return particle.decay > 20;
     });
@@ -205,12 +208,12 @@ public class GamePanel extends JPanel{
     // Draw all cannon balls
     g2d.setColor(Color.WHITE);
     for (CannonBall b : balls) {
-      g2d.fillRect(b.x, b.y, b.size, b.size);
-      g2d.drawRect(b.x, b.y, b.size, b.size);
+      g2d.fillRect(b.x, b.y, b.width, b.height);
+      g2d.drawRect(b.x, b.y, b.width, b.height);
     }
     for (Particle p : particles) {
-      g2d.fillRect(p.x, p.y, p.size, p.size);
-      g2d.drawRect(p.x, p.y, p.size, p.size);
+      g2d.fillRect(p.x, p.y, p.width, p.height);
+      g2d.drawRect(p.x, p.y, p.width, p.height);
     }
   }
 
