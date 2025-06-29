@@ -2,7 +2,8 @@ import java.awt.image.BufferedImage;
 
 public class Enemy {
     public int x, y;
-    public final int size;
+    public int width;
+    public int height;
 
     int health;
     int speed;
@@ -10,10 +11,11 @@ public class Enemy {
 
     BufferedImage skin;
 
-    public Enemy(int x, int y, int size, BufferedImage skin) {
+    public Enemy(int x, int y, int width, int height, BufferedImage skin) {
         this.x = x;
         this.y = y;
-        this.size = size;
+        this.width = width;
+        this.height = height;
         this.skin = skin;
     }
 

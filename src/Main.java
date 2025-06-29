@@ -12,6 +12,8 @@ public class Main{
         
         // Set default close operation so the app exits when window is closed
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        // Remove window decorations
+        frame.setUndecorated(true);
 
         // Create GamePanel instance
         GamePanel gamePanel = new GamePanel();
@@ -26,6 +28,7 @@ public class Main{
         
         // Make the window visible
         frame.setVisible(true);
+
     }
 
     public static void main(String[] args) {

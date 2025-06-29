@@ -9,6 +9,8 @@ import javax.swing.*;
 
 public class GamePanel extends JPanel{
 
+  private boolean DEBUG_MODE = true;
+
   // Textures of the pieces
   BufferedImage rookImage;
   BufferedImage knightImage;
@@ -18,6 +20,7 @@ public class GamePanel extends JPanel{
   BufferedImage pawnImage;
   // uses the enum
   PieceType selectedPieceType;
+
   private final int ROOK_ABILITY_COOLDOWN = 60;
   private final int QUEEN_ABILITY_COOLDOWN = 40;
 
@@ -47,9 +50,7 @@ public class GamePanel extends JPanel{
   Player player = new Player(this, keyHandler, startX, startY);
   EnemyManager enemyManager = new EnemyManager(this);
   EntityManager entityManager = new EntityManager(this, keyHandler, soundManager, player);
-
-
-
+  CollisionHandler collisionHandler = new CollisionHandler(this, player);
 
   public GamePanel() {
     // Window size
@@ -63,9 +64,9 @@ public class GamePanel extends JPanel{
     // Default piece
     selectPiece(PieceType.ROOK);
     // Test enemy
-    enemyManager.spawnEnemy(200,200,80,rookImage);
-    enemyManager.spawnEnemy(400,200,80,rookImage);
-    enemyManager.spawnEnemy(600,200,80,rookImage);
+    enemyManager.spawnEnemy(200,200,80, 80, rookImage);
+    enemyManager.spawnEnemy(400,200,80, 80, rookImage);
+    enemyManager.spawnEnemy(600,200,80, 80, rookImage);
     // Refreshrate. Might have to improve that
     new Timer(16, e -> update()).start(); // ~60 FPS
                                           //
@@ -176,7 +177,13 @@ public class GamePanel extends JPanel{
       int pieceWidth = selectedPiece.getWidth() * SCALE;
       int pieceHeight = selectedPiece.getHeight() * SCALE;
       g2d.drawImage(selectedPiece, player.playerX, player.playerY, pieceWidth, pieceHeight, this);
+      // Draw hitbox
+      if (DEBUG_MODE) {
+        g2d.drawRect(player.playerX, player.playerY, pieceWidth, pieceHeight);
+      }
     }
+
+
   }
 
   private void drawEntities(Graphics2D g2d){
@@ -184,15 +191,18 @@ public class GamePanel extends JPanel{
     g2d.setColor(Color.WHITE);
     for (CannonBall b : balls) {
       g2d.fillRect(b.x, b.y, b.size, b.size);
+      g2d.drawRect(b.x, b.y, b.size, b.size);
     }
     for (Particle p : particles) {
       g2d.fillRect(p.x, p.y, p.size, p.size);
+      g2d.drawRect(p.x, p.y, p.size, p.size);
     }
   }
 
   private void drawEnemies(Graphics2D g2d){
     for (Enemy enemy : enemies) {
-      g2d.drawImage(enemy.skin, enemy.x, enemy.y, enemy.size, enemy.size, this);
+      g2d.drawImage(enemy.skin, enemy.x, enemy.y, enemy.width, enemy.height, this);
+      g2d.drawRect(enemy.x, enemy.y, enemy.width, enemy.height);
     }
   }
 }

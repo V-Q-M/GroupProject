@@ -38,21 +38,8 @@ public class EntityManager {
             // spawn at top‐center of the rook
             int bx = player.playerX + (queenWidth - size) / 2;
             int by = player.playerY + (queenHeight - size) / 2;
-            String direction = "right";
-            if (keyHandler.goingDown) {
-                direction = "down";
-            }
-            if (keyHandler.goingUp) {
-                direction = "up";
-            }
-            if (keyHandler.goingLeft) {
-                direction = "left";
-            }
-            if (keyHandler.goingRight) {
-                direction = "right";
-            }
             // Append balls to the list of balls
-            gamePanel.particles.add(new Particle(bx, by, size, direction));
+            gamePanel.particles.add(new Particle(bx, by, size, player.facingDirection));
             // this should move to a variable
             soundManager.playClip(soundManager.sliceClip);
         }
