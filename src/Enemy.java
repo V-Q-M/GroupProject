@@ -53,6 +53,7 @@ public class Enemy {
                 if (collisionHandler.projectileCollision(this, ball)) {
                     health -= 50;
                     isInvulnerable = true;
+                    ball.hasHit = true;
                 }
             }
         }

@@ -9,6 +9,7 @@ public class Player {
     int moveSpeed;
     boolean queenDashing = false;
     private int queenDashingCounter = 0;
+    public int health = 60;
 
     String facingDirection = "right";
 

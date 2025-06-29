@@ -9,7 +9,7 @@ import javax.swing.*;
 
 public class GamePanel extends JPanel{
 
-  private boolean DEBUG_MODE = true;
+  private boolean DEBUG_MODE = false;
 
   // Textures of the pieces
   BufferedImage rookImage;
@@ -20,6 +20,8 @@ public class GamePanel extends JPanel{
   BufferedImage pawnImage;
   // uses the enum
   PieceType selectedPieceType;
+  int pieceWidth;
+  int pieceHeight;
 
   private final int ROOK_ABILITY_COOLDOWN = 60;
   private final int QUEEN_ABILITY_COOLDOWN = 40;
@@ -100,24 +102,26 @@ public class GamePanel extends JPanel{
   void selectPiece(PieceType changePiece) {
     selectedPieceType = changePiece;
     switch (changePiece) {
-    case PieceType.ROOK -> {
-      selectedPiece = rookImage;
-      abilityCoolDown = ROOK_ABILITY_COOLDOWN;
+      case PieceType.ROOK -> {
+        selectedPiece = rookImage;
+        abilityCoolDown = ROOK_ABILITY_COOLDOWN;
+      }
+      case PieceType.QUEEN -> {
+        selectedPiece = queenImage;
+        abilityCoolDown = QUEEN_ABILITY_COOLDOWN;
+      }
+      case PieceType.KING -> {
+        selectedPiece = kingImage;
+      }
+      case PieceType.KNIGHT -> {
+        selectedPiece = knightImage;
+      }
+      case PieceType.BISHOP -> {
+        selectedPiece = bishopImage;
+      }
     }
-    case PieceType.QUEEN -> {
-      selectedPiece = queenImage;
-      abilityCoolDown = QUEEN_ABILITY_COOLDOWN;
-    }
-    case PieceType.KING -> {
-      selectedPiece = kingImage;
-    }
-    case PieceType.KNIGHT -> {
-      selectedPiece = knightImage;
-    }
-    case PieceType.BISHOP -> {
-      selectedPiece = bishopImage;
-    }
-    }
+    pieceWidth = selectedPiece.getWidth() * SCALE;
+    pieceHeight = selectedPiece.getHeight() * SCALE;
   }
 
   public void update() {
@@ -138,7 +142,7 @@ public class GamePanel extends JPanel{
     // Update cannon balls
     balls.removeIf(ball -> {
       ball.moveBall(ball.getBallSpeed());
-      return ball.y + ball.size < 0;
+      return ball.hasHit || ball.y + ball.size < 0;
     });
     // update particles (queens effect)
     particles.removeIf(particle -> {
@@ -146,7 +150,6 @@ public class GamePanel extends JPanel{
       particle.decay++;
       return particle.decay > 20;
     });
-
   }
 
 
@@ -175,22 +178,30 @@ public class GamePanel extends JPanel{
     }
   }
 
-  int pieceWidth;
-  int pieceHeight;
+  private void drawHealthBar(Graphics2D g2d, int x, int y, int width, int height, int health){
+    g2d.setColor(Color.red);
+    g2d.fillRect(x, y - height * 2, width, height);
+    int greenWidth= (int) (width * health / 100);
+    g2d.setColor(Color.green);
+    g2d.fillRect(x, y - height * 2, greenWidth, height);
+  }
 
   private void drawPlayer(Graphics2D g2d){
     // Draw selectedPiece at current position
     if (selectedPiece != null) {
-      pieceWidth = selectedPiece.getWidth() * SCALE;
-      pieceHeight = selectedPiece.getHeight() * SCALE;
-      g2d.drawImage(selectedPiece, player.playerX, player.playerY, pieceWidth, pieceHeight, this);
+      int x = player.playerX;
+      int y = player.playerY;
+      g2d.drawImage(selectedPiece, x, y, pieceWidth, pieceHeight, this);
+      // Personal choice - only show healthbar when not at full health
+      if (player.health != 100) {
+        drawHealthBar(g2d, x, y, pieceWidth, 20, player.health);
+      }
       // Draw hitbox
       if (DEBUG_MODE) {
+        g2d.setColor(Color.red);
         g2d.drawRect(player.playerX, player.playerY, pieceWidth, pieceHeight);
       }
     }
-
-
   }
 
   private void drawEntities(Graphics2D g2d){
@@ -210,8 +221,17 @@ public class GamePanel extends JPanel{
     for (Enemy enemy : enemies) {
       if (!enemy.dead) {
         g2d.drawImage(enemy.skin, enemy.x, enemy.y, enemy.width, enemy.height, this);
-        g2d.drawRect(enemy.x, enemy.y, enemy.width, enemy.height);
+        if (enemy.health != 100) {
+          drawHealthBar(g2d, enemy.x, enemy.y, enemy.width, 15, enemy.health);
+        }
+        if (DEBUG_MODE){
+          g2d.setColor(Color.red);
+          g2d.drawRect(enemy.x, enemy.y, enemy.width, enemy.height);
+        }
       }
     }
   }
+
+
+
 }

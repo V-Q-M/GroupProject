@@ -3,6 +3,7 @@ public class CannonBall {
   public final int size;
   public final String direction;
   private int ballSpeed = 10;
+  public boolean hasHit = false;
 
   // Specialized constructor
   public CannonBall(int x, int y, int size, String direction) {
