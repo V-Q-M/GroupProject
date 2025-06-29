@@ -6,10 +6,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.imageio.ImageIO;
-import javax.sound.sampled.*;
 import javax.swing.*;
 
-public class GamePanel extends JPanel implements KeyListener{
+public class GamePanel extends JPanel{
 
   // Textures of the pieces
   BufferedImage rookImage;
@@ -19,7 +18,7 @@ public class GamePanel extends JPanel implements KeyListener{
   BufferedImage queenImage;
   BufferedImage pawnImage;
   // uses the enum
-  private PieceType selectedPieceType;
+  PieceType selectedPieceType;
 
   // Part of the background
   private BufferedImage tileImage;
@@ -27,35 +26,26 @@ public class GamePanel extends JPanel implements KeyListener{
   // This will hold the actual Player piece
   private BufferedImage selectedPiece;
 
-
-
-  // Start Position
-  int playerX = 100;
-  int playerY = 100;
-
-  boolean queenDashing = false;
-  private int queenDashingCounter = 0;
-
   // Im scaling 32x32 Textures so that they look nicer
   final int SCALE = 10;
 
-  // Movespeed. Might create a PieceClass and move it there
-  final int BASE_MOVE_SPEED = 5;
-  final int DASH_SPEED = 18;
-  int moveSpeed;
-
-
   // List to track cannon balls
-  // Might expand that to carry other projectiles
   final List<CannonBall> balls = new ArrayList<>();
   // carries particle effects
   final List<Particle> particles = new ArrayList<>();
   // carries enemies
   final List<Enemy>  enemies = new ArrayList<>();
 
+  KeyHandler keyHandler = new KeyHandler(this);
   SoundManager soundManager = new SoundManager(this);
-  EntityManager entityManager = new EntityManager(this, soundManager);
+
+  int startX = 100;
+  int startY = 100;
+  Player player = new Player(this, keyHandler, startX, startY);
   EnemyManager enemyManager = new EnemyManager(this);
+  EntityManager entityManager = new EntityManager(this, keyHandler, soundManager, player);
+
+
 
 
   public GamePanel() {
@@ -63,7 +53,7 @@ public class GamePanel extends JPanel implements KeyListener{
     setPreferredSize(new Dimension(Main.WIDTH, Main.HEIGHT));
     setFocusable(true);
     requestFocusInWindow();
-    addKeyListener((KeyListener) this);
+    addKeyListener((KeyListener) keyHandler);
 
     this.loadImages();
     soundManager.loadSounds();
@@ -77,7 +67,6 @@ public class GamePanel extends JPanel implements KeyListener{
     new Timer(16, e -> update()).start(); // ~60 FPS
                                           //
   }
-
 
   // Image loader. Very simple. Might expand to ImageAtlas
   private void loadImages() {
@@ -103,7 +92,7 @@ public class GamePanel extends JPanel implements KeyListener{
   }
 
   // SelectPiece. Should prompt the user to pick one eventually
-  private void selectPiece(PieceType changePiece) {
+  void selectPiece(PieceType changePiece) {
     selectedPieceType = changePiece;
     switch (changePiece) {
     case PieceType.ROOK -> selectedPiece = rookImage;
@@ -116,7 +105,7 @@ public class GamePanel extends JPanel implements KeyListener{
 
   public void update() {
     // Self-explanatory
-    playerUpdate();
+    player.playerUpdate();
     entityUpdate();
 
     // Update every enemy
@@ -138,27 +127,6 @@ public class GamePanel extends JPanel implements KeyListener{
       particle.decay++;
       return particle.decay > 20;
     });
-  }
-
-  private void playerUpdate(){
-    int speed = moveSpeed;
-
-    if (goingUp)
-      playerY -= speed;
-    if (goingDown)
-      playerY += speed;
-    if (goingLeft)
-      playerX -= speed;
-    if (goingRight)
-      playerX += speed;
-
-    if (queenDashing && queenDashingCounter <= 20){
-      queenDashingCounter ++;
-    } else {
-      queenDashing = false;
-      queenDashingCounter = 0;
-      moveSpeed = BASE_MOVE_SPEED;
-    }
   }
 
   // Carefull. Render method
@@ -191,7 +159,7 @@ public class GamePanel extends JPanel implements KeyListener{
     if (selectedPiece != null) {
       int pieceWidth = selectedPiece.getWidth() * SCALE;
       int pieceHeight = selectedPiece.getHeight() * SCALE;
-      g2d.drawImage(selectedPiece, playerX, playerY, pieceWidth, pieceHeight, this);
+      g2d.drawImage(selectedPiece, player.playerX, player.playerY, pieceWidth, pieceHeight, this);
     }
   }
 
@@ -211,87 +179,14 @@ public class GamePanel extends JPanel implements KeyListener{
       g2d.drawImage(enemy.skin, enemy.x, enemy.y, enemy.size, enemy.size, this);
     }
   }
-  boolean goingRight = false;
-  boolean goingLeft = false;
-  boolean goingUp = false;
-  boolean goingDown = false;
 
-  @Override
-  public void keyPressed(KeyEvent e) {
-    int key = e.getKeyCode();
-    // rook has his own pattern, because i dont want him to move diagonally
-    if (selectedPieceType == PieceType.ROOK) {
-      switch (key) {
-      case KeyEvent.VK_W -> {
-        goingUp = true;
-        goingRight = false;
-        goingLeft = false;
-        goingDown = false;
-      }
-      case KeyEvent.VK_S -> {
-        goingDown = true;
-        goingRight = false;
-        goingLeft = false;
-        goingUp = false;
-      }
-      case KeyEvent.VK_A -> {
-        goingLeft = true;
-        goingDown = false;
-        goingRight = false;
-        goingUp = false;
-      }
-      case KeyEvent.VK_D -> {
-        goingRight = true;
-        goingDown = false;
-        goingLeft = false;
-        goingUp = false;
-      }
-      case KeyEvent.VK_SPACE -> performAttack();
-      case KeyEvent.VK_1 -> selectPiece(PieceType.ROOK);
-      case KeyEvent.VK_2 -> selectPiece(PieceType.QUEEN);
-      }
-    } else {
-      switch (key) {
-      case KeyEvent.VK_W -> {
-        goingUp = true;
-      }
-      case KeyEvent.VK_S -> {
-        goingDown = true;
-      }
-      case KeyEvent.VK_A -> {
-        goingLeft = true;
-      }
-      case KeyEvent.VK_D -> {
-        goingRight = true;
-      }
-      case KeyEvent.VK_SPACE -> performAttack();
-      case KeyEvent.VK_1 -> selectPiece(PieceType.ROOK);
-      case KeyEvent.VK_2 -> selectPiece(PieceType.QUEEN);
-      }
-    }
-  }
-  @Override
-  public void keyReleased(KeyEvent e) {
-    int key = e.getKeyCode();
-    switch (key) {
-    case KeyEvent.VK_W -> goingUp = false;
-    case KeyEvent.VK_S -> goingDown = false;
-    case KeyEvent.VK_A -> goingLeft = false;
-    case KeyEvent.VK_D -> goingRight = false;
-    }
-  }
 
-  // Unused but required
-  @Override
-  public void keyTyped(KeyEvent e) {}
   // gets called when space is pressed
-  private void performAttack() {
+  void performAttack() {
     switch (selectedPieceType) {
-    case ROOK -> entityManager.spawnCannonBall();
-    case QUEEN -> entityManager.spawnQueenParticles();
+      case ROOK -> entityManager.spawnCannonBall();
+      case QUEEN -> entityManager.spawnQueenParticles();
     }
   }
-
-
 
 }

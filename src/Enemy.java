@@ -18,7 +18,7 @@ public class Enemy {
     }
 
     public void update(){
-        System.out.println("Updated Enemy");
+    //System.out.println("Updated Enemy");
     }
 
 

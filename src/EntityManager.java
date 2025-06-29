@@ -1,9 +1,13 @@
 public class EntityManager {
     GamePanel gamePanel;
     SoundManager soundManager;
-    public EntityManager(GamePanel gamePanel, SoundManager soundManager) {
+    KeyHandler keyHandler;
+    Player player;
+    public EntityManager(GamePanel gamePanel, KeyHandler keyHandler, SoundManager soundManager, Player player) {
        this.gamePanel = gamePanel;
        this.soundManager = soundManager;
+       this.keyHandler = keyHandler;
+       this.player = player;
     }
 
     int CANNON_BALL_SIZE = 80;
@@ -13,19 +17,19 @@ public class EntityManager {
             int size = CANNON_BALL_SIZE; // size of the cannonball
             int rookWidth = gamePanel.rookImage.getWidth() * gamePanel.SCALE;
             // spawn at top‐center of the rook
-            int bx = gamePanel.playerX + (rookWidth - size) / 2;
-            int by = gamePanel.playerY;
+            int bx = player.playerX + (rookWidth - size) / 2;
+            int by = player.playerY;
             String direction = "right";
-            if (gamePanel.goingDown) {
+            if (keyHandler.goingDown) {
                 direction = "down";
             }
-            if (gamePanel.goingUp) {
+            if (keyHandler.goingUp) {
                 direction = "up";
             }
-            if (gamePanel.goingLeft) {
+            if (keyHandler.goingLeft) {
                 direction = "left";
             }
-            if (gamePanel.goingRight) {
+            if (keyHandler.goingRight) {
                 direction = "right";
             }
             // Append balls to the list of balls
@@ -39,23 +43,23 @@ public class EntityManager {
             int size = 140; // size of the cannonball
             int queenWidth= gamePanel.queenImage.getWidth() * gamePanel.SCALE;
             int queenHeight = gamePanel.queenImage.getHeight() * gamePanel.SCALE;
-            gamePanel.moveSpeed = gamePanel.DASH_SPEED;
-            gamePanel.queenDashing = true;
+            player.moveSpeed = player.DASH_SPEED;
+            player.queenDashing = true;
 
             // spawn at top‐center of the rook
-            int bx = gamePanel.playerX + (queenWidth - size) / 2;
-            int by = gamePanel.playerY + (queenHeight - size) / 2;
+            int bx = player.playerX + (queenWidth - size) / 2;
+            int by = player.playerY + (queenHeight - size) / 2;
             String direction = "right";
-            if (gamePanel.goingDown) {
+            if (keyHandler.goingDown) {
                 direction = "down";
             }
-            if (gamePanel.goingUp) {
+            if (keyHandler.goingUp) {
                 direction = "up";
             }
-            if (gamePanel.goingLeft) {
+            if (keyHandler.goingLeft) {
                 direction = "left";
             }
-            if (gamePanel.goingRight) {
+            if (keyHandler.goingRight) {
                 direction = "right";
             }
             // Append balls to the list of balls
