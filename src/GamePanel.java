@@ -31,8 +31,8 @@ public class GamePanel extends JPanel implements KeyListener{
   private Clip sliceClip;
 
   // Start Position
-  private int rookX = 100;
-  private int rookY = 100;
+  private int playerX = 100;
+  private int playerY = 100;
 
   private boolean queenDashing = false;
   private int queenDashingCounter = 0;
@@ -40,7 +40,7 @@ public class GamePanel extends JPanel implements KeyListener{
   // Im scaling 32x32 Textures so that they look nicer
   private final int SCALE = 10;
 
-  // Rook movespeed. Might create a PieceClass and move it there
+  // Movespeed. Might create a PieceClass and move it there
   private int BASE_MOVE_SPEED = 5;
   private int DASH_SPEED = 18;
   private int moveSpeed;
@@ -136,13 +136,13 @@ public class GamePanel extends JPanel implements KeyListener{
     int speed = moveSpeed;
 
     if (goingUp)
-      rookY -= speed;
+      playerY -= speed;
     if (goingDown)
-      rookY += speed;
+      playerY += speed;
     if (goingLeft)
-      rookX -= speed;
+      playerX -= speed;
     if (goingRight)
-      rookX += speed;
+      playerX += speed;
 
     // Update cannon balls
     balls.removeIf(ball -> {
@@ -187,7 +187,7 @@ public class GamePanel extends JPanel implements KeyListener{
     if (selectedPiece != null) {
       int rw = selectedPiece.getWidth() * SCALE;
       int rh = selectedPiece.getHeight() * SCALE;
-      g2d.drawImage(selectedPiece, rookX, rookY, rw, rh, this);
+      g2d.drawImage(selectedPiece, playerX, playerY, rw, rh, this);
     }
 
     // Draw all cannon balls
@@ -281,15 +281,15 @@ public class GamePanel extends JPanel implements KeyListener{
     case QUEEN -> spawnQueenParticles();
     }
   }
+  int CANNON_BALL_SIZE = 80;
   // Yeah this could get its own class later
   private void spawnCannonBall() {
     if (rookImage != null) {
-      int size = 80; // size of the cannonball
-      int rw = rookImage.getWidth() * SCALE;
-      int rh = rookImage.getHeight() * SCALE;
+      int size = CANNON_BALL_SIZE; // size of the cannonball
+      int rookWidth = rookImage.getWidth() * SCALE;
       // spawn at top‐center of the rook
-      int bx = rookX + (rw - size) / 2;
-      int by = rookY;
+      int bx = playerX + (rookWidth - size) / 2;
+      int by = playerY;
       String direction = "right";
       if (goingDown) {
         direction = "down";
@@ -313,14 +313,14 @@ public class GamePanel extends JPanel implements KeyListener{
   private void spawnQueenParticles() {
     if (queenImage != null) {
       int size = 140; // size of the cannonball
-      int rw = queenImage.getWidth() * SCALE;
-      int rh = queenImage.getHeight() * SCALE;
+      int queenWidth= queenImage.getWidth() * SCALE;
+      int queenHeight = queenImage.getHeight() * SCALE;
       moveSpeed = DASH_SPEED;
       queenDashing = true;
 
       // spawn at top‐center of the rook
-      int bx = rookX + (rw - size) / 2;
-      int by = rookY + (rh - size) / 2;
+      int bx = playerX + (queenWidth - size) / 2;
+      int by = playerY + (queenHeight - size) / 2;
       String direction = "right";
       if (goingDown) {
         direction = "down";
