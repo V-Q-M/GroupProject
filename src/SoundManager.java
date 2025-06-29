@@ -8,6 +8,8 @@ public class SoundManager {
 
     Clip shootClip;
     Clip sliceClip;
+    Clip hitClip;
+    Clip deathClip;
 
     public SoundManager(GamePanel gamePanel){
         this.gamePanel = gamePanel;
@@ -23,6 +25,8 @@ public class SoundManager {
     protected void loadSounds() {
         shootClip = loadClip("res/shoot.wav");
         sliceClip = loadClip("res/slice1.wav");
+        hitClip   = loadClip("res/hit.wav");
+        deathClip = loadClip("res/death.wav");
     }
 
     private Clip loadClip(String path) {

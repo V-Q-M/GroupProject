@@ -58,7 +58,7 @@ public class GamePanel extends JPanel{
   int startX = 100;
   int startY = 100;
 
-  Player player = new Player(this, keyHandler, collisionHandler, startX, startY);
+  Player player = new Player(this, keyHandler, soundManager, collisionHandler, startX, startY);
   EnemyManager enemyManager = new EnemyManager(this);
   EntityManager entityManager = new EntityManager(this, keyHandler, soundManager, player);
 

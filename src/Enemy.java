@@ -2,6 +2,7 @@ import java.awt.image.BufferedImage;
 
 public class Enemy {
     GamePanel gamePanel;
+    SoundManager soundManager;
     CollisionHandler collisionHandler;
     public int x, y;
     public int width;
@@ -21,8 +22,9 @@ public class Enemy {
 
     BufferedImage skin;
 
-    public Enemy(GamePanel gamePanel, CollisionHandler collisionHandler, int x, int y, int width, int height, BufferedImage skin) {
+    public Enemy(GamePanel gamePanel,SoundManager soundManager, CollisionHandler collisionHandler, int x, int y, int width, int height, BufferedImage skin) {
         this.gamePanel = gamePanel;
+        this.soundManager = soundManager;
         this.collisionHandler = collisionHandler;
         this.x = x;
         this.y = y;
@@ -41,6 +43,7 @@ public class Enemy {
     private void checkAlive(){
         if (health <= 0){
             this.isDead = true;
+            soundManager.playClip(soundManager.deathClip);
         }
     }
 
@@ -83,6 +86,7 @@ public class Enemy {
                         health -= DEFAULT_CANNON_BALL_DMG;
                         isInvulnerable = true;
                         ball.hasHit = true;
+                        soundManager.playClip(soundManager.hitClip);
                     }
                 }
             } else {
@@ -90,6 +94,7 @@ public class Enemy {
                     if ( collisionHandler.projectileCollision(this, particle)){
                         health -= DEFAULT_SLICE_DMG;
                         isInvulnerable = true;
+                        soundManager.playClip(soundManager.hitClip);
                     }
                 }
             }

@@ -1,6 +1,7 @@
 public class Player {
     GamePanel gamePanel;
     KeyHandler keyHandler;
+    SoundManager soundManager;
     boolean isDead = false;
     CollisionHandler collisionHandler;
     boolean isInvulnerable;
@@ -20,9 +21,10 @@ public class Player {
     private int attackCoolDownCounter = 0;
 
 
-    public Player(GamePanel gamePanel, KeyHandler keyHandler,  CollisionHandler collisionHandler, int startPositionX, int startPositionY){
+    public Player(GamePanel gamePanel, KeyHandler keyHandler, SoundManager soundManager,  CollisionHandler collisionHandler, int startPositionX, int startPositionY){
         this.gamePanel = gamePanel;
         this.keyHandler = keyHandler;
+        this.soundManager = soundManager;
         this.collisionHandler = collisionHandler;
         this.playerX = startPositionX;
         this.playerY = startPositionY;
@@ -105,6 +107,7 @@ public class Player {
                     enemy.hasAttacked = true;
                     health -= 10;
                     isInvulnerable = true;
+                    soundManager.playClip(soundManager.hitClip);
                 }
             }
         }
@@ -113,6 +116,7 @@ public class Player {
     private void checkAlive(){
         if (health <= 0){
             this.isDead = true;
+            soundManager.playClip(soundManager.deathClip);
         }
     }
 
