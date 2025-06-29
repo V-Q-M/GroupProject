@@ -18,6 +18,10 @@ public class GamePanel extends JPanel{
   BufferedImage pawnImage;
   // uses the enum
   PieceType selectedPieceType;
+  private final int ROOK_ABILITY_COOLDOWN = 60;
+  private final int QUEEN_ABILITY_COOLDOWN = 40;
+
+  int abilityCoolDown = ROOK_ABILITY_COOLDOWN;
 
   // Part of the background
   private BufferedImage tileImage;
@@ -94,11 +98,23 @@ public class GamePanel extends JPanel{
   void selectPiece(PieceType changePiece) {
     selectedPieceType = changePiece;
     switch (changePiece) {
-    case PieceType.ROOK -> selectedPiece = rookImage;
-    case PieceType.QUEEN -> selectedPiece = queenImage;
-    case PieceType.KING -> selectedPiece = kingImage;
-    case PieceType.KNIGHT -> selectedPiece = knightImage;
-    case PieceType.BISHOP -> selectedPiece = bishopImage;
+    case PieceType.ROOK -> {
+      selectedPiece = rookImage;
+      abilityCoolDown = ROOK_ABILITY_COOLDOWN;
+    }
+    case PieceType.QUEEN -> {
+      selectedPiece = queenImage;
+      abilityCoolDown = QUEEN_ABILITY_COOLDOWN;
+    }
+    case PieceType.KING -> {
+      selectedPiece = kingImage;
+    }
+    case PieceType.KNIGHT -> {
+      selectedPiece = knightImage;
+    }
+    case PieceType.BISHOP -> {
+      selectedPiece = bishopImage;
+    }
     }
   }
 

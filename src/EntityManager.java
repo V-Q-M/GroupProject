@@ -3,6 +3,8 @@ public class EntityManager {
     SoundManager soundManager;
     KeyHandler keyHandler;
     Player player;
+    String direction = "right";
+
     public EntityManager(GamePanel gamePanel, KeyHandler keyHandler, SoundManager soundManager, Player player) {
        this.gamePanel = gamePanel;
        this.soundManager = soundManager;
@@ -19,21 +21,8 @@ public class EntityManager {
             // spawn at top‐center of the rook
             int bx = player.playerX + (rookWidth - size) / 2;
             int by = player.playerY;
-            String direction = "right";
-            if (keyHandler.goingDown) {
-                direction = "down";
-            }
-            if (keyHandler.goingUp) {
-                direction = "up";
-            }
-            if (keyHandler.goingLeft) {
-                direction = "left";
-            }
-            if (keyHandler.goingRight) {
-                direction = "right";
-            }
             // Append balls to the list of balls
-            gamePanel.balls.add(new CannonBall(bx, by, size, direction));
+            gamePanel.balls.add(new CannonBall(bx, by, size, player.facingDirection));
             // this should move to a variable
             soundManager.playClip(soundManager.shootClip);
         }
