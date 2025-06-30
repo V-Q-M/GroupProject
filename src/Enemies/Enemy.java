@@ -11,7 +11,7 @@ public class Enemy extends AnimateObject {
     final int DEFAULT_SLICE_DMG= 50;
 
 
-    public Enemy(GamePanel gamePanel, SoundManager soundManager, CollisionHandler collisionHandler, int x, int y, int width, int height, BufferedImage skin) {
+    public Enemy(GamePanel gamePanel, SoundManager soundManager, CollisionHandler collisionHandler, int x, int y, int width, int height) {
         this.gamePanel = gamePanel;
         this.soundManager = soundManager;
         this.collisionHandler = collisionHandler;
@@ -19,7 +19,6 @@ public class Enemy extends AnimateObject {
         this.y = y;
         this.width = width;
         this.height = height;
-        this.skin = skin;
     }
 
     public void update(){

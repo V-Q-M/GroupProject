@@ -19,19 +19,19 @@ public class GamePanel extends JPanel{
   private boolean DEBUG_MODE = false;
 
   // Textures of the pieces
-  BufferedImage rookImage;
-  BufferedImage knightImage;
-  BufferedImage bishopImage;
-  BufferedImage kingImage;
-  BufferedImage queenImage;
-  BufferedImage pawnImage;
+  public BufferedImage rookImage;
+  public BufferedImage knightImage;
+  public BufferedImage bishopImage;
+  public BufferedImage kingImage;
+  public BufferedImage queenImage;
+  public BufferedImage pawnImage;
 
-  BufferedImage enemyRookImage;
-  BufferedImage enemyKnightImage;
-  BufferedImage enemyBishopImage;
-  BufferedImage enemyKingImage;
-  BufferedImage enemyQueenImage;
-  BufferedImage enemyPawnImage;
+  public BufferedImage enemyRookImage;
+  public BufferedImage enemyKnightImage;
+  public BufferedImage enemyBishopImage;
+  public BufferedImage enemyKingImage;
+  public BufferedImage enemyQueenImage;
+  public BufferedImage enemyPawnImage;
   // uses the enum
   public PieceType selectedPieceType;
   public int pieceWidth;
@@ -321,7 +321,6 @@ public class GamePanel extends JPanel{
     }
     // player.Player health-bar always on top
     if (!player.isDead && player.health != 100) {
-      createHealthBar(g2d, player.x, player.y, pieceWidth, 20, player.health);
     }
 
     // Castle healthbar

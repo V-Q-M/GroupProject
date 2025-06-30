@@ -4,13 +4,13 @@ import main.CollisionHandler;
 import main.GamePanel;
 import main.SoundManager;
 
-public class EnemyPawn extends Enemy {
-    public EnemyPawn(GamePanel gamePanel, SoundManager soundManager, CollisionHandler collisionHandler, int x, int y, int width, int height) {
+public class EnemyBishop extends Enemy{
+    public EnemyBishop(GamePanel gamePanel, SoundManager soundManager, CollisionHandler collisionHandler, int x, int y, int width, int height) {
         super(gamePanel, soundManager, collisionHandler, x, y, width, height);
         this.damage = 10;
         this.speed = 4;
         this.health = 100;
-        this.skin = gamePanel.enemyPawnImage;
+        this.skin = gamePanel.enemyBishopImage;
         this.attackCoolDown = 80;
     }
 }
