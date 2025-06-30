@@ -1,12 +1,18 @@
+package main;
+
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import javax.imageio.ImageIO;
 import javax.swing.*;
+
+import enemies.Enemy;
+import entities.CannonBall;
+import entities.Particle;
+import player.Player;
 
 public class GamePanel extends JPanel{
 
@@ -27,37 +33,37 @@ public class GamePanel extends JPanel{
   BufferedImage enemyQueenImage;
   BufferedImage enemyPawnImage;
   // uses the enum
-  PieceType selectedPieceType;
-  int pieceWidth;
-  int pieceHeight;
+  public PieceType selectedPieceType;
+  public int pieceWidth;
+  public int pieceHeight;
 
   private final int ROOK_ABILITY_COOLDOWN = 60;
   private final int QUEEN_ABILITY_COOLDOWN = 40;
 
-  int abilityCoolDown = ROOK_ABILITY_COOLDOWN;
+  public int abilityCoolDown = ROOK_ABILITY_COOLDOWN;
 
   // Part of the background
   private BufferedImage tileImage;
 
-  // This will hold the actual Player piece
+  // This will hold the actual player.Player piece
   private BufferedImage selectedPiece;
 
   // Im scaling 32x32 Textures so that they look nicer
   final int SCALE = 8;
 
   // List to track cannon balls
-  final List<CannonBall> balls = new ArrayList<>();
+  public final List<CannonBall> balls = new ArrayList<>();
   // carries particle effects
-  final List<Particle> particles = new ArrayList<>();
+  public final List<Particle> particles = new ArrayList<>();
   // carries enemies
-  final List<Enemy>  enemies = new ArrayList<>();
+  public final List<Enemy>  enemies = new ArrayList<>();
 
   // Gamelogic here
   boolean gameStart = true;
-  boolean swapSoon = false;
+  public boolean swapSoon = false;
   public int castleHealth = 100;
   //public int castleHealth = 10;
-  boolean gameOver = false;
+  public boolean gameOver = false;
 
   KeyHandler keyHandler = new KeyHandler(this);
   CollisionHandler collisionHandler = new CollisionHandler(this);
@@ -68,7 +74,7 @@ public class GamePanel extends JPanel{
 
   Player player = new Player(this, keyHandler, soundManager, collisionHandler, startX, startY);
   EnemyManager enemyManager = new EnemyManager(this);
-  EntityManager entityManager = new EntityManager(this, keyHandler, soundManager, player);
+  public EntityManager entityManager = new EntityManager(this, keyHandler, soundManager, player);
 
   public GamePanel() {
     // Window size
@@ -134,7 +140,7 @@ public class GamePanel extends JPanel{
   }
 
   // SelectPiece. Should prompt the user to pick one eventually
-  void selectPiece(PieceType changePiece) {
+  public void selectPiece(PieceType changePiece) {
     selectedPieceType = changePiece;
     player.swapCounter = 0;
     soundManager.playClip(soundManager.swapClip);
@@ -313,7 +319,7 @@ public class GamePanel extends JPanel{
         createHealthBar(g2d, enemy.x, enemy.y, enemy.width, 15, enemy.health);
       }
     }
-    // Player health-bar always on top
+    // player.Player health-bar always on top
     if (!player.isDead && player.health != 100) {
       createHealthBar(g2d, player.playerX, player.playerY, pieceWidth, 20, player.health);
     }

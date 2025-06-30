@@ -1,23 +1,27 @@
-public class Player {
+package player;
+
+import enemies.Enemy;
+import main.*;
+
+public class Player extends AnimateObject{
     GamePanel gamePanel;
     KeyHandler keyHandler;
     SoundManager soundManager;
-    boolean isDead = false;
+    public boolean isDead = false;
     CollisionHandler collisionHandler;
-    boolean isInvulnerable;
+    public boolean isInvulnerable;
     private int invulnerableCounter;
-    int playerX;
-    int playerY;
+    public int playerX;
+    public int playerY;
     final int BASE_MOVE_SPEED = 5;
-    final int DASH_SPEED = 18;
-    int moveSpeed;
-    boolean queenDashing = false;
+    public final int DASH_SPEED = 18;
+    public boolean queenDashing = false;
     private int queenDashingCounter = 0;
     public int health = 100;
 
-    int swapCounter = 0;
+    public int swapCounter = 0;
 
-    String facingDirection = "right";
+    public String facingDirection = "right";
 
     private boolean hasAttacked = false;
     private int attackCoolDownCounter = 0;
@@ -32,7 +36,7 @@ public class Player {
         this.playerY = startPositionY;
     }
 
-    void playerUpdate(){
+    public void playerUpdate(){
         movement();
         checkCollision();
         coolDowns();
@@ -63,7 +67,7 @@ public class Player {
     }
 
     private boolean notReachedBorder(){
-        return !collisionHandler.borderCollision(playerX, playerY, gamePanel.pieceWidth, gamePanel.pieceHeight, moveSpeed, facingDirection);
+        return !collisionHandler.borderCollision(playerX, playerY, gamePanel.pieceWidth, gamePanel.pieceHeight, speed, facingDirection);
     }
 
     private void movement(){
@@ -71,25 +75,25 @@ public class Player {
         if (keyHandler.goingUp) {
             facingDirection = "up";
             if (notReachedBorder()) {
-                playerY -= moveSpeed;
+                playerY -= speed;
             }
         }
         if (keyHandler.goingDown) {
             facingDirection = "down";
             if (notReachedBorder()) {
-                playerY += moveSpeed;
+                playerY += speed;
             }
         }
         if (keyHandler.goingLeft) {
             facingDirection = "left";
             if (notReachedBorder()) {
-                playerX -= moveSpeed;
+                playerX -= speed;
             }
         }
         if (keyHandler.goingRight) {
             facingDirection = "right";
             if (notReachedBorder()) {
-                playerX += moveSpeed;
+                playerX += speed;
             }
         }
         if (keyHandler.spacePressed) {
@@ -108,7 +112,7 @@ public class Player {
             queenDashing = false;
             queenDashingCounter = 0;
             isInvulnerable = false;
-            moveSpeed = BASE_MOVE_SPEED;
+            speed = BASE_MOVE_SPEED;
         }
 
         if (hasAttacked && attackCoolDownCounter < gamePanel.abilityCoolDown){
@@ -142,9 +146,9 @@ public class Player {
         if (health <= 0){
             this.isDead = true;
             soundManager.playClip(soundManager.deathClip);
+            gamePanel.gameOver = true;
         }
     }
-
 
     void performAttack() {
         switch (gamePanel.selectedPieceType) {

@@ -1,3 +1,5 @@
+package main;
+
 import javax.swing.JFrame;
 
 public class Main{
@@ -15,7 +17,7 @@ public class Main{
         // Remove window decorations
         frame.setUndecorated(true);
 
-        // Create GamePanel instance
+        // Create main.GamePanel instance
         GamePanel gamePanel = new GamePanel();
 
         frame.add(gamePanel);

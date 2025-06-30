@@ -18,7 +18,7 @@ Or use the Intelij `clone repository` option and paste the same URL.
 I suggest using Intelij to run the project but using
 
 ```
-java src/Main.java
+java src/main.Main.java
 ```
 
 also works when run from root.

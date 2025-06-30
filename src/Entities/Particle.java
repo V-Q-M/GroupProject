@@ -1,3 +1,5 @@
+package entities;
+
 public class Particle extends Projectile{
   public final String direction;
   public int decay = 0;

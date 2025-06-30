@@ -1,3 +1,9 @@
+package main;
+
+import entities.CannonBall;
+import entities.Particle;
+import player.Player;
+
 public class EntityManager {
     GamePanel gamePanel;
     SoundManager soundManager;
@@ -15,7 +21,7 @@ public class EntityManager {
 
     int CANNON_BALL_SIZE = 80;
     // Yeah this could get its own class later
-    protected void spawnCannonBall() {
+    public void spawnCannonBall() {
         if (gamePanel.rookImage != null) {
             int size = CANNON_BALL_SIZE; // size of the cannonball
             int rookWidth = gamePanel.rookImage.getWidth() * gamePanel.SCALE;
@@ -28,12 +34,12 @@ public class EntityManager {
             soundManager.playClip(soundManager.shootClip);
         }
     }
-    protected void spawnQueenParticles() {
+    public void spawnQueenParticles() {
         if (gamePanel.queenImage != null) {
             int size = 140; // size of the cannonball
             int queenWidth= gamePanel.queenImage.getWidth() * gamePanel.SCALE;
             int queenHeight = gamePanel.queenImage.getHeight() * gamePanel.SCALE;
-            player.moveSpeed = player.DASH_SPEED;
+            player.speed = player.DASH_SPEED;
             player.queenDashing = true;
             player.isInvulnerable = true;
 

@@ -1,28 +1,17 @@
+package enemies;
+
+import entities.CannonBall;
+import entities.Particle;
+import main.*;
+
 import java.awt.image.BufferedImage;
 
-public class Enemy {
-    GamePanel gamePanel;
-    SoundManager soundManager;
-    CollisionHandler collisionHandler;
-    public int x, y;
-    public int width;
-    public int height;
-    boolean isDead = false;
-    boolean isInvulnerable = false;
-    int invulnerableCounter = 0;
-    boolean hasAttacked = false;
-    int attackCoolDownCounter;
-    final int attackCoolDown = 80;
-
-    int health = 100;
+public class Enemy extends AnimateObject {
     final int DEFAULT_CANNON_BALL_DMG = 35;
     final int DEFAULT_SLICE_DMG= 50;
-    int speed = 3;
-    int damage = 10;
 
-    BufferedImage skin;
 
-    public Enemy(GamePanel gamePanel,SoundManager soundManager, CollisionHandler collisionHandler, int x, int y, int width, int height, BufferedImage skin) {
+    public Enemy(GamePanel gamePanel, SoundManager soundManager, CollisionHandler collisionHandler, int x, int y, int width, int height, BufferedImage skin) {
         this.gamePanel = gamePanel;
         this.soundManager = soundManager;
         this.collisionHandler = collisionHandler;

@@ -1,10 +1,15 @@
+package main;
+import enemies.Enemy;
+import entities.Projectile;
+import player.Player;
+
 public class CollisionHandler {
     GamePanel gamePanel;
     public CollisionHandler(GamePanel gamePanel){
         this.gamePanel = gamePanel;
     }
 
-    boolean borderCollision(int playerX, int playerY, int playerWidth, int playerHeight, int speed, String direction){
+    public boolean borderCollision(int playerX, int playerY, int playerWidth, int playerHeight, int speed, String direction){
         switch (direction){
             case "up" -> {
                 return (playerY - speed <= 0);
@@ -23,7 +28,7 @@ public class CollisionHandler {
         return false;
     }
 
-    boolean projectileCollision(Enemy enemy, Projectile projectile) {
+    public boolean projectileCollision(Enemy enemy, Projectile projectile) {
         boolean returnValue = false;
         if (gamePanel.selectedPieceType == PieceType.ROOK) {
             int speed = projectile.speed;
@@ -45,8 +50,8 @@ public class CollisionHandler {
         return returnValue;
     }
 
-    boolean enemyCollision(Enemy enemy, Player player){
-        int speed = player.moveSpeed;
+    public boolean enemyCollision(Enemy enemy, Player player){
+        int speed = player.speed;
         if (player.playerX + gamePanel.pieceWidth + speed > enemy.x &&
                 player.playerX - speed < enemy.x + enemy.width &&
                 player.playerY + gamePanel.pieceHeight + speed > enemy.y &&

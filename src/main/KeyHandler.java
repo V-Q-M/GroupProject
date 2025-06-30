@@ -1,13 +1,15 @@
+package main;
+
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 public class KeyHandler implements KeyListener {
     GamePanel gamePanel;
-    boolean goingRight = false;
-    boolean goingLeft = false;
-    boolean goingUp = false;
-    boolean goingDown = false;
-    boolean spacePressed = false;
+    public boolean goingRight = false;
+    public boolean goingLeft = false;
+    public boolean goingUp = false;
+    public boolean goingDown = false;
+    public boolean spacePressed = false;
 
     public KeyHandler(GamePanel gamePanel){
         this.gamePanel = gamePanel;
