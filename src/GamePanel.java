@@ -79,7 +79,7 @@ public class GamePanel extends JPanel{
     this.loadImages();
     this.loadFonts();
     soundManager.loadSounds();
-    //soundManager.startMusic();
+    soundManager.startMusic();
     // Default piece
     selectPiece(PieceType.ROOK);
     // Refreshrate. Might have to improve that
@@ -188,11 +188,20 @@ public class GamePanel extends JPanel{
       if (gameStartCounter > 180) {
         gameStart = false;
         gameStartCounter = 0;
+      } else if (gameStartCounter > 150) {
+        startMessage = "";
+        gameStartCounter++;
       } else if (gameStartCounter > 120) {
         startMessage = "Starting in: 1";
         gameStartCounter++;
+      } else if (gameStartCounter > 90){
+        startMessage = "";
+        gameStartCounter++;
       } else if (gameStartCounter > 60){
         startMessage = "Starting in: 2";
+        gameStartCounter++;
+      } else if (gameStartCounter > 30){
+        startMessage = "";
         gameStartCounter++;
       } else {
         gameStartCounter++;
