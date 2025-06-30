@@ -118,7 +118,7 @@ public class Player {
             for (Enemy enemy : gamePanel.enemies) {
                 if (collisionHandler.enemyCollision(enemy, this) && !enemy.hasAttacked && !enemy.isDead) {
                     enemy.hasAttacked = true;
-                    health -= 10;
+                    health -= enemy.damage;
                     isInvulnerable = true;
                     soundManager.playClip(soundManager.hitClip);
                 }

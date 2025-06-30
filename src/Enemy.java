@@ -18,7 +18,7 @@ public class Enemy {
     final int DEFAULT_CANNON_BALL_DMG = 35;
     final int DEFAULT_SLICE_DMG= 50;
     int speed = 3;
-    int damage;
+    int damage = 10;
 
     BufferedImage skin;
 
@@ -51,6 +51,7 @@ public class Enemy {
     private void move(){
         if (x < 0){
             health = 0;
+            gamePanel.castleHealth -= damage / 3;
         } else {
             x -= speed;
         }

@@ -51,6 +51,10 @@ public class GamePanel extends JPanel{
   // carries enemies
   final List<Enemy>  enemies = new ArrayList<>();
 
+  // Gamelogic here
+  public int castleHealth = 100;
+  boolean gameOver = false;
+
   KeyHandler keyHandler = new KeyHandler(this);
   CollisionHandler collisionHandler = new CollisionHandler(this);
   SoundManager soundManager = new SoundManager(this);
@@ -71,6 +75,7 @@ public class GamePanel extends JPanel{
 
     this.loadImages();
     soundManager.loadSounds();
+    soundManager.startMusic();
     // Default piece
     selectPiece(PieceType.ROOK);
     // Refreshrate. Might have to improve that
@@ -141,22 +146,32 @@ public class GamePanel extends JPanel{
   }
 
   public void update() {
-    if (!player.isDead){
-      player.playerUpdate();
-    }
-
-    entityUpdate();
-
-    // Update every enemy
-    for (Enemy enemy : enemies){
-      if (!enemy.isDead){
-        enemy.update();
+    if (!gameOver) {
+      if (!player.isDead) {
+        player.playerUpdate();
       }
+
+      entityUpdate();
+
+      // Update every enemy
+      for (Enemy enemy : enemies) {
+        if (!enemy.isDead) {
+          enemy.update();
+        }
+      }
+      enemyManager.updateSpawner();
+      gameUpdate();
+    } else {
+      System.out.println("OVER");
     }
-    enemyManager.updateSpawner();
     repaint();
   }
 
+  private void gameUpdate(){
+    if (castleHealth <= 0){
+      gameOver = true;
+    }
+  }
   private void entityUpdate(){
     // Update cannon balls
     balls.removeIf(ball -> {
@@ -259,6 +274,9 @@ public class GamePanel extends JPanel{
     if (!player.isDead && player.health != 100) {
       createHealthBar(g2d, player.playerX, player.playerY, pieceWidth, 20, player.health);
     }
+
+    // Castle healthbar
+    createHealthBar(g2d, 350, 60, 1200, 20, castleHealth);
   }
 
 
