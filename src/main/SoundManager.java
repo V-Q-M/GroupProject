@@ -36,6 +36,12 @@ public class SoundManager {
        mainTheme.start();
     }
 
+    public void stopMusic(){
+        if (mainTheme == null) return;
+        if (menuTheme.isRunning()) menuTheme.stop();
+        if (mainTheme.isRunning()) mainTheme.stop();
+    }
+
     protected void loadSounds() {
         shootClip = loadClip("res/shoot.wav");
         sliceClip = loadClip("res/slice1.wav");

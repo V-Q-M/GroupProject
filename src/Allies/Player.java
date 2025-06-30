@@ -1,7 +1,9 @@
-package player;
+package Allies;
 
 import enemies.Enemy;
 import main.*;
+
+import java.util.Random;
 
 public class Player extends AnimateObject{
     GamePanel gamePanel;
@@ -41,12 +43,14 @@ public class Player extends AnimateObject{
         checkAlive();
         forceSwap();
     }
+    PieceType[] values = PieceType.values(); // Gets an array of enum constants
+    Random random = new Random();
     private void forceSwap(){
         if (swapCounter >= 600) {
-            switch (gamePanel.selectedPieceType) {
-                case QUEEN -> gamePanel.selectPiece(PieceType.ROOK);
-                case ROOK -> gamePanel.selectPiece(PieceType.QUEEN);
-            }
+            int index = random.nextInt(values.length); // Pick a random index
+            PieceType randomValue = values[index]; // Access by index
+            System.out.println("Random Enum: " + randomValue);
+            gamePanel.selectPiece(randomValue);
         } else if (swapCounter >= 570){
             gamePanel.swapSoon = false;
             swapCounter++;
@@ -151,8 +155,11 @@ public class Player extends AnimateObject{
     void performAttack() {
         switch (gamePanel.selectedPieceType) {
             // Add new characters here
-            case ROOK -> gamePanel.entityManager.spawnCannonBall();
-            case QUEEN -> gamePanel.entityManager.spawnQueenParticles();
+            case ROOK   -> gamePanel.entityManager.spawnCannonBall();
+            case KNIGHT -> gamePanel.entityManager.spawnCannonBall();
+            case BISHOP -> gamePanel.entityManager.spawnCannonBall();
+            case KING   -> gamePanel.entityManager.spawnCannonBall();
+            case QUEEN  -> gamePanel.entityManager.spawnQueenParticles();
         }
     }
 }

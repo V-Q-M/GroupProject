@@ -1,7 +1,7 @@
 package main;
 import enemies.Enemy;
 import entities.Projectile;
-import player.Player;
+import Allies.Player;
 
 public class CollisionHandler {
     GamePanel gamePanel;

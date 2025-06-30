@@ -2,7 +2,7 @@ package main;
 
 import entities.CannonBall;
 import entities.Particle;
-import player.Player;
+import Allies.Player;
 
 public class EntityManager {
     GamePanel gamePanel;

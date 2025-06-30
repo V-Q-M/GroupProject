@@ -12,7 +12,7 @@ import javax.swing.*;
 import enemies.Enemy;
 import entities.CannonBall;
 import entities.Particle;
-import player.Player;
+import Allies.Player;
 
 public class GamePanel extends JPanel{
 
@@ -86,7 +86,7 @@ public class GamePanel extends JPanel{
     this.loadImages();
     this.loadFonts();
     soundManager.loadSounds();
-    soundManager.startMusic();
+    //soundManager.startMusic();
     // Default piece
     selectPiece(PieceType.ROOK);
     // Refreshrate. Might have to improve that
@@ -156,12 +156,15 @@ public class GamePanel extends JPanel{
       }
       case PieceType.KING -> {
         selectedPiece = kingImage;
+        abilityCoolDown = ROOK_ABILITY_COOLDOWN;
       }
       case PieceType.KNIGHT -> {
         selectedPiece = knightImage;
+        abilityCoolDown = ROOK_ABILITY_COOLDOWN;
       }
       case PieceType.BISHOP -> {
         selectedPiece = bishopImage;
+        abilityCoolDown = ROOK_ABILITY_COOLDOWN;
       }
     }
     pieceWidth = selectedPiece.getWidth() * SCALE;
@@ -173,7 +176,6 @@ public class GamePanel extends JPanel{
       if (!player.isDead) {
         player.playerUpdate();
       }
-
       entityUpdate();
 
       // Update every enemy
@@ -217,6 +219,7 @@ public class GamePanel extends JPanel{
     if (castleHealth <= 0){
       gameOver = true;
       castleHealth = 0;
+      soundManager.stopMusic();
     }
 
   }
@@ -321,6 +324,7 @@ public class GamePanel extends JPanel{
     }
     // player.Player health-bar always on top
     if (!player.isDead && player.health != 100) {
+        createHealthBar(g2d, player.x, player.y, pieceWidth, 20, player.health);
     }
 
     // Castle healthbar
