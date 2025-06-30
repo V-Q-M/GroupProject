@@ -1,7 +1,6 @@
 package entities;
 
 public class CannonBall extends Projectile {
-  public final String direction;
   public boolean hasHit = false;
 
   // Specialized constructor
