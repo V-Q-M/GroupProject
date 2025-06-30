@@ -52,10 +52,10 @@ public class CollisionHandler {
 
     public boolean enemyCollision(Enemy enemy, Player player){
         int speed = player.speed;
-        if (player.playerX + gamePanel.pieceWidth + speed > enemy.x &&
-                player.playerX - speed < enemy.x + enemy.width &&
-                player.playerY + gamePanel.pieceHeight + speed > enemy.y &&
-                player.playerY - speed < enemy.y + enemy.height) {
+        if (player.x + gamePanel.pieceWidth + speed > enemy.x &&
+                player.x - speed < enemy.x + enemy.width &&
+                player.y + gamePanel.pieceHeight + speed > enemy.y &&
+                player.y - speed < enemy.y + enemy.height) {
             return true;
         }
         return false;

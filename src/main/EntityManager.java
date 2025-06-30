@@ -26,8 +26,8 @@ public class EntityManager {
             int size = CANNON_BALL_SIZE; // size of the cannonball
             int rookWidth = gamePanel.rookImage.getWidth() * gamePanel.SCALE;
             // spawn at top‐center of the rook
-            int bx = player.playerX + (rookWidth - size) / 2;
-            int by = player.playerY;
+            int bx = player.x + (rookWidth - size) / 2;
+            int by = player.y ;
             // Append balls to the list of balls
             gamePanel.balls.add(new CannonBall(bx, by, size, DEFAULT_CANNONBALL_SPEED, player.facingDirection));
             // this should move to a variable
@@ -44,8 +44,8 @@ public class EntityManager {
             player.isInvulnerable = true;
 
             // spawn at top‐center of the rook
-            int bx = player.playerX + (queenWidth - size) / 2;
-            int by = player.playerY + (queenHeight - size) / 2;
+            int bx = player.x + (queenWidth - size) / 2;
+            int by = player.y + (queenHeight - size) / 2;
             // Append balls to the list of balls
             gamePanel.particles.add(new Particle(bx, by, size, DEFAULT_QUEEN_PARTICLE_SPEED,player.facingDirection));
             // this should move to a variable

@@ -276,13 +276,13 @@ public class GamePanel extends JPanel{
   private void drawPlayer(Graphics2D g2d){
     // Draw selectedPiece at current position
     if (selectedPiece != null && !player.isDead) {
-      int x = player.playerX;
-      int y = player.playerY;
+      int x = player.x;
+      int y = player.y;
       g2d.drawImage(selectedPiece, x, y, pieceWidth, pieceHeight, this);
       // Draw hitbox
       if (DEBUG_MODE) {
         g2d.setColor(Color.red);
-        g2d.drawRect(player.playerX, player.playerY, pieceWidth, pieceHeight);
+        g2d.drawRect(player.x , player.y, pieceWidth, pieceHeight);
       }
     }
   }
@@ -321,7 +321,7 @@ public class GamePanel extends JPanel{
     }
     // player.Player health-bar always on top
     if (!player.isDead && player.health != 100) {
-      createHealthBar(g2d, player.playerX, player.playerY, pieceWidth, 20, player.health);
+      createHealthBar(g2d, player.x, player.y, pieceWidth, 20, player.health);
     }
 
     // Castle healthbar

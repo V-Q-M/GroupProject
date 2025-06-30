@@ -11,8 +11,6 @@ public class Player extends AnimateObject{
     CollisionHandler collisionHandler;
     public boolean isInvulnerable;
     private int invulnerableCounter;
-    public int playerX;
-    public int playerY;
     final int BASE_MOVE_SPEED = 5;
     public final int DASH_SPEED = 18;
     public boolean queenDashing = false;
@@ -32,8 +30,8 @@ public class Player extends AnimateObject{
         this.keyHandler = keyHandler;
         this.soundManager = soundManager;
         this.collisionHandler = collisionHandler;
-        this.playerX = startPositionX;
-        this.playerY = startPositionY;
+        this.x = startPositionX;
+        this.y = startPositionY;
     }
 
     public void playerUpdate(){
@@ -67,7 +65,7 @@ public class Player extends AnimateObject{
     }
 
     private boolean notReachedBorder(){
-        return !collisionHandler.borderCollision(playerX, playerY, gamePanel.pieceWidth, gamePanel.pieceHeight, speed, facingDirection);
+        return !collisionHandler.borderCollision(x, y, gamePanel.pieceWidth, gamePanel.pieceHeight, speed, facingDirection);
     }
 
     private void movement(){
@@ -75,25 +73,25 @@ public class Player extends AnimateObject{
         if (keyHandler.goingUp) {
             facingDirection = "up";
             if (notReachedBorder()) {
-                playerY -= speed;
+                y -= speed;
             }
         }
         if (keyHandler.goingDown) {
             facingDirection = "down";
             if (notReachedBorder()) {
-                playerY += speed;
+                y += speed;
             }
         }
         if (keyHandler.goingLeft) {
             facingDirection = "left";
             if (notReachedBorder()) {
-                playerX -= speed;
+                x -= speed;
             }
         }
         if (keyHandler.goingRight) {
             facingDirection = "right";
             if (notReachedBorder()) {
-                playerX += speed;
+                x += speed;
             }
         }
         if (keyHandler.spacePressed) {
