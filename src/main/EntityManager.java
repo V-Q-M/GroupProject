@@ -1,6 +1,7 @@
 package main;
 
 import entities.CannonBall;
+import entities.KnightSmash;
 import entities.QueenSlice;
 import Allies.Player;
 
@@ -9,7 +10,7 @@ public class EntityManager {
     SoundManager soundManager;
     KeyHandler keyHandler;
     Player player;
-    String direction = "right";
+
     int DEFAULT_CANNONBALL_SPEED = 10;
     int DEFAULT_QUEEN_PARTICLE_SPEED = 20;
     public EntityManager(GamePanel gamePanel, KeyHandler keyHandler, SoundManager soundManager, Player player) {
@@ -24,9 +25,8 @@ public class EntityManager {
     public void spawnCannonBall() {
         if (gamePanel.rookImage != null) {
             int size = CANNON_BALL_SIZE; // size of the cannonball
-            int rookWidth = gamePanel.rookImage.getWidth() * gamePanel.SCALE;
             // spawn at top‐center of the rook
-            int bx = player.x + (rookWidth - size) / 2;
+            int bx = player.x + (gamePanel.pieceWidth - size) / 2;
             int by = player.y ;
             // Append balls to the list of balls
             gamePanel.balls.add(new CannonBall(bx, by, size, DEFAULT_CANNONBALL_SPEED, player.facingDirection));
@@ -37,19 +37,33 @@ public class EntityManager {
     public void spawnQueenParticles() {
         if (gamePanel.queenImage != null) {
             int size = 140; // size of the cannonball
-            int queenWidth= gamePanel.queenImage.getWidth() * gamePanel.SCALE;
-            int queenHeight = gamePanel.queenImage.getHeight() * gamePanel.SCALE;
             player.speed = player.DASH_SPEED;
             player.queenDashing = true;
             player.isInvulnerable = true;
 
             // spawn at top‐center of the rook
-            int bx = player.x + (queenWidth - size) / 2;
-            int by = player.y + (queenHeight - size) / 2;
+            int bx = player.x + (gamePanel.pieceWidth  - size) / 2;
+            int by = player.y + (gamePanel.pieceHeight - size) / 2;
             // Append balls to the list of balls
-            gamePanel.projectiles.add(new QueenSlice(bx, by, size, DEFAULT_QUEEN_PARTICLE_SPEED,player.facingDirection));
-            // this should move to a variable
+            gamePanel.projectiles.add(new QueenSlice(bx, by, size, DEFAULT_QUEEN_PARTICLE_SPEED, 20, player.facingDirection));
             soundManager.playClip(soundManager.sliceClip);
         }
+    }
+
+    public void spawnKnightParticles() {
+       if (gamePanel.knightImage != null) {
+           int size = 140; // size of the cannonball
+           player.speed = player.LEAP_SPEED;
+           player.queenDashing = true;
+           player.isInvulnerable = true;
+
+           // spawn at top‐center of the rook
+           int bx = player.x + (gamePanel.pieceWidth  - size) / 2;
+           int by = player.y + (gamePanel.pieceHeight - size) / 2;
+
+           // Append balls to the list of balls
+           gamePanel.projectiles.add(new KnightSmash(bx, by, size, DEFAULT_QUEEN_PARTICLE_SPEED,40, player.facingDirection));
+           soundManager.playClip(soundManager.sliceClip);
+       }
     }
 }

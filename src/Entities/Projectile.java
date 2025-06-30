@@ -9,6 +9,6 @@ public abstract class Projectile {
     public int decay;
     public String direction;
 
-    public void moveParticle(int speed) {}
+    public void moveProjectile(int speed) {}
 
 }

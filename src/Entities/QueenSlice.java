@@ -3,17 +3,18 @@ package entities;
 public class QueenSlice extends Projectile{
 
   // Specialized constructor
-  public QueenSlice(int x, int y, int size, int speed, String direction) {
+  public QueenSlice(int x, int y, int size, int speed, int decay, String direction) {
     this.x = x;
     this.y = y;
     this.height = size;
     this.width = size;
     this.direction = direction;
     this.speed = speed;
+    this.decay = decay;
   }
 
   // Moves the ball
-  public void moveParticle(int speed) {
+  public void moveProjectile(int speed) {
     switch (direction) {
     case "up" -> y -= speed;
     case "down" -> y += speed;

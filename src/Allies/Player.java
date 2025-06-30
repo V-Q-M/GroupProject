@@ -15,6 +15,7 @@ public class Player extends AnimateObject{
     private int invulnerableCounter;
     final int BASE_MOVE_SPEED = 5;
     public final int DASH_SPEED = 18;
+    public final int LEAP_SPEED = 10;
     public boolean queenDashing = false;
     private int queenDashingCounter = 0;
     public int health = 100;
@@ -34,6 +35,8 @@ public class Player extends AnimateObject{
         this.collisionHandler = collisionHandler;
         this.x = startPositionX;
         this.y = startPositionY;
+        this.height = gamePanel.pieceHeight;
+        this.width  = gamePanel.pieceWidth;
     }
 
     public void playerUpdate(){
@@ -50,7 +53,11 @@ public class Player extends AnimateObject{
             int index = random.nextInt(values.length); // Pick a random index
             PieceType randomValue = values[index]; // Access by index
             System.out.println("Random Enum: " + randomValue);
-            gamePanel.selectPiece(randomValue);
+            if (randomValue != PieceType.PAWN){
+                gamePanel.selectPiece(randomValue);
+            } else {
+                gamePanel.selectPiece(PieceType.ROOK);
+            }
         } else if (swapCounter >= 570){
             gamePanel.swapSoon = false;
             swapCounter++;
@@ -156,10 +163,28 @@ public class Player extends AnimateObject{
         switch (gamePanel.selectedPieceType) {
             // Add new characters here
             case ROOK   -> gamePanel.entityManager.spawnCannonBall();
-            case KNIGHT -> gamePanel.entityManager.spawnCannonBall();
+            case KNIGHT -> knightAttack();
             case BISHOP -> gamePanel.entityManager.spawnCannonBall();
             case KING   -> gamePanel.entityManager.spawnCannonBall();
             case QUEEN  -> gamePanel.entityManager.spawnQueenParticles();
         }
+    }
+
+    void knightAttack(){
+        switch(facingDirection){
+            case "up" -> {
+                y -= gamePanel.pieceHeight * 2;
+            }
+            case "down" -> {
+                y += gamePanel.pieceHeight * 2;
+            }
+            case "left" -> {
+                x -= gamePanel.pieceWidth * 2;
+            }
+            case "right" -> {
+                x += gamePanel.pieceWidth * 2;
+            }
+        }
+        gamePanel.entityManager.spawnKnightParticles();
     }
 }

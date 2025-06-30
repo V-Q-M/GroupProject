@@ -39,6 +39,7 @@ public class GamePanel extends JPanel{
   public int pieceHeight;
 
   private final int ROOK_ABILITY_COOLDOWN = 60;
+  private final int KNIGHT_ABILITY_COOLDOWN = 120;
   private final int QUEEN_ABILITY_COOLDOWN = 40;
 
   public int abilityCoolDown = ROOK_ABILITY_COOLDOWN;
@@ -89,7 +90,7 @@ public class GamePanel extends JPanel{
     soundManager.loadSounds();
     //soundManager.startMusic();
     // Default piece
-    selectPiece(PieceType.ROOK);
+    selectPiece(PieceType.KNIGHT);
     // Refreshrate. Might have to improve that
     new Timer(16, e -> update()).start(); // ~60 FPS
                                           //
@@ -161,7 +162,7 @@ public class GamePanel extends JPanel{
       }
       case PieceType.KNIGHT -> {
         selectedPiece = knightImage;
-        abilityCoolDown = ROOK_ABILITY_COOLDOWN;
+        abilityCoolDown = KNIGHT_ABILITY_COOLDOWN;
       }
       case PieceType.BISHOP -> {
         selectedPiece = bishopImage;
@@ -236,9 +237,9 @@ public class GamePanel extends JPanel{
     // update projectiles (queens effect)
     for (Iterator<Projectile> iterator = projectiles.iterator(); iterator.hasNext(); ) {
       Projectile projectile = iterator.next();
-      projectile.moveParticle(projectile.speed);
-      projectile.decay++;
-      if (projectile.decay > 20) {
+      projectile.moveProjectile(projectile.speed);
+      projectile.decay--;
+      if (projectile.decay <= 0) {
         iterator.remove();
       }
     }
