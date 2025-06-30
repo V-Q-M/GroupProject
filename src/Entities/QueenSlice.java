@@ -1,11 +1,9 @@
 package entities;
 
-public class Particle extends Projectile{
-  public final String direction;
-  public int decay = 0;
+public class QueenSlice extends Projectile{
 
   // Specialized constructor
-  public Particle(int x, int y, int size, int speed, String direction) {
+  public QueenSlice(int x, int y, int size, int speed, String direction) {
     this.x = x;
     this.y = y;
     this.height = size;

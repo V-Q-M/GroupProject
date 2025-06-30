@@ -1,10 +1,8 @@
 package enemies;
 
 import entities.CannonBall;
-import entities.Particle;
+import entities.Projectile;
 import main.*;
-
-import java.awt.image.BufferedImage;
 
 public class Enemy extends AnimateObject {
     final int DEFAULT_CANNON_BALL_DMG = 35;
@@ -69,21 +67,54 @@ public class Enemy extends AnimateObject {
 
     private void checkCollision(){
         if (!isInvulnerable) {
-            if(gamePanel.selectedPieceType == PieceType.ROOK) {
-                for (CannonBall ball : gamePanel.balls) {
-                    if (collisionHandler.projectileCollision(this, ball)) {
-                        health -= DEFAULT_CANNON_BALL_DMG;
-                        isInvulnerable = true;
-                        ball.hasHit = true;
-                        soundManager.playClip(soundManager.hitClip);
+            switch(gamePanel.selectedPieceType){
+                case ROOK   -> {
+                    for (CannonBall ball : gamePanel.balls) {
+                        if (collisionHandler.projectileCollision(this, ball)) {
+                            health -= DEFAULT_CANNON_BALL_DMG;
+                            isInvulnerable = true;
+                            ball.hasHit = true;
+                            soundManager.playClip(soundManager.hitClip);
+                        }
                     }
                 }
-            } else {
-                for (Particle particle: gamePanel.particles) {
-                    if ( collisionHandler.projectileCollision(this, particle)){
-                        health -= DEFAULT_SLICE_DMG;
-                        isInvulnerable = true;
-                        soundManager.playClip(soundManager.hitClip);
+                case KNIGHT -> {
+                    for (CannonBall ball : gamePanel.balls) {
+                        if (collisionHandler.projectileCollision(this, ball)) {
+                            health -= DEFAULT_CANNON_BALL_DMG;
+                            isInvulnerable = true;
+                            ball.hasHit = true;
+                            soundManager.playClip(soundManager.hitClip);
+                        }
+                    }
+                }
+                case BISHOP -> {
+                    for (CannonBall ball : gamePanel.balls) {
+                        if (collisionHandler.projectileCollision(this, ball)) {
+                            health -= DEFAULT_CANNON_BALL_DMG;
+                            isInvulnerable = true;
+                            ball.hasHit = true;
+                            soundManager.playClip(soundManager.hitClip);
+                        }
+                    }
+                }
+                case QUEEN  -> {
+                    for (Projectile projectile: gamePanel.projectiles) {
+                        if ( collisionHandler.projectileCollision(this, projectile)){
+                            health -= DEFAULT_SLICE_DMG;
+                            isInvulnerable = true;
+                            soundManager.playClip(soundManager.hitClip);
+                        }
+                    }
+                }
+                case KING   -> {
+                    for (CannonBall ball : gamePanel.balls) {
+                        if (collisionHandler.projectileCollision(this, ball)) {
+                            health -= DEFAULT_CANNON_BALL_DMG;
+                            isInvulnerable = true;
+                            ball.hasHit = true;
+                            soundManager.playClip(soundManager.hitClip);
+                        }
                     }
                 }
             }

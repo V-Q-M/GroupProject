@@ -1,7 +1,7 @@
 package main;
 
 import entities.CannonBall;
-import entities.Particle;
+import entities.QueenSlice;
 import Allies.Player;
 
 public class EntityManager {
@@ -47,7 +47,7 @@ public class EntityManager {
             int bx = player.x + (queenWidth - size) / 2;
             int by = player.y + (queenHeight - size) / 2;
             // Append balls to the list of balls
-            gamePanel.particles.add(new Particle(bx, by, size, DEFAULT_QUEEN_PARTICLE_SPEED,player.facingDirection));
+            gamePanel.projectiles.add(new QueenSlice(bx, by, size, DEFAULT_QUEEN_PARTICLE_SPEED,player.facingDirection));
             // this should move to a variable
             soundManager.playClip(soundManager.sliceClip);
         }

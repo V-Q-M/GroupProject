@@ -6,4 +6,9 @@ public abstract class Projectile {
     public int width;
     public int height;
     public int speed;
+    public int decay;
+    public String direction;
+
+    public void moveParticle(int speed) {}
+
 }

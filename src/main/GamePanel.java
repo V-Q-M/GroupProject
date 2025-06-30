@@ -5,14 +5,15 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
 import enemies.Enemy;
 import entities.CannonBall;
-import entities.Particle;
 import Allies.Player;
+import entities.Projectile;
 
 public class GamePanel extends JPanel{
 
@@ -54,7 +55,7 @@ public class GamePanel extends JPanel{
   // List to track cannon balls
   public final List<CannonBall> balls = new ArrayList<>();
   // carries particle effects
-  public final List<Particle> particles = new ArrayList<>();
+  public final List<Projectile> projectiles = new ArrayList<>();
   // carries enemies
   public final List<Enemy>  enemies = new ArrayList<>();
 
@@ -232,12 +233,15 @@ public class GamePanel extends JPanel{
                          || ball.x + ball.width < 0
                          || ball.x - ball.width >= Main.WIDTH;
     });
-    // update particles (queens effect)
-    particles.removeIf(particle -> {
-      particle.moveParticle(particle.speed);
-      particle.decay++;
-      return particle.decay > 20;
-    });
+    // update projectiles (queens effect)
+    for (Iterator<Projectile> iterator = projectiles.iterator(); iterator.hasNext(); ) {
+      Projectile projectile = iterator.next();
+      projectile.moveParticle(projectile.speed);
+      projectile.decay++;
+      if (projectile.decay > 20) {
+        iterator.remove();
+      }
+    }
   }
 
 
@@ -297,7 +301,7 @@ public class GamePanel extends JPanel{
       g2d.fillRect(b.x, b.y, b.width, b.height);
       g2d.drawRect(b.x, b.y, b.width, b.height);
     }
-    for (Particle p : particles) {
+    for (Projectile p : projectiles) {
       g2d.fillRect(p.x, p.y, p.width, p.height);
       g2d.drawRect(p.x, p.y, p.width, p.height);
     }
