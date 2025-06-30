@@ -40,11 +40,23 @@ public class Player {
         forceSwap();
     }
     private void forceSwap(){
-        if (swapCounter >= 600){
-            switch(gamePanel.selectedPieceType){
+        if (swapCounter >= 600) {
+            switch (gamePanel.selectedPieceType) {
                 case QUEEN -> gamePanel.selectPiece(PieceType.ROOK);
                 case ROOK -> gamePanel.selectPiece(PieceType.QUEEN);
             }
+        } else if (swapCounter >= 570){
+            gamePanel.swapSoon = false;
+            swapCounter++;
+        } else if (swapCounter >= 540){
+            gamePanel.swapSoon = true;
+            swapCounter++;
+        } else if (swapCounter >= 510){
+            gamePanel.swapSoon = false;
+            swapCounter++;
+        } else if (swapCounter >= 480){
+            gamePanel.swapSoon = true;
+            swapCounter++;
         } else {
             swapCounter++;
         }

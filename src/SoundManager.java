@@ -10,6 +10,7 @@ public class SoundManager {
     Clip sliceClip;
     Clip hitClip;
     Clip deathClip;
+    Clip swapClip;
     Clip menuTheme;
     Clip mainTheme;
 
@@ -37,6 +38,7 @@ public class SoundManager {
         sliceClip = loadClip("res/slice1.wav");
         hitClip   = loadClip("res/hit.wav");
         deathClip = loadClip("res/death.wav");
+        swapClip  = loadClip("res/swap2.wav");
         menuTheme = loadClip("res/menuTheme.wav");
         mainTheme = loadClip("res/mainTheme2.wav");
     }

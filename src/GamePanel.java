@@ -2,6 +2,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import javax.imageio.ImageIO;
@@ -52,7 +53,9 @@ public class GamePanel extends JPanel{
   final List<Enemy>  enemies = new ArrayList<>();
 
   // Gamelogic here
-  public int castleHealth = 100;
+  boolean gameStart = true;
+  boolean swapSoon = false;
+  public int castleHealth = 10;
   boolean gameOver = false;
 
   KeyHandler keyHandler = new KeyHandler(this);
@@ -74,8 +77,9 @@ public class GamePanel extends JPanel{
     addKeyListener(keyHandler);
 
     this.loadImages();
+    this.loadFonts();
     soundManager.loadSounds();
-    soundManager.startMusic();
+    //soundManager.startMusic();
     // Default piece
     selectPiece(PieceType.ROOK);
     // Refreshrate. Might have to improve that
@@ -117,11 +121,23 @@ public class GamePanel extends JPanel{
       JOptionPane.showMessageDialog(this, "Could not load images");
     }
   }
+  Font gameFont;
+  private void loadFonts(){
+      try {
+        File fontFile = new File("res/PressStart2P.ttf");
+        gameFont = Font.createFont(Font.TRUETYPE_FONT, fontFile).deriveFont(80f);
+      } catch (FontFormatException | IOException e) {
+        e.printStackTrace();
+        gameFont = new Font("Monospaced", Font.BOLD, 80); // fallback
+      }
+  }
 
   // SelectPiece. Should prompt the user to pick one eventually
   void selectPiece(PieceType changePiece) {
     selectedPieceType = changePiece;
     player.swapCounter = 0;
+    soundManager.playClip(soundManager.swapClip);
+    swapSoon = false;
     switch (changePiece) {
       case PieceType.ROOK -> {
         selectedPiece = rookImage;
@@ -161,16 +177,32 @@ public class GamePanel extends JPanel{
       }
       enemyManager.updateSpawner();
       gameUpdate();
-    } else {
-      System.out.println("OVER");
     }
     repaint();
   }
 
+  int gameStartCounter = 0;
+  String startMessage = "Starting in: 3";
   private void gameUpdate(){
+    if (gameStart) {
+      if (gameStartCounter > 180) {
+        gameStart = false;
+        gameStartCounter = 0;
+      } else if (gameStartCounter > 120) {
+        startMessage = "Starting in: 1";
+        gameStartCounter++;
+      } else if (gameStartCounter > 60){
+        startMessage = "Starting in: 2";
+        gameStartCounter++;
+      } else {
+        gameStartCounter++;
+      }
+    }
     if (castleHealth <= 0){
       gameOver = true;
+      castleHealth = 0;
     }
+
   }
   private void entityUpdate(){
     // Update cannon balls
@@ -201,6 +233,7 @@ public class GamePanel extends JPanel{
     drawEnemies(g2d);
     drawEntities(g2d);
     drawHealthBars(g2d);
+    drawUI(g2d);
   }
 
   private void drawBackground(Graphics2D g2d){
@@ -280,8 +313,33 @@ public class GamePanel extends JPanel{
   }
 
 
+  void drawUI(Graphics2D g2d) {
+    g2d.setFont(gameFont);
 
+    if (gameOver) {
+      g2d.setColor(Color.RED);
+      drawText(g2d, "Game Over!");
+    }
 
+    if (gameStart) {
+      g2d.setColor(Color.WHITE);
+      drawText(g2d, startMessage);
+    }
+    if (swapSoon){
+      g2d.setColor(Color.YELLOW);
+      drawText(g2d, "Swapping soon!");
+    }
+  }
 
+  void drawText(Graphics2D g2d, String text){
+    // Get font metrics for positioning
+    FontMetrics fm = g2d.getFontMetrics();
+    int textWidth = fm.stringWidth(text);
+    int textHeight = fm.getHeight();
 
+    int x = (getWidth() - textWidth) / 2;
+    int y = (getHeight() - textHeight) / 2 + fm.getAscent(); // ascent = baseline offset
+
+    g2d.drawString(text, x, y);
+  }
 }
