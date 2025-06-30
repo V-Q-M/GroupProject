@@ -7,6 +7,7 @@ import main.*;
 public class Enemy extends AnimateObject {
     final int DEFAULT_CANNON_BALL_DMG = 35;
     final int DEFAULT_SLICE_DMG= 50;
+    final int DEFAULT_SLAM_DMG= 100;
 
 
     public Enemy(GamePanel gamePanel, SoundManager soundManager, CollisionHandler collisionHandler, int x, int y, int width, int height) {
@@ -79,11 +80,10 @@ public class Enemy extends AnimateObject {
                     }
                 }
                 case KNIGHT -> {
-                    for (CannonBall ball : gamePanel.balls) {
-                        if (collisionHandler.projectileCollision(this, ball)) {
-                            health -= DEFAULT_CANNON_BALL_DMG;
+                    for (Projectile projectile: gamePanel.projectiles) {
+                        if ( collisionHandler.projectileCollision(this, projectile)){
+                            health -= DEFAULT_SLAM_DMG;
                             isInvulnerable = true;
-                            ball.hasHit = true;
                             soundManager.playClip(soundManager.hitClip);
                         }
                     }
