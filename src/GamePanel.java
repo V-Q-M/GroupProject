@@ -55,7 +55,8 @@ public class GamePanel extends JPanel{
   // Gamelogic here
   boolean gameStart = true;
   boolean swapSoon = false;
-  public int castleHealth = 10;
+  public int castleHealth = 100;
+  //public int castleHealth = 10;
   boolean gameOver = false;
 
   KeyHandler keyHandler = new KeyHandler(this);
