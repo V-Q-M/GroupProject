@@ -440,7 +440,7 @@ public class GamePanel extends JPanel{
     if (!player.queenAlive){
       g2d.drawImage(queenImage, xPos + 402, yPos, 100, 100, this);
     }
-    if (!player.queenAlive){
+    if (!player.bishopAlive){
       g2d.drawImage(bishopImage, xPos + 534, yPos, 100, 100, this);
     }
 

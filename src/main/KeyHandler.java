@@ -23,25 +23,25 @@ public class KeyHandler implements KeyListener {
         // rook has his own pattern, because i dont want him to move diagonally
         if (gamePanel.selectedPieceType == PieceType.ROOK) {
             switch (key) {
-                case KeyEvent.VK_W -> {
+                case KeyEvent.VK_W, KeyEvent.VK_UP, KeyEvent.VK_K -> {
                     goingUp = true;
                     goingRight = false;
                     goingLeft = false;
                     goingDown = false;
                 }
-                case KeyEvent.VK_S -> {
+                case KeyEvent.VK_S, KeyEvent.VK_DOWN, KeyEvent.VK_J -> {
                     goingDown = true;
                     goingRight = false;
                     goingLeft = false;
                     goingUp = false;
                 }
-                case KeyEvent.VK_A -> {
+                case KeyEvent.VK_A, KeyEvent.VK_LEFT, KeyEvent.VK_H -> {
                     goingLeft = true;
                     goingDown = false;
                     goingRight = false;
                     goingUp = false;
                 }
-                case KeyEvent.VK_D -> {
+                case KeyEvent.VK_D, KeyEvent.VK_RIGHT, KeyEvent.VK_L -> {
                     goingRight = true;
                     goingDown = false;
                     goingLeft = false;
@@ -79,10 +79,18 @@ public class KeyHandler implements KeyListener {
     public void keyReleased(KeyEvent e) {
         int key = e.getKeyCode();
         switch (key) {
-            case KeyEvent.VK_W -> goingUp = false;
-            case KeyEvent.VK_S -> goingDown = false;
-            case KeyEvent.VK_A -> goingLeft = false;
-            case KeyEvent.VK_D -> goingRight = false;
+            case KeyEvent.VK_W, KeyEvent.VK_UP, KeyEvent.VK_K -> {
+                goingUp = false;
+            }
+            case KeyEvent.VK_S, KeyEvent.VK_DOWN, KeyEvent.VK_J -> {
+                goingDown = false;
+            }
+            case KeyEvent.VK_A, KeyEvent.VK_LEFT, KeyEvent.VK_H -> {
+                goingLeft = false;
+            }
+            case KeyEvent.VK_D, KeyEvent.VK_RIGHT, KeyEvent.VK_L -> {
+                goingRight = false;
+            }
         }
     }
 
