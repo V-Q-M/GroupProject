@@ -40,7 +40,7 @@ public class Ally extends AnimateObject {
             if (x > Main.WIDTH){
                 health = 0;
             } else {
-                x -= speed;
+                x += speed;
             }
         }
     }

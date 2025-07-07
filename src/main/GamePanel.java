@@ -42,6 +42,7 @@ public class GamePanel extends JPanel{
   private final int ROOK_ABILITY_COOLDOWN = 60;
   private final int KNIGHT_ABILITY_COOLDOWN = 120;
   private final int QUEEN_ABILITY_COOLDOWN = 40;
+  private final int KING_ABILITY_COOLDOWN = 240;
 
   public int abilityCoolDown = ROOK_ABILITY_COOLDOWN;
 
@@ -97,14 +98,14 @@ public class GamePanel extends JPanel{
     buildWall();
 
     // Default piece
-    selectPiece(PieceType.BISHOP);
+    selectPiece(PieceType.KING);
     // Refreshrate. Might have to improve that
     new Timer(16, e -> update()).start(); // ~60 FPS
   }
 
   private void buildWall(){
     for (int i = 0; i < 8; i++){
-      allies.add(new AllyPawn(this, soundManager, collisionHandler, 0, i * PIECE_HEIGHT, PIECE_HEIGHT, PIECE_HEIGHT));
+      allies.add(new AllyPawn(this, soundManager, collisionHandler, 0, i * PIECE_HEIGHT, PIECE_HEIGHT, PIECE_HEIGHT, false));
     }
   }
 
@@ -172,7 +173,7 @@ public class GamePanel extends JPanel{
       }
       case PieceType.KING -> {
         selectedPiece = kingImage;
-        abilityCoolDown = ROOK_ABILITY_COOLDOWN;
+        abilityCoolDown = KING_ABILITY_COOLDOWN;
       }
       case PieceType.KNIGHT -> {
         selectedPiece = knightImage;

@@ -331,8 +331,14 @@ public class Player extends AnimateObject{
             case ROOK   -> gamePanel.entityManager.spawnCannonBall();
             case KNIGHT -> gamePanel.entityManager.spawnKnightParticles();
             case BISHOP -> gamePanel.entityManager.spawnLance();
-            case KING   -> gamePanel.entityManager.spawnCannonBall();
             case QUEEN  -> gamePanel.entityManager.spawnQueenParticles();
+            case KING   -> performKingAttack();
         }
+    }
+
+    private void performKingAttack(){
+        gamePanel.entityManager.spawnPawns(x , y - 132);
+        gamePanel.entityManager.spawnPawns(x + 132, y);
+        gamePanel.entityManager.spawnPawns(x , y + 132);
     }
 }

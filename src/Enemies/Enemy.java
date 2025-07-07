@@ -8,6 +8,7 @@ public class Enemy extends AnimateObject {
     final int DEFAULT_CANNON_BALL_DMG = 35;
     final int DEFAULT_SLICE_DMG= 50;
     final int DEFAULT_SLAM_DMG= 100;
+    final int DEFAULT_LANCE_DMG= 50;
     public int maxHealth = 100; // need to pass it in constructor soon
 
 
@@ -91,11 +92,11 @@ public class Enemy extends AnimateObject {
                     }
                 }
                 case BISHOP -> {
-                    for (Projectile ball : gamePanel.balls) {
-                        if (collisionHandler.projectileCollision(this, ball)) {
-                            health -= DEFAULT_CANNON_BALL_DMG;
+                    for (Projectile lance : gamePanel.balls) {
+                        if (collisionHandler.projectileCollision(this, lance)) {
+                            health -= DEFAULT_LANCE_DMG;
                             isInvulnerable = true;
-                            ball.hasHit = true;
+                            lance.hasHit = true;
                             soundManager.playClip(soundManager.hitClip);
                         }
                     }

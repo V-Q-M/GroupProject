@@ -1,5 +1,6 @@
 package main;
 
+import Allies.AllyPawn;
 import entities.BishopLance;
 import entities.CannonBall;
 import entities.KnightSmash;
@@ -82,5 +83,12 @@ public class EntityManager {
            gamePanel.projectiles.add(new KnightSmash(bx, by, size, DEFAULT_QUEEN_PARTICLE_SPEED,50, player.facingDirection));
            soundManager.playClip(soundManager.smashClip);
        }
+    }
+
+    public void spawnPawns(int x, int y){
+        if (gamePanel.pawnImage != null){
+            int size =132;
+            gamePanel.allies.add(new AllyPawn(gamePanel, soundManager, gamePanel.collisionHandler, x, y, size, size, true));
+        }
     }
 }
