@@ -9,23 +9,36 @@ public class Player extends AnimateObject{
     GamePanel gamePanel;
     KeyHandler keyHandler;
     SoundManager soundManager;
-    public boolean isDead = false;
     CollisionHandler collisionHandler;
+
+    public boolean isDead = false;
     public boolean isInvulnerable;
     private int invulnerableCounter;
+
     final int BASE_MOVE_SPEED = 6;
     public final int DASH_SPEED = 16;
     public final int LEAP_SPEED = 8;
+
     public boolean queenDashing = false;
     private int queenDashingCounter = 0;
+
     public int health = 100;
 
-    public int rookHealth = 20;
-    public int knightHealth = 30;
-    public int bishopHealth = 10;
-    public int queenHealth = 10;
-    public int kingHealth = 50;
-    public int pawnHealth = 10;
+    // Base health constants
+    public static final int ROOK_BASE_HEALTH = 20;
+    public static final int KNIGHT_BASE_HEALTH = 30;
+    public static final int BISHOP_BASE_HEALTH = 10;
+    public static final int QUEEN_BASE_HEALTH = 10;
+    public static final int KING_BASE_HEALTH = 50;
+    public static final int PAWN_BASE_HEALTH = 10;
+
+    // Mutable health values
+    public int rookHealth = ROOK_BASE_HEALTH;
+    public int knightHealth = KNIGHT_BASE_HEALTH;
+    public int bishopHealth = BISHOP_BASE_HEALTH;
+    public int queenHealth = QUEEN_BASE_HEALTH;
+    public int kingHealth = KING_BASE_HEALTH;
+    public int pawnHealth = PAWN_BASE_HEALTH;
 
     public int swapCounter = 0;
 

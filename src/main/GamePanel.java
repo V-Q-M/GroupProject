@@ -288,10 +288,10 @@ public class GamePanel extends JPanel{
     }
   }
 
-  private void createHealthBar(Graphics2D g2d, int x, int y, int width, int height, int health){
+  private void createHealthBar(Graphics2D g2d, int x, int y, int width, int height, int health, int maxHealth){
     g2d.setColor(Color.red);
     g2d.fillRect(x, y - height * 2, width, height);
-    int greenWidth= (int) (width * health / 100);
+    int greenWidth= (int) (width * health / maxHealth);
     g2d.setColor(Color.green);
     g2d.fillRect(x, y - height * 2, greenWidth, height);
   }
@@ -351,26 +351,42 @@ public class GamePanel extends JPanel{
     // Personal choice - only show health-bar when not at full health
     for (Enemy enemy : enemies) {
       if (!enemy.isDead && enemy.health != 100) {
-        createHealthBar(g2d, enemy.x, enemy.y, enemy.width, 15, enemy.health);
+        createHealthBar(g2d, enemy.x, enemy.y, enemy.width, 15, enemy.health, enemy.maxHealth);
       }
     }
 
     int playerHealth = player.health;
+    int playerMaxHealth = player.health;
     switch(selectedPieceType){
-      case ROOK -> playerHealth = player.rookHealth;
-      case KNIGHT -> playerHealth = player.knightHealth;
-      case BISHOP -> playerHealth = player.bishopHealth;
-      case QUEEN -> playerHealth = player.queenHealth;
-      case KING -> playerHealth = player.kingHealth;
+      case ROOK -> {
+        playerHealth = player.rookHealth;
+        playerMaxHealth = player.ROOK_BASE_HEALTH;
+      }
+      case KNIGHT -> {
+        playerHealth = player.knightHealth;
+        playerMaxHealth = player.KNIGHT_BASE_HEALTH;
+      }
+      case BISHOP -> {
+        playerHealth = player.bishopHealth;
+        playerMaxHealth = player.BISHOP_BASE_HEALTH;
+      }
+      case QUEEN -> {
+        playerHealth = player.queenHealth;
+        playerMaxHealth = player.QUEEN_BASE_HEALTH;
+      }
+      case KING -> {
+        playerHealth = player.kingHealth;
+        playerMaxHealth = player.KING_BASE_HEALTH;
+      }
     }
 
     // player.Player health-bar always on top
     if (!player.isDead) {
-        createHealthBar(g2d, player.x, player.y, pieceWidth, 20, playerHealth);
+        createHealthBar(g2d, player.x, player.y, pieceWidth, 20, playerHealth, playerMaxHealth);
     }
 
     // Castle healthbar
-    createHealthBar(g2d, 350, 60, 1200, 20, castleHealth);
+    createHealthBar(g2d, 350, 60, 1200, 20, castleHealth, 100);
   }
 
 
