@@ -42,6 +42,9 @@ public class MenuPanel extends JPanel {
     private boolean hoveringPlay = false;
     private boolean hoveringShop = false;
     private boolean hoveringQuit = false;
+    private boolean hoveringSettings = false;
+    private boolean hoveringHelp = false;
+    private boolean shopMode = false;
 
     private void updateMenuState(){
         // Pressing a key increments or decrements index
@@ -69,29 +72,46 @@ public class MenuPanel extends JPanel {
         if (keyHandler.enterPressed){
             keyHandler.enterPressed = false;
             soundManager.playClip(soundManager.buttonClickClip);
-            if (buttonIndexX == 0){
-                System.out.println("Shop");
-            }
-            else if (buttonIndexX == 1){
-                System.out.println("Play");
-                Main.startMainGame(this);
-            }
-            else if (buttonIndexX == 2){
-                System.out.println("Quit");
+            if (buttonIndexY % 2 == 0) {
+                if (buttonIndexX % 3 == 0) {
+                    System.out.println("Shop");
+                    shopMode = true;
+                } else if (buttonIndexX % 3 == 1) {
+                    System.out.println("Play");
+                    Main.startMainGame(this);
+                } else if (buttonIndexX % 3 == 2) {
+                    System.out.println("Quit");
+                    System.exit(0);
+                }
+            } else if (buttonIndexY % 2 == 1){
+                if (buttonIndexX % 2 == 0) {
+                    System.out.println("Settings");
+                } else if (buttonIndexX % 2 == 1) {
+                    System.out.println("Help");
+                }
             }
         }
 
         // Hover effect
         resetButtons(); // Resets hover effect
         // Color buttons correctly
-        if (buttonIndexX % 3 == 0){
-           hoveringShop = true;
-        }
-        if (buttonIndexX % 3 == 1){
-            hoveringPlay = true;
-        }
-        if (buttonIndexX % 3 == 2){
-            hoveringQuit = true;
+        if (buttonIndexY % 2 == 0) {
+            if (buttonIndexX % 3 == 0) {
+                hoveringShop = true;
+            }
+            if (buttonIndexX % 3 == 1) {
+                hoveringPlay = true;
+            }
+            if (buttonIndexX % 3 == 2) {
+                hoveringQuit = true;
+            }
+        } else if (buttonIndexY % 2 == 1){
+            if (buttonIndexX % 2 == 0) {
+                hoveringSettings = true;
+            }
+            if (buttonIndexX % 2 == 1) {
+                hoveringHelp = true;
+            }
         }
     }
 
@@ -99,6 +119,8 @@ public class MenuPanel extends JPanel {
         hoveringShop = false;
         hoveringPlay = false;
         hoveringQuit = false;
+        hoveringSettings = false;
+        hoveringHelp = false;
     }
 
     private void loadImages() {
@@ -112,10 +134,12 @@ public class MenuPanel extends JPanel {
         }
     }
     Font gameFont;
+    Font gameFontSmall;
     private void loadFonts(){
         try {
             File fontFile = new File("res/PressStart2P.ttf");
             gameFont = Font.createFont(Font.TRUETYPE_FONT, fontFile).deriveFont(80f);
+            gameFontSmall = Font.createFont(Font.TRUETYPE_FONT, fontFile).deriveFont(40f);
         } catch (FontFormatException | IOException e) {
             e.printStackTrace();
             gameFont = new Font("Monospaced", Font.BOLD, 80); // fallback
@@ -142,12 +166,22 @@ public class MenuPanel extends JPanel {
     private void drawUI(Graphics2D g2d){
         g2d.setFont(gameFont);
 
-        g2d.setColor(new Color(0, 0, 0, 220));
-        g2d.fillRect(0, 450, Main.WIDTH, 180);
-
+        // Title background
         g2d.setColor(new Color(0, 0, 0, 220));
         g2d.fillRect(650, 15, Main.WIDTH - 1300, 210);
 
+        // Upper row background
+        g2d.setColor(new Color(0, 0, 0, 230));
+        g2d.fillRect(0, 450, Main.WIDTH, 180);
+
+        // Lower row background
+        g2d.setColor(new Color(0, 0, 0, 220));
+        g2d.fillRect(0, 680, Main.WIDTH, 80);
+
+        // Title
+        g2d.setColor(Color.WHITE);
+        drawText(g2d,0,120, "Chess");
+        drawText(g2d,0,220, "Defense");
 
         if(hoveringPlay){
             g2d.setColor(Color.YELLOW);
@@ -170,10 +204,21 @@ public class MenuPanel extends JPanel {
         }
         drawText(g2d,Main.WIDTH/2 + 400,0, "Quit");
 
+        g2d.setFont(gameFontSmall);
+        if(hoveringSettings){
+            g2d.setColor(Color.YELLOW);
+        } else {
+            g2d.setColor(Color.WHITE);
+        }
+        drawText(g2d, 545, 745, "Settings");
 
-        g2d.setColor(Color.WHITE);
-        drawText(g2d,0,120, "Chess");
-        drawText(g2d,0,220, "Defense");
+        if(hoveringHelp){
+            g2d.setColor(Color.YELLOW);
+        } else {
+            g2d.setColor(Color.WHITE);
+        }
+        drawText(g2d,Main.WIDTH/2 + 215,745, "Help");
+
 
 
     }

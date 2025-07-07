@@ -40,7 +40,6 @@ public class Main{
         frame.add(new GamePanel());
         frame.remove(menuPanel);
         frame.pack();
-
     }
 
     public static void main(String[] args) {

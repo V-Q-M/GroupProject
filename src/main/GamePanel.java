@@ -19,6 +19,7 @@ import entities.Projectile;
 public class GamePanel extends JPanel{
 
   private boolean DEBUG_MODE = false;
+  public boolean gamePaused = false;
 
   // Textures of the pieces
   public BufferedImage rookImage;
@@ -189,7 +190,7 @@ public class GamePanel extends JPanel{
   }
 
   public void update() {
-    if (!gameOver) {
+    if (!gameOver && !gamePaused) {
       if (!player.isDead) {
         player.playerUpdate();
       }
@@ -209,6 +210,10 @@ public class GamePanel extends JPanel{
       }
       enemyManager.updateSpawner();
       gameUpdate();
+    }
+    if (keyHandler.escapePressed){
+      keyHandler.escapePressed = false;
+      gamePaused = !gamePaused;
     }
     repaint();
   }

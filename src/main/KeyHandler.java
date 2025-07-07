@@ -10,6 +10,8 @@ public class KeyHandler implements KeyListener {
     public boolean goingUp = false;
     public boolean goingDown = false;
     public boolean spacePressed = false;
+    public boolean escapePressed = false;
+    public boolean enterPressed = false;
 
     public KeyHandler(GamePanel gamePanel){
         this.gamePanel = gamePanel;
@@ -66,6 +68,8 @@ public class KeyHandler implements KeyListener {
                 }
                 //case KeyEvent.VK_SPACE -> gamePanel.performAttack();
                 case KeyEvent.VK_SPACE -> spacePressed = true;
+                case KeyEvent.VK_ENTER -> enterPressed = true;
+                case KeyEvent.VK_ESCAPE -> escapePressed = true;
                 case KeyEvent.VK_1 -> gamePanel.selectPiece(PieceType.ROOK);
                 case KeyEvent.VK_2 -> gamePanel.selectPiece(PieceType.QUEEN);
             }
