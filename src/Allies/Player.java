@@ -293,25 +293,21 @@ public class Player extends AnimateObject{
             rookAlive = false;
             availablePieces.remove(PieceType.ROOK);
             forceSwap();
-            health -= 25;
         }
         if (knightHealth <= 0 && knightAlive){
             knightAlive = false;
             availablePieces.remove(PieceType.KNIGHT);
             forceSwap();
-            health -= 25;
         }
         if (bishopHealth <= 0 && bishopAlive){
             bishopAlive = false;
             availablePieces.remove(PieceType.BISHOP);
             forceSwap();
-            health -= 25;
         }
         if (queenHealth <= 0 && queenAlive){
             queenAlive = false;
             availablePieces.remove(PieceType.QUEEN);
             forceSwap();
-            health -= 25;
         }
         // specialcase - king dead
         if (kingHealth <= 0 && kingAlive){
