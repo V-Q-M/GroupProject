@@ -20,6 +20,13 @@ public class Player extends AnimateObject{
     private int queenDashingCounter = 0;
     public int health = 100;
 
+    public int rookHealth = 20;
+    public int knightHealth = 30;
+    public int bishopHealth = 10;
+    public int queenHealth = 10;
+    public int kingHealth = 50;
+    public int pawnHealth = 10;
+
     public int swapCounter = 0;
 
     public String facingDirection = "down";
@@ -162,7 +169,7 @@ public class Player extends AnimateObject{
             for (Enemy enemy : gamePanel.enemies) {
                 if (collisionHandler.enemyCollision(enemy, this) && !enemy.hasAttacked && !enemy.isDead) {
                     enemy.hasAttacked = true;
-                    health -= enemy.damage;
+                    takeDamage(enemy.damage);
                     isInvulnerable = true;
                     soundManager.playClip(soundManager.hitClip);
                 }
@@ -170,12 +177,49 @@ public class Player extends AnimateObject{
         }
     }
 
+
+
+    private void takeDamage(int damageAmount){
+        switch(gamePanel.selectedPieceType){
+            case ROOK -> rookHealth -= damageAmount;
+            case KNIGHT -> knightHealth -= damageAmount;
+            case BISHOP -> bishopHealth -= damageAmount;
+            case QUEEN -> queenHealth -= damageAmount;
+            case KING -> kingHealth -= damageAmount;
+            case PAWN -> pawnHealth -= damageAmount;
+        }
+    }
+
+    private boolean rookAlive = true;
+    private boolean bishopAlive = true;
+    private boolean knightAlive = true;
+    private boolean queenAlive = true;
+    private boolean kingAlive = true;
+
+
     private void checkAlive(){
         if (health <= 0){
             this.isDead = true;
             soundManager.playClip(soundManager.deathClip);
             gamePanel.gameOver = true;
         }
+
+        if (rookHealth <= 0 && rookAlive){
+            rookAlive = false;
+            health -= 25; }
+        if (knightHealth <= 0 && knightAlive){
+            knightAlive = false;
+            health -= 25; }
+        if (bishopHealth <= 0 && bishopAlive){
+            bishopAlive = false;
+            health -= 25; }
+        if (queenHealth <= 0 && queenAlive){
+            queenAlive = false;
+            health -= 25; }
+        // specialcase - king dead
+        if (kingHealth <= 0 && kingAlive){
+            kingAlive = false;
+            health = 0; }
     }
 
     void performAttack() {

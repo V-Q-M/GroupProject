@@ -354,9 +354,19 @@ public class GamePanel extends JPanel{
         createHealthBar(g2d, enemy.x, enemy.y, enemy.width, 15, enemy.health);
       }
     }
+
+    int playerHealth = player.health;
+    switch(selectedPieceType){
+      case ROOK -> playerHealth = player.rookHealth;
+      case KNIGHT -> playerHealth = player.knightHealth;
+      case BISHOP -> playerHealth = player.bishopHealth;
+      case QUEEN -> playerHealth = player.queenHealth;
+      case KING -> playerHealth = player.kingHealth;
+    }
+
     // player.Player health-bar always on top
-    if (!player.isDead && player.health != 100) {
-        createHealthBar(g2d, player.x, player.y, pieceWidth, 20, player.health);
+    if (!player.isDead) {
+        createHealthBar(g2d, player.x, player.y, pieceWidth, 20, playerHealth);
     }
 
     // Castle healthbar
