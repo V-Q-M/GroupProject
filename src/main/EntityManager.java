@@ -29,7 +29,8 @@ public class EntityManager {
             int bx = player.x + (gamePanel.pieceWidth - size) / 2;
             int by = player.y ;
             // Append balls to the list of balls
-            gamePanel.balls.add(new CannonBall(bx, by, size, DEFAULT_CANNONBALL_SPEED, player.facingDirection));
+            //gamePanel.balls.add(new CannonBall(bx, by, size, DEFAULT_CANNONBALL_SPEED, player.facingDirection));
+            gamePanel.balls.add(new CannonBall(bx, by, size, DEFAULT_CANNONBALL_SPEED, "right"));
             // this should move to a variable
             soundManager.playClip(soundManager.shootClip);
         }

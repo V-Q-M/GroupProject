@@ -5,8 +5,10 @@ import enemies.*;
 public class EnemyManager {
     GamePanel gamePanel;
     private int lastSpawnCounter;
-    private int spawnCoolDown = 180;
+    private int spawnCoolDown = 240;
+    private int size = 4 * 32;
     public EnemyManager(GamePanel gamePanel){
+
         this.gamePanel = gamePanel;
     }
 
@@ -27,8 +29,10 @@ public class EnemyManager {
         } else {
             lastSpawnCounter = 0;
             int X = Main.WIDTH;
-            int randomY = (int) (Math.random() * Main.HEIGHT);
-            spawnEnemy(X,randomY,80, 80, PieceType.PAWN);
+            //int randomY = (int) (Math.random() * Main.HEIGHT);
+            int randomY = (int)(Math.random() * (Main.HEIGHT / size)) * size;
+
+            spawnEnemy(X,randomY, size, size, PieceType.PAWN);
         }
     }
 }

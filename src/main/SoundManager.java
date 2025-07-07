@@ -49,7 +49,7 @@ public class SoundManager {
         deathClip = loadClip("res/death.wav");
         swapClip  = loadClip("res/swap2.wav");
         menuTheme = loadClip("res/menuTheme.wav");
-        mainTheme = loadClip("res/mainTheme2.wav");
+        mainTheme = loadClip("res/mainTheme3.wav");
     }
 
     private Clip loadClip(String path) {

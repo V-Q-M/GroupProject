@@ -17,7 +17,7 @@ import entities.Projectile;
 
 public class GamePanel extends JPanel{
 
-  private boolean DEBUG_MODE = false;
+  private boolean DEBUG_MODE = true;
 
   // Textures of the pieces
   public BufferedImage rookImage;
@@ -49,6 +49,7 @@ public class GamePanel extends JPanel{
 
   // This will hold the actual player.Player piece
   private BufferedImage selectedPiece;
+  public int PIECE_HEIGHT = 4 * 32;
 
   // Im scaling 32x32 Textures so that they look nicer
   final int SCALE = 8;
@@ -71,8 +72,8 @@ public class GamePanel extends JPanel{
   CollisionHandler collisionHandler = new CollisionHandler(this);
   SoundManager soundManager = new SoundManager(this);
 
-  int startX = 100;
-  int startY = 100;
+  int startX = 0;
+  int startY = PIECE_HEIGHT*4;
 
   Player player = new Player(this, keyHandler, soundManager, collisionHandler, startX, startY);
   EnemyManager enemyManager = new EnemyManager(this);
@@ -88,7 +89,7 @@ public class GamePanel extends JPanel{
     this.loadImages();
     this.loadFonts();
     soundManager.loadSounds();
-    //soundManager.startMusic();
+    soundManager.startMusic();
     // Default piece
     selectPiece(PieceType.KNIGHT);
     // Refreshrate. Might have to improve that
