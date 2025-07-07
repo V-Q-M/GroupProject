@@ -87,7 +87,7 @@ public class EntityManager {
 
     public void spawnPawns(int x, int y){
         if (gamePanel.pawnImage != null){
-            int size =132;
+            int size = gamePanel.pieceHeight;
             gamePanel.allies.add(new AllyPawn(gamePanel, soundManager, gamePanel.collisionHandler, x, y, size, size, true));
         }
     }
