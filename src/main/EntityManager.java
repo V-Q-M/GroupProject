@@ -20,14 +20,14 @@ public class EntityManager {
        this.player = player;
     }
 
-    int CANNON_BALL_SIZE = 80;
+    int CANNON_BALL_SIZE = 64;
     // Yeah this could get its own class later
     public void spawnCannonBall() {
         if (gamePanel.rookImage != null) {
             int size = CANNON_BALL_SIZE; // size of the cannonball
             // spawn at top‐center of the rook
             int bx = player.x + (gamePanel.pieceWidth - size) / 2;
-            int by = player.y ;
+            int by = player.y + (gamePanel.pieceHeight - size) / 2;
             // Append balls to the list of balls
             //gamePanel.balls.add(new CannonBall(bx, by, size, DEFAULT_CANNONBALL_SPEED, player.facingDirection));
             gamePanel.balls.add(new CannonBall(bx, by, size, DEFAULT_CANNONBALL_SPEED, "right"));
@@ -59,18 +59,14 @@ public class EntityManager {
 
     public void spawnKnightParticles() {
        if (gamePanel.knightImage != null) {
-           int size = 140; // size of the cannonball
-           player.speed = player.LEAP_SPEED;
-           player.queenDashing = true;
-           player.isInvulnerable = true;
-
+           int size = 132; // size of the cannonball
            // spawn at top‐center of the rook
            int bx = player.x + (gamePanel.pieceWidth  - size) / 2;
            int by = player.y + (gamePanel.pieceHeight - size) / 2;
 
            // Append balls to the list of balls
-           gamePanel.projectiles.add(new KnightSmash(bx, by, size, DEFAULT_QUEEN_PARTICLE_SPEED,40, player.facingDirection));
-           soundManager.playClip(soundManager.sliceClip);
+           gamePanel.projectiles.add(new KnightSmash(bx, by, size, DEFAULT_QUEEN_PARTICLE_SPEED,50, player.facingDirection));
+           soundManager.playClip(soundManager.smashClip);
        }
     }
 }

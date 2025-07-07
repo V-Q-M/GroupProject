@@ -11,6 +11,7 @@ public class SoundManager {
     public Clip shootClip;
     public Clip sliceClip;
     public Clip hitClip;
+    public Clip smashClip;
     public Clip deathClip;
     public Clip swapClip;
     public Clip menuTheme;
@@ -46,6 +47,7 @@ public class SoundManager {
         shootClip = loadClip("res/shoot.wav");
         sliceClip = loadClip("res/slice1.wav");
         hitClip   = loadClip("res/hit.wav");
+        smashClip = loadClip("res/smash.wav");
         deathClip = loadClip("res/death.wav");
         swapClip  = loadClip("res/swap2.wav");
         menuTheme = loadClip("res/menuTheme.wav");

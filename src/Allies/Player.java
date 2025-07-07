@@ -90,14 +90,12 @@ public class Player extends AnimateObject{
 
     private void forceSwap(){
         int index = random.nextInt(availablePieces.size()); // Pick a random index
-        //PieceType randomValue = values[index]; // Access by index
         PieceType randomValue = availablePieces.get(index); // Access by index
         System.out.println("Random Enum: " + randomValue);
-        if (randomValue != PieceType.PAWN){
-            gamePanel.selectPiece(randomValue);
-        } else {
-            gamePanel.selectPiece(PieceType.ROOK);
-        }
+        gamePanel.selectPiece(randomValue);
+        swapCounter = 0;
+        attackCoolDownCounter = 0;
+        hasAttacked = false;
     }
 
     private void prepareForcedSwap(){
@@ -268,29 +266,10 @@ public class Player extends AnimateObject{
         switch (gamePanel.selectedPieceType) {
             // Add new characters here
             case ROOK   -> gamePanel.entityManager.spawnCannonBall();
-            //case KNIGHT -> knightAttack();
-            case KNIGHT   -> gamePanel.entityManager.spawnCannonBall();
+            case KNIGHT -> gamePanel.entityManager.spawnKnightParticles();
             case BISHOP -> gamePanel.entityManager.spawnCannonBall();
             case KING   -> gamePanel.entityManager.spawnCannonBall();
             case QUEEN  -> gamePanel.entityManager.spawnQueenParticles();
         }
-    }
-
-    void knightAttack(){
-        switch(facingDirection){
-            case "up" -> {
-                y -= gamePanel.pieceHeight * 2;
-            }
-            case "down" -> {
-                y += gamePanel.pieceHeight * 2;
-            }
-            case "left" -> {
-                x -= gamePanel.pieceWidth * 2;
-            }
-            case "right" -> {
-                x += gamePanel.pieceWidth * 2;
-            }
-        }
-        gamePanel.entityManager.spawnKnightParticles();
     }
 }

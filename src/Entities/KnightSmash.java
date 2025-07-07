@@ -15,14 +15,6 @@ public class KnightSmash extends Projectile {
     // Moves the ball
     public void moveProjectile(int speed) {
         int spreadSpeed = speed/4;
-        /*
-        switch (direction) {
-            case "up" -> y -= speed;
-            case "down" -> y += speed;
-            case "right" -> x += speed;
-            case "left" -> x -= speed;
-        }
-        */
         x -= spreadSpeed/2;
         y -= spreadSpeed/2;
 
