@@ -15,6 +15,9 @@ public class SoundManager {
     public Clip smashClip;
     public Clip deathClip;
     public Clip swapClip;
+    public Clip buttonHoverClip;
+    public Clip buttonClickClip;
+
     public Clip menuTheme;
     public Clip mainTheme;
 
@@ -62,6 +65,8 @@ public class SoundManager {
         swapClip  = loadClip("res/swap2.wav");
         menuTheme = loadClip("res/menuTheme.wav");
         mainTheme = loadClip("res/mainTheme3.wav");
+        buttonHoverClip = loadClip("res/buttonHover.wav");
+        buttonClickClip = loadClip("res/buttonClick.wav");
     }
 
     private Clip loadClip(String path) {

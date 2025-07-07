@@ -12,14 +12,18 @@ import java.io.File;
 import java.io.IOException;
 
 public class MenuPanel extends JPanel {
+    MenuKeyHandler keyHandler = new MenuKeyHandler(this);
     SoundManager soundManager = new SoundManager(this);
     BufferedImage backgroundImg;
+
+    private int buttonIndexX = 0;
+    private int buttonIndexY = 0;
     // Window size
     public MenuPanel() {
         setPreferredSize(new Dimension(Main.WIDTH, Main.HEIGHT));
         setFocusable(true);
         requestFocusInWindow();
-        //addKeyListener(keyHandler);
+        addKeyListener(keyHandler);
 
         this.loadImages();
         this.loadFonts();
@@ -31,7 +35,68 @@ public class MenuPanel extends JPanel {
     }
 
     private void update(){
+        updateMenuState();
         repaint();
+    }
+
+    private boolean hoveringPlay = false;
+    private boolean hoveringShop = false;
+    private boolean hoveringQuit = false;
+
+    private void updateMenuState(){
+        // Pressing a key increments or decrements index
+
+        if (keyHandler.goingRight){
+            keyHandler.goingRight = false;
+            soundManager.playClip(soundManager.buttonHoverClip);
+            buttonIndexX++;
+        } else if (keyHandler.goingLeft){
+            keyHandler.goingLeft = false;
+            soundManager.playClip(soundManager.buttonHoverClip);
+            buttonIndexX--;
+        }
+        if (keyHandler.goingUp){
+            keyHandler.goingUp = false;
+            soundManager.playClip(soundManager.buttonHoverClip);
+            buttonIndexY--;
+        } else if (keyHandler.goingDown){
+            keyHandler.goingDown = false;
+            soundManager.playClip(soundManager.buttonHoverClip);
+            buttonIndexY++;
+        }
+
+        // Enter performs action on the button
+        if (keyHandler.enterPressed){
+            soundManager.playClip(soundManager.buttonClickClip);
+            if (buttonIndexX == 0){
+                System.out.println("Shop");
+            }
+            else if (buttonIndexX == 1){
+                System.out.println("Play");
+            }
+            else if (buttonIndexX == 2){
+                System.out.println("Quit");
+            }
+        }
+
+        // Hover effect
+        resetButtons(); // Resets hover effect
+        // Color buttons correctly
+        if (buttonIndexX % 3 == 0){
+           hoveringShop = true;
+        }
+        if (buttonIndexX % 3 == 1){
+            hoveringPlay = true;
+        }
+        if (buttonIndexX % 3 == 2){
+            hoveringQuit = true;
+        }
+    }
+
+    private void resetButtons(){
+        hoveringShop = false;
+        hoveringPlay = false;
+        hoveringQuit = false;
     }
 
     private void loadImages() {
@@ -82,10 +147,29 @@ public class MenuPanel extends JPanel {
         g2d.fillRect(650, 15, Main.WIDTH - 1300, 210);
 
 
-        g2d.setColor(Color.WHITE);
+        if(hoveringPlay){
+            g2d.setColor(Color.YELLOW);
+        } else {
+            g2d.setColor(Color.WHITE);
+        }
         drawText(g2d,0,0, "Play");
+
+        if(hoveringShop){
+            g2d.setColor(Color.YELLOW);
+        } else {
+            g2d.setColor(Color.WHITE);
+        }
         drawText(g2d,300,0, "Shop");
+
+        if(hoveringQuit){
+            g2d.setColor(Color.YELLOW);
+        } else {
+            g2d.setColor(Color.WHITE);
+        }
         drawText(g2d,Main.WIDTH/2 + 400,0, "Quit");
+
+
+        g2d.setColor(Color.WHITE);
         drawText(g2d,0,120, "Chess");
         drawText(g2d,0,220, "Defense");
 
