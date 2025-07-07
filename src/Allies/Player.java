@@ -13,7 +13,7 @@ public class Player extends AnimateObject{
     CollisionHandler collisionHandler;
     public boolean isInvulnerable;
     private int invulnerableCounter;
-    final int BASE_MOVE_SPEED = 8;
+    final int BASE_MOVE_SPEED = 6;
     public final int DASH_SPEED = 16;
     public final int LEAP_SPEED = 8;
     public boolean queenDashing = false;
@@ -26,8 +26,8 @@ public class Player extends AnimateObject{
 
     private boolean hasAttacked = false;
     private int attackCoolDownCounter = 0;
-    private int targetX;
-    private int targetY;
+    public int targetX;
+    public int targetY;
     private boolean isMoving = false;
 
 
@@ -87,7 +87,6 @@ public class Player extends AnimateObject{
 
 
     private void movement() {
-        System.out.println(targetX + " " + targetY);
         if (!isMoving) {
             analyzeInput();
         }
@@ -96,46 +95,35 @@ public class Player extends AnimateObject{
             isMoving = false;
         } else {
             isMoving = true;
-            if (facingDirection == "up") {
-                y -= speed;
-            }
-            if (facingDirection == "down") {
-                y += speed;
-            }
-            if (facingDirection == "left") {
-                x -= speed;
-            }
-            if (facingDirection == "right") {
-                x += speed;
-            }
+
+            if (y < targetY) y = Math.min(y + speed, targetY);
+            if (y > targetY) y = Math.max(y - speed, targetY);
+            if (x < targetX) x = Math.min(x + speed, targetX);
+            if (x > targetX) x = Math.max(x - speed, targetX);
         }
     }
-    private void analyzeInput(){
-        if (keyHandler.goingUp) {
-            facingDirection = "up";
-            if (notReachedBorder()) {
-                targetY-= gamePanel.PIECE_HEIGHT;
-            }
+    private void analyzeInput() {
+        int deltaX = 0;
+        int deltaY = 0;
+        // Prioritize diagonal movement
+        if (keyHandler.goingUp) deltaY -= gamePanel.PIECE_HEIGHT;
+        if (keyHandler.goingDown) deltaY += gamePanel.PIECE_HEIGHT;
+        if (keyHandler.goingLeft) deltaX -= gamePanel.PIECE_HEIGHT;
+        if (keyHandler.goingRight) deltaX += gamePanel.PIECE_HEIGHT;
+
+        if ((deltaX != 0 || deltaY != 0) && notReachedBorder()) {
+            targetX += deltaX;
+            targetY += deltaY;
+            isMoving = true;
         }
-        if (keyHandler.goingDown) {
-            facingDirection = "down";
-            if (notReachedBorder()) {
-                targetY+= gamePanel.PIECE_HEIGHT;
-            }
-        }
-        if (keyHandler.goingLeft) {
-            facingDirection = "left";
-            if (notReachedBorder()) {
-                x -= speed;
-                targetX -= gamePanel.PIECE_HEIGHT;
-            }
-        }
-        if (keyHandler.goingRight) {
-            facingDirection = "right";
-            if (notReachedBorder()) {
-                targetX += gamePanel.PIECE_HEIGHT;
-            }
-        }
+
+        // Set facing direction based on input (last key pressed takes priority)
+        if (deltaY < 0) facingDirection = "up";
+        else if (deltaY > 0) facingDirection = "down";
+        if (deltaX < 0) facingDirection = "left";
+        else if (deltaX > 0) facingDirection = "right";
+
+        // Handle attack input
         if (keyHandler.spacePressed) {
             keyHandler.spacePressed = false;
             if (!hasAttacked) {

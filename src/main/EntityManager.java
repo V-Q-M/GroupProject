@@ -37,10 +37,16 @@ public class EntityManager {
     }
     public void spawnQueenParticles() {
         if (gamePanel.queenImage != null) {
-            int size = 140; // size of the cannonball
+            int size = 132; // size of the cannonball
             player.speed = player.DASH_SPEED;
             player.queenDashing = true;
             player.isInvulnerable = true;
+            switch(player.facingDirection){
+                case "up" -> player.targetY -= gamePanel.PIECE_HEIGHT * 3;
+                case "down" -> player.targetY += gamePanel.PIECE_HEIGHT * 3;
+                case "left" -> player.targetX -= gamePanel.PIECE_HEIGHT * 3;
+                case "right" -> player.targetX += gamePanel.PIECE_HEIGHT * 3;
+            }
 
             // spawn at top‐center of the rook
             int bx = player.x + (gamePanel.pieceWidth  - size) / 2;

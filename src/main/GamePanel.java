@@ -10,6 +10,7 @@ import java.util.List;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
+import Allies.AllyPawn;
 import enemies.Enemy;
 import entities.CannonBall;
 import Allies.Player;
@@ -60,6 +61,8 @@ public class GamePanel extends JPanel{
   public final List<Projectile> projectiles = new ArrayList<>();
   // carries enemies
   public final List<Enemy>  enemies = new ArrayList<>();
+  // carries wall
+  public final List<Enemy> allies = new ArrayList<>();
 
   // Gamelogic here
   boolean gameStart = true;
@@ -90,12 +93,22 @@ public class GamePanel extends JPanel{
     this.loadFonts();
     soundManager.loadSounds();
     soundManager.startMusic();
+
+    buildWall();
+
     // Default piece
     selectPiece(PieceType.KNIGHT);
     // Refreshrate. Might have to improve that
     new Timer(16, e -> update()).start(); // ~60 FPS
-                                          //
   }
+
+  private void buildWall(){
+    for (int i = 0; i < 8; i++){
+      allies.add(new AllyPawn(this, soundManager, collisionHandler, 0, i * PIECE_HEIGHT, PIECE_HEIGHT, PIECE_HEIGHT));
+    }
+  }
+
+
 
   // Image loader. Very simple. Might expand to ImageAtlas
   private void loadImages() {
@@ -255,6 +268,7 @@ public class GamePanel extends JPanel{
 
     drawBackground(g2d);
     drawPlayer(g2d);
+    drawAllies(g2d);
     drawEnemies(g2d);
     drawEntities(g2d);
     drawHealthBars(g2d);
@@ -292,6 +306,18 @@ public class GamePanel extends JPanel{
       if (DEBUG_MODE) {
         g2d.setColor(Color.red);
         g2d.drawRect(player.x , player.y, pieceWidth, pieceHeight);
+      }
+    }
+  }
+
+  private void drawAllies(Graphics2D g2d){
+    for (Enemy ally : allies) {
+      if (!ally.isDead) {
+        g2d.drawImage(ally.skin, ally.x, ally.y, ally.width, ally.height, this);
+        if (DEBUG_MODE){
+          g2d.setColor(Color.red);
+          g2d.drawRect(ally.x, ally.y, ally.width, ally.height);
+        }
       }
     }
   }

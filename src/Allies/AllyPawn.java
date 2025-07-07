@@ -1,4 +1,40 @@
 package Allies;
 
-public class AllyPawn {
+import enemies.Enemy;
+import main.CollisionHandler;
+import main.GamePanel;
+import main.Main;
+import main.SoundManager;
+
+public class AllyPawn extends Enemy {
+
+    boolean canMove = false;
+
+    public AllyPawn(GamePanel gamePanel, SoundManager soundManager, CollisionHandler collisionHandler, int x, int y, int width, int height) {
+        super(gamePanel, soundManager, collisionHandler, x, y, width, height);
+        this.damage = 10;
+        this.speed = 3;
+        this.health = 100;
+        this.skin = gamePanel.pawnImage;
+        this.attackCoolDown = 80;
+    }
+
+
+    @Override
+    public void move(){
+        if (canMove) {
+            if (x < 0) {
+                health = 0;
+                gamePanel.castleHealth -= damage / 3;
+            } else {
+                x -= speed;
+            }
+
+            if (y < 132) {
+                y += speed;
+            } else if (y > Main.HEIGHT - height - 132) {
+                y -= speed;
+            }
+        }
+    }
 }
