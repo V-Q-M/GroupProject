@@ -1,5 +1,5 @@
 package main;
-import Allies.AllyPawn;
+import Allies.Ally;
 import enemies.Enemy;
 import entities.Projectile;
 import Allies.Player;
@@ -41,7 +41,7 @@ public class CollisionHandler {
             player.y + gamePanel.pieceHeight > enemy.y &&
             player.y < enemy.y + enemy.height;
     }
-    public boolean allyCollision(Enemy enemy, Enemy pawn){
+    public boolean allyCollision(Enemy enemy, Ally pawn){
         return pawn.x + pawn.width > enemy.x &&
             pawn.x < enemy.x + enemy.width &&
             pawn.y + pawn.height > enemy.y &&

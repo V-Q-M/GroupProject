@@ -10,9 +10,9 @@ import java.util.List;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
+import Allies.Ally;
 import Allies.AllyPawn;
 import enemies.Enemy;
-import entities.CannonBall;
 import Allies.Player;
 import entities.Projectile;
 
@@ -62,7 +62,7 @@ public class GamePanel extends JPanel{
   // carries enemies
   public final List<Enemy>  enemies = new ArrayList<>();
   // carries wall
-  public final List<Enemy> allies = new ArrayList<>();
+  public final List<Ally> allies = new ArrayList<>();
 
   // Gamelogic here
   boolean gameStart = true;
@@ -201,7 +201,7 @@ public class GamePanel extends JPanel{
         }
       }
 
-      for (Enemy ally : allies){
+      for (Ally ally : allies){
         if (!ally.isDead){
           ally.update();
         }
@@ -317,7 +317,7 @@ public class GamePanel extends JPanel{
   }
 
   private void drawAllies(Graphics2D g2d){
-    for (Enemy ally : allies) {
+    for (Ally ally : allies) {
       if (!ally.isDead) {
         g2d.drawImage(ally.skin, ally.x, ally.y, ally.width, ally.height, this);
         if (DEBUG_MODE){

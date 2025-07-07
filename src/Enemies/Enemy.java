@@ -1,7 +1,6 @@
 package enemies;
 
-import Allies.AllyPawn;
-import entities.CannonBall;
+import Allies.Ally;
 import entities.Projectile;
 import main.*;
 
@@ -124,7 +123,7 @@ public class Enemy extends AnimateObject {
         }
     }
      void checkPawnWallCollision(){
-        for (Enemy pawn : gamePanel.allies){
+        for (Ally pawn : gamePanel.allies){
             if (!pawn.isDead && collisionHandler.allyCollision(this, pawn)) {
                 health = 0;
                 pawn.health = 0;
