@@ -18,7 +18,7 @@ import entities.Projectile;
 
 public class GamePanel extends JPanel{
 
-  private boolean DEBUG_MODE = true;
+  private boolean DEBUG_MODE = false;
 
   // Textures of the pieces
   public BufferedImage rookImage;

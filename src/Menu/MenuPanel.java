@@ -67,12 +67,14 @@ public class MenuPanel extends JPanel {
 
         // Enter performs action on the button
         if (keyHandler.enterPressed){
+            keyHandler.enterPressed = false;
             soundManager.playClip(soundManager.buttonClickClip);
             if (buttonIndexX == 0){
                 System.out.println("Shop");
             }
             else if (buttonIndexX == 1){
                 System.out.println("Play");
+                Main.startMainGame(this);
             }
             else if (buttonIndexX == 2){
                 System.out.println("Quit");

@@ -10,10 +10,12 @@ public class Main{
 
     public static final int HEIGHT = 1080;
 
+
+    private static JFrame frame = new JFrame("Chess Defense");
+
     public static void openWindow() {
         // Create a new JFrame (window)
-        JFrame frame = new JFrame("Chess Defense");
-        
+
         // Set default close operation so the app exits when window is closed
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         // Remove window decorations
@@ -32,6 +34,12 @@ public class Main{
         
         // Make the window visible
         frame.setVisible(true);
+
+    }
+    public static void startMainGame(MenuPanel menuPanel){
+        frame.add(new GamePanel());
+        frame.remove(menuPanel);
+        frame.pack();
 
     }
 
