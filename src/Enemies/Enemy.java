@@ -43,7 +43,7 @@ public class Enemy extends AnimateObject {
             x -= speed;
         }
 
-        if (y < 100){
+        if (y < 128){
             y += speed;
         } else if (y > Main.HEIGHT - height - 100){
             y -= speed;
