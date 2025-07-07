@@ -54,16 +54,16 @@ public class KeyHandler implements KeyListener {
             }
         } else {
             switch (key) {
-                case KeyEvent.VK_W -> {
+                case KeyEvent.VK_W, KeyEvent.VK_UP, KeyEvent.VK_K -> {
                     goingUp = true;
                 }
-                case KeyEvent.VK_S -> {
+                case KeyEvent.VK_S, KeyEvent.VK_DOWN, KeyEvent.VK_J -> {
                     goingDown = true;
                 }
-                case KeyEvent.VK_A -> {
+                case KeyEvent.VK_A, KeyEvent.VK_LEFT, KeyEvent.VK_H -> {
                     goingLeft = true;
                 }
-                case KeyEvent.VK_D -> {
+                case KeyEvent.VK_D, KeyEvent.VK_RIGHT, KeyEvent.VK_L -> {
                     goingRight = true;
                 }
                 //case KeyEvent.VK_SPACE -> gamePanel.performAttack();
