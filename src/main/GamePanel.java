@@ -94,7 +94,7 @@ public class GamePanel extends JPanel{
     this.loadImages();
     this.loadFonts();
     soundManager.loadSounds();
-    //soundManager.startMusic();
+    soundManager.startMusic();
 
     buildWall();
 

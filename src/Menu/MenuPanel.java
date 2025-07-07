@@ -78,6 +78,7 @@ public class MenuPanel extends JPanel {
                     shopMode = true;
                 } else if (buttonIndexX % 3 == 1) {
                     System.out.println("Play");
+                    soundManager.stopMusic();
                     Main.startMainGame(this);
                 } else if (buttonIndexX % 3 == 2) {
                     System.out.println("Quit");

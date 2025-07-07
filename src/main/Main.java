@@ -39,7 +39,8 @@ public class Main{
     public static void startMainGame(MenuPanel menuPanel){
         frame.add(new GamePanel());
         frame.remove(menuPanel);
-        frame.pack();
+        frame.revalidate();
+        frame.repaint();
     }
 
     public static void main(String[] args) {
