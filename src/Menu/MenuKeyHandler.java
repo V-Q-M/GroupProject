@@ -21,25 +21,25 @@ public class MenuKeyHandler implements KeyListener {
     public void keyPressed(KeyEvent e) {
         int key = e.getKeyCode();
             switch (key) {
-                case KeyEvent.VK_W -> {
+                case KeyEvent.VK_W, KeyEvent.VK_UP, KeyEvent.VK_K -> {
                     goingUp = true;
                     goingRight = false;
                     goingLeft = false;
                     goingDown = false;
                 }
-                case KeyEvent.VK_S -> {
+                case KeyEvent.VK_S, KeyEvent.VK_DOWN, KeyEvent.VK_J -> {
                     goingDown = true;
                     goingRight = false;
                     goingLeft = false;
                     goingUp = false;
                 }
-                case KeyEvent.VK_A -> {
+                case KeyEvent.VK_A, KeyEvent.VK_LEFT, KeyEvent.VK_H -> {
                     goingLeft = true;
                     goingDown = false;
                     goingRight = false;
                     goingUp = false;
                 }
-                case KeyEvent.VK_D -> {
+                case KeyEvent.VK_D, KeyEvent.VK_RIGHT, KeyEvent.VK_L -> {
                     goingRight = true;
                     goingDown = false;
                     goingLeft = false;

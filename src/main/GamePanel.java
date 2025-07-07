@@ -419,8 +419,49 @@ public class GamePanel extends JPanel{
       drawText(g2d, "Swapping soon!");
     }
 
-    g2d.setColor(Color.GRAY);
-    g2d.fillRect(0, Main.HEIGHT - 100, Main.WIDTH, 100);
+    drawAbilityBar(g2d);
+  }
+
+  void drawAbilityBar(Graphics2D g2d){
+    // A bit of a dumb solution. If the piece is dead it gets drawn beneath the bar
+    // making it appear greyed out. If its alive its drawn above the bar, looking active
+    int xPos = 666;
+    int yPos = Main.HEIGHT - 132;
+
+    if (!player.rookAlive){
+      g2d.drawImage(rookImage, xPos, yPos, 100, 100, this);
+    }
+    if (!player.knightAlive){
+      g2d.drawImage(knightImage, xPos + 132, yPos, 100, 100, this);
+    }
+    if (!player.kingAlive){
+      g2d.drawImage(kingImage, xPos + 264, yPos, 100, 100, this);
+    }
+    if (!player.queenAlive){
+      g2d.drawImage(queenImage, xPos + 402, yPos, 100, 100, this);
+    }
+    if (!player.queenAlive){
+      g2d.drawImage(bishopImage, xPos + 534, yPos, 100, 100, this);
+    }
+
+    g2d.setColor(new Color(50,50,50,200));
+    g2d.fillRect(xPos, yPos, Main.WIDTH - 1290, 100);
+
+    if (player.rookAlive){
+      g2d.drawImage(rookImage, xPos, yPos, 100, 100, this);
+    }
+    if (player.knightAlive){
+      g2d.drawImage(knightImage, xPos + 132, yPos, 100, 100, this);
+    }
+    if (player.kingAlive){
+      g2d.drawImage(kingImage, xPos + 264, yPos, 100, 100, this);
+    }
+    if (player.queenAlive){
+      g2d.drawImage(queenImage, xPos + 402, yPos, 100, 100, this);
+    }
+    if (player.queenAlive){
+      g2d.drawImage(bishopImage, xPos + 534, yPos, 100, 100, this);
+    }
   }
 
   void drawText(Graphics2D g2d, String text){

@@ -224,15 +224,6 @@ public class MenuPanel extends JPanel {
 
     }
 
-    private void drawButton(Graphics2D g2d){
-
-    }
-
-    private void drawLabel(Graphics2D g2d){
-
-    }
-
-
     void drawText(Graphics2D g2d, int x, int y, String text){
         // Get font metrics for positioning
         FontMetrics fm = g2d.getFontMetrics();

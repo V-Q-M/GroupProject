@@ -31,8 +31,8 @@ public class CollisionHandler {
     public boolean projectileCollision(Enemy enemy, Projectile projectile) {
         return projectile.x + projectile.width > enemy.x &&
             projectile.x < enemy.x + enemy.width &&
-            projectile.y + projectile.height > enemy.y &&
-            projectile.y < enemy.y + enemy.height;
+            projectile.y + projectile.height > enemy.y + 10 &&
+            projectile.y < enemy.y + enemy.height - 10;
     }
 
     public boolean enemyCollision(Enemy enemy, Player player){
@@ -44,7 +44,7 @@ public class CollisionHandler {
     public boolean allyCollision(Enemy enemy, Ally pawn){
         return pawn.x + pawn.width > enemy.x &&
             pawn.x < enemy.x + enemy.width &&
-            pawn.y + pawn.height > enemy.y &&
-            pawn.y < enemy.y + enemy.height;
+            pawn.y + pawn.height > enemy.y + 10 &&
+            pawn.y < enemy.y + enemy.height - 10;
     }
 }
