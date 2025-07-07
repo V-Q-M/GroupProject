@@ -3,6 +3,8 @@ package Allies;
 import enemies.Enemy;
 import main.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class Player extends AnimateObject{
@@ -23,6 +25,12 @@ public class Player extends AnimateObject{
     private int queenDashingCounter = 0;
 
     public int health = 100;
+
+    public boolean rookAlive = true;
+    public boolean bishopAlive = true;
+    public boolean knightAlive = true;
+    public boolean queenAlive = true;
+    public boolean kingAlive = true;
 
     // Base health constants
     public static final int ROOK_BASE_HEALTH = 20;
@@ -50,6 +58,14 @@ public class Player extends AnimateObject{
     public int targetY;
     private boolean isMoving = false;
 
+    Random random = new Random();
+    ArrayList<PieceType> availablePieces = new ArrayList<>(List.of(
+            PieceType.ROOK,
+            PieceType.KNIGHT,
+            PieceType.BISHOP,
+            PieceType.QUEEN,
+            PieceType.KING
+    ));
 
     public Player(GamePanel gamePanel, KeyHandler keyHandler, SoundManager soundManager,  CollisionHandler collisionHandler, int startPositionX, int startPositionY){
         this.gamePanel = gamePanel;
@@ -69,20 +85,24 @@ public class Player extends AnimateObject{
         checkCollision();
         coolDowns();
         checkAlive();
-        forceSwap();
+        prepareForcedSwap();
     }
-    PieceType[] values = PieceType.values(); // Gets an array of enum constants
-    Random random = new Random();
+
     private void forceSwap(){
+        int index = random.nextInt(availablePieces.size()); // Pick a random index
+        //PieceType randomValue = values[index]; // Access by index
+        PieceType randomValue = availablePieces.get(index); // Access by index
+        System.out.println("Random Enum: " + randomValue);
+        if (randomValue != PieceType.PAWN){
+            gamePanel.selectPiece(randomValue);
+        } else {
+            gamePanel.selectPiece(PieceType.ROOK);
+        }
+    }
+
+    private void prepareForcedSwap(){
         if (swapCounter >= 600) {
-            int index = random.nextInt(values.length); // Pick a random index
-            PieceType randomValue = values[index]; // Access by index
-            System.out.println("Random Enum: " + randomValue);
-            if (randomValue != PieceType.PAWN){
-                gamePanel.selectPiece(randomValue);
-            } else {
-                gamePanel.selectPiece(PieceType.ROOK);
-            }
+            forceSwap();
         } else if (swapCounter >= 570){
             gamePanel.swapSoon = false;
             swapCounter++;
@@ -100,11 +120,10 @@ public class Player extends AnimateObject{
         }
     }
 
+
     private boolean notReachedBorder(){
         return !collisionHandler.borderCollision(x, y, gamePanel.pieceWidth, gamePanel.pieceHeight, speed, facingDirection);
     }
-
-
 
     private void movement() {
         if (!isMoving) {
@@ -190,8 +209,6 @@ public class Player extends AnimateObject{
         }
     }
 
-
-
     private void takeDamage(int damageAmount){
         switch(gamePanel.selectedPieceType){
             case ROOK -> rookHealth -= damageAmount;
@@ -203,12 +220,6 @@ public class Player extends AnimateObject{
         }
     }
 
-    private boolean rookAlive = true;
-    private boolean bishopAlive = true;
-    private boolean knightAlive = true;
-    private boolean queenAlive = true;
-    private boolean kingAlive = true;
-
 
     private void checkAlive(){
         if (health <= 0){
@@ -219,20 +230,34 @@ public class Player extends AnimateObject{
 
         if (rookHealth <= 0 && rookAlive){
             rookAlive = false;
-            health -= 25; }
+            availablePieces.remove(PieceType.ROOK);
+            forceSwap();
+            health -= 25;
+        }
         if (knightHealth <= 0 && knightAlive){
             knightAlive = false;
-            health -= 25; }
+            availablePieces.remove(PieceType.KNIGHT);
+            forceSwap();
+            health -= 25;
+        }
         if (bishopHealth <= 0 && bishopAlive){
             bishopAlive = false;
-            health -= 25; }
+            availablePieces.remove(PieceType.BISHOP);
+            forceSwap();
+            health -= 25;
+        }
         if (queenHealth <= 0 && queenAlive){
             queenAlive = false;
-            health -= 25; }
+            availablePieces.remove(PieceType.QUEEN);
+            forceSwap();
+            health -= 25;
+        }
         // specialcase - king dead
         if (kingHealth <= 0 && kingAlive){
             kingAlive = false;
-            health = 0; }
+            availablePieces.remove(PieceType.KING);
+            health = 0;
+        }
     }
 
     void performAttack() {

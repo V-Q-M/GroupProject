@@ -8,6 +8,7 @@ public class Enemy extends AnimateObject {
     final int DEFAULT_CANNON_BALL_DMG = 35;
     final int DEFAULT_SLICE_DMG= 50;
     final int DEFAULT_SLAM_DMG= 100;
+    public int maxHealth = 100; // need to pass it in constructor soon
 
 
     public Enemy(GamePanel gamePanel, SoundManager soundManager, CollisionHandler collisionHandler, int x, int y, int width, int height) {
@@ -35,7 +36,7 @@ public class Enemy extends AnimateObject {
     }
 
 
-    void move(){
+    public void move(){
         if (x < 0){
             health = 0;
             gamePanel.castleHealth -= damage / 3;
