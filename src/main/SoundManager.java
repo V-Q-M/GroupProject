@@ -3,10 +3,11 @@ package main;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
+import javax.swing.*;
 import java.io.File;
 
 public class SoundManager {
-    GamePanel gamePanel;
+    JPanel gamePanel;
 
     public Clip shootClip;
     public Clip sliceClip;
@@ -17,7 +18,7 @@ public class SoundManager {
     public Clip menuTheme;
     public Clip mainTheme;
 
-    public SoundManager(GamePanel gamePanel){
+    public SoundManager(JPanel gamePanel){
         this.gamePanel = gamePanel;
     }
 
@@ -37,13 +38,22 @@ public class SoundManager {
        mainTheme.start();
     }
 
+    public void startMenuMusic(){
+        if(menuTheme == null) return;
+        if (menuTheme.isRunning()) menuTheme.stop();
+        if (mainTheme.isRunning()) mainTheme.stop();
+        menuTheme.setFramePosition(0);
+        menuTheme.loop(Clip.LOOP_CONTINUOUSLY);
+        menuTheme.start();
+    }
+
     public void stopMusic(){
         if (mainTheme == null) return;
         if (menuTheme.isRunning()) menuTheme.stop();
         if (mainTheme.isRunning()) mainTheme.stop();
     }
 
-    protected void loadSounds() {
+    public void loadSounds() {
         shootClip = loadClip("res/shoot.wav");
         sliceClip = loadClip("res/slice1.wav");
         hitClip   = loadClip("res/hit.wav");

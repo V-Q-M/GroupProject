@@ -1,5 +1,7 @@
 package main;
 
+import Menu.MenuPanel;
+
 import javax.swing.JFrame;
 
 public class Main{
@@ -17,10 +19,10 @@ public class Main{
         // Remove window decorations
         frame.setUndecorated(true);
 
-        // Create main.GamePanel instance
-        GamePanel gamePanel = new GamePanel();
+        // Create main.MenuPanel instance
+        //frame.add(new GamePanel());
+        frame.add(new MenuPanel());
 
-        frame.add(gamePanel);
         frame.pack();
 
         // Set the window size (width, height)

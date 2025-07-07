@@ -93,7 +93,7 @@ public class GamePanel extends JPanel{
     this.loadImages();
     this.loadFonts();
     soundManager.loadSounds();
-    soundManager.startMusic();
+    //soundManager.startMusic();
 
     buildWall();
 
@@ -413,6 +413,9 @@ public class GamePanel extends JPanel{
       g2d.setColor(Color.YELLOW);
       drawText(g2d, "Swapping soon!");
     }
+
+    g2d.setColor(Color.GRAY);
+    g2d.fillRect(0, Main.HEIGHT - 100, Main.WIDTH, 100);
   }
 
   void drawText(Graphics2D g2d, String text){
