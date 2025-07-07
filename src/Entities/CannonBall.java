@@ -15,10 +15,11 @@ public class CannonBall extends Projectile {
   // Moves the ball
   public void moveProjectile(int speed) {
     switch (direction) {
-    case "up" -> y -= speed;
-    case "down" -> y += speed;
-    case "right" -> x += speed;
-    case "left" -> x -= speed;
+      case "up" -> y -= speed;
+      case "down" -> y += speed;
+      case "right" -> x += speed;
+      case "left" -> x -= speed;
+      default -> x += speed;
     }
   }
 }
