@@ -75,7 +75,7 @@ public class GamePanel extends JPanel{
   CollisionHandler collisionHandler = new CollisionHandler(this);
   SoundManager soundManager = new SoundManager(this);
 
-  int startX = 0;
+  int startX = PIECE_HEIGHT;
   int startY = PIECE_HEIGHT*4;
 
   Player player = new Player(this, keyHandler, soundManager, collisionHandler, startX, startY);

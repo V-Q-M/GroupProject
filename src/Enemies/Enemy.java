@@ -35,7 +35,7 @@ public class Enemy extends AnimateObject {
     }
 
 
-    private void move(){
+    void move(){
         if (x < 0){
             health = 0;
             gamePanel.castleHealth -= damage / 3;
@@ -43,10 +43,10 @@ public class Enemy extends AnimateObject {
             x -= speed;
         }
 
-        if (y < 128){
+        if (y < 0){
             y += speed;
-        } else if (y > Main.HEIGHT - height - 100){
-            y -= speed;
+        } else if (y > 8 * gamePanel.PIECE_HEIGHT){
+            y = 8 * gamePanel.PIECE_HEIGHT;
         }
     }
 
