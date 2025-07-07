@@ -56,7 +56,7 @@ public class GamePanel extends JPanel{
   final int SCALE = 8;
 
   // List to track cannon balls
-  public final List<CannonBall> balls = new ArrayList<>();
+  public final List<Projectile> balls = new ArrayList<>();
   // carries particle effects
   public final List<Projectile> projectiles = new ArrayList<>();
   // carries enemies
@@ -97,7 +97,7 @@ public class GamePanel extends JPanel{
     buildWall();
 
     // Default piece
-    selectPiece(PieceType.KNIGHT);
+    selectPiece(PieceType.BISHOP);
     // Refreshrate. Might have to improve that
     new Timer(16, e -> update()).start(); // ~60 FPS
   }
@@ -200,6 +200,12 @@ public class GamePanel extends JPanel{
           enemy.update();
         }
       }
+
+      for (Enemy ally : allies){
+        if (!ally.isDead){
+          ally.update();
+        }
+      }
       enemyManager.updateSpawner();
       gameUpdate();
     }
@@ -242,7 +248,7 @@ public class GamePanel extends JPanel{
   private void entityUpdate(){
     // Update cannon balls
     balls.removeIf(ball -> {
-      ball.moveBall(ball.speed);
+      ball.moveProjectile(ball.speed);
       return ball.hasHit || ball.y + ball.height < 0
                          || ball.y - ball.height >= Main.HEIGHT
                          || ball.x + ball.width < 0
@@ -325,7 +331,7 @@ public class GamePanel extends JPanel{
   private void drawEntities(Graphics2D g2d){
     // Draw all cannon balls
     g2d.setColor(Color.WHITE);
-    for (CannonBall b : balls) {
+    for (Projectile b : balls) {
       g2d.fillRect(b.x, b.y, b.width, b.height);
       g2d.drawRect(b.x, b.y, b.width, b.height);
     }

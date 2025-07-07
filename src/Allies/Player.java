@@ -51,6 +51,8 @@ public class Player extends AnimateObject{
     public int swapCounter = 0;
 
     public String facingDirection = "down";
+    public String facingDirectionX = "right";
+    public String facingDirectionY = "down";
 
     private boolean hasAttacked = false;
     private int attackCoolDownCounter = 0;
@@ -125,7 +127,11 @@ public class Player extends AnimateObject{
 
     private void movement() {
         if (!isMoving) {
-            analyzeInput();
+            if (gamePanel.selectedPieceType == PieceType.BISHOP){
+                analyzeInputBishop();
+            } else {
+                analyzeInput();
+            }
         }
 
         if (x == targetX && y == targetY) {
@@ -154,11 +160,68 @@ public class Player extends AnimateObject{
             isMoving = true;
         }
 
+        System.out.println(deltaX);
         // Set facing direction based on input (last key pressed takes priority)
-        if (deltaY < 0) facingDirection = "up";
-        else if (deltaY > 0) facingDirection = "down";
-        if (deltaX < 0) facingDirection = "left";
-        else if (deltaX > 0) facingDirection = "right";
+        if (deltaY < 0) {
+            facingDirection = "up";
+        }
+        else if (deltaY > 0) {
+            facingDirection = "down";
+        }
+        if (deltaX < 0) {
+            facingDirection = "left";
+            facingDirectionX = "left";
+        }
+        else if (deltaX > 0) {
+            facingDirection = "right";
+            facingDirectionX = "right";
+        }
+
+        // Handle attack input
+        if (keyHandler.spacePressed) {
+            keyHandler.spacePressed = false;
+            if (!hasAttacked) {
+                performAttack();
+                hasAttacked = true;
+            }
+        }
+    }
+
+
+    private void analyzeInputBishop() {
+        int deltaX = 0;
+        int deltaY = 0;
+
+        boolean up = keyHandler.goingUp;
+        boolean down = keyHandler.goingDown;
+        boolean left = keyHandler.goingLeft;
+        boolean right = keyHandler.goingRight;
+
+        // Only allow diagonal movement (both one vertical and one horizontal key must be pressed)
+        if (up && left) {
+            deltaY -= gamePanel.PIECE_HEIGHT;
+            deltaX -= gamePanel.PIECE_HEIGHT;
+            facingDirection = "up-left";
+        } else if (up && right) {
+            deltaY -= gamePanel.PIECE_HEIGHT;
+            deltaX += gamePanel.PIECE_HEIGHT;
+            facingDirection = "up-right";
+        } else if (down && left) {
+            deltaY += gamePanel.PIECE_HEIGHT;
+            deltaX -= gamePanel.PIECE_HEIGHT;
+            facingDirection = "down-left";
+        } else if (down && right) {
+            deltaY += gamePanel.PIECE_HEIGHT;
+            deltaX += gamePanel.PIECE_HEIGHT;
+            facingDirection = "down-right";
+        }
+
+        // Only move if diagonal keys were pressed
+        if ((deltaX != 0 && deltaY != 0) && notReachedBorder()) {
+            targetX += deltaX;
+            targetY += deltaY;
+            isMoving = true;
+        }
 
         // Handle attack input
         if (keyHandler.spacePressed) {
@@ -267,7 +330,7 @@ public class Player extends AnimateObject{
             // Add new characters here
             case ROOK   -> gamePanel.entityManager.spawnCannonBall();
             case KNIGHT -> gamePanel.entityManager.spawnKnightParticles();
-            case BISHOP -> gamePanel.entityManager.spawnCannonBall();
+            case BISHOP -> gamePanel.entityManager.spawnLance();
             case KING   -> gamePanel.entityManager.spawnCannonBall();
             case QUEEN  -> gamePanel.entityManager.spawnQueenParticles();
         }

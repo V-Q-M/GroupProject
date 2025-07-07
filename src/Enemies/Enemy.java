@@ -1,5 +1,6 @@
 package enemies;
 
+import Allies.AllyPawn;
 import entities.CannonBall;
 import entities.Projectile;
 import main.*;
@@ -24,7 +25,8 @@ public class Enemy extends AnimateObject {
     public void update(){
         checkAlive();
         move();
-        checkCollision();
+        checkPlayerCollision();
+        checkPawnWallCollision();
         updateCooldowns();
     }
 
@@ -67,11 +69,11 @@ public class Enemy extends AnimateObject {
         }
     }
 
-    private void checkCollision(){
+    private void checkPlayerCollision(){
         if (!isInvulnerable) {
             switch(gamePanel.selectedPieceType){
                 case ROOK   -> {
-                    for (CannonBall ball : gamePanel.balls) {
+                    for (Projectile ball : gamePanel.balls) {
                         if (collisionHandler.projectileCollision(this, ball)) {
                             health -= DEFAULT_CANNON_BALL_DMG;
                             isInvulnerable = true;
@@ -90,7 +92,7 @@ public class Enemy extends AnimateObject {
                     }
                 }
                 case BISHOP -> {
-                    for (CannonBall ball : gamePanel.balls) {
+                    for (Projectile ball : gamePanel.balls) {
                         if (collisionHandler.projectileCollision(this, ball)) {
                             health -= DEFAULT_CANNON_BALL_DMG;
                             isInvulnerable = true;
@@ -109,7 +111,7 @@ public class Enemy extends AnimateObject {
                     }
                 }
                 case KING   -> {
-                    for (CannonBall ball : gamePanel.balls) {
+                    for (Projectile ball : gamePanel.balls) {
                         if (collisionHandler.projectileCollision(this, ball)) {
                             health -= DEFAULT_CANNON_BALL_DMG;
                             isInvulnerable = true;
@@ -118,6 +120,14 @@ public class Enemy extends AnimateObject {
                         }
                     }
                 }
+            }
+        }
+    }
+     void checkPawnWallCollision(){
+        for (Enemy pawn : gamePanel.allies){
+            if (!pawn.isDead && collisionHandler.allyCollision(this, pawn)) {
+                health = 0;
+                pawn.health = 0;
             }
         }
     }

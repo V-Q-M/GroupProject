@@ -1,7 +1,6 @@
 package entities;
 
 public class CannonBall extends Projectile {
-  public boolean hasHit = false;
 
   // Specialized constructor
   public CannonBall(int x, int y, int size, int speed, String direction) {
@@ -14,7 +13,7 @@ public class CannonBall extends Projectile {
   }
 
   // Moves the ball
-  public void moveBall(int speed) {
+  public void moveProjectile(int speed) {
     switch (direction) {
     case "up" -> y -= speed;
     case "down" -> y += speed;

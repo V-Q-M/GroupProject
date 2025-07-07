@@ -1,5 +1,6 @@
 package main;
 
+import entities.BishopLance;
 import entities.CannonBall;
 import entities.KnightSmash;
 import entities.QueenSlice;
@@ -30,7 +31,20 @@ public class EntityManager {
             int by = player.y + (gamePanel.pieceHeight - size) / 2;
             // Append balls to the list of balls
             //gamePanel.balls.add(new CannonBall(bx, by, size, DEFAULT_CANNONBALL_SPEED, player.facingDirection));
-            gamePanel.balls.add(new CannonBall(bx, by, size, DEFAULT_CANNONBALL_SPEED, "right"));
+            gamePanel.balls.add(new CannonBall(bx, by, size, DEFAULT_CANNONBALL_SPEED, player.facingDirection));
+            // this should move to a variable
+            soundManager.playClip(soundManager.shootClip);
+        }
+    }
+    public void spawnLance(){
+        if (gamePanel.bishopImage != null) {
+            int size = CANNON_BALL_SIZE; // size of the cannonball
+            // spawn at top‐center of the rook
+            int bx = player.x + (gamePanel.pieceWidth - size) / 2;
+            int by = player.y + (gamePanel.pieceHeight - size) / 2;
+            // Append balls to the list of balls
+            //gamePanel.balls.add(new CannonBall(bx, by, size, DEFAULT_CANNONBALL_SPEED, player.facingDirection));
+            gamePanel.balls.add(new BishopLance(bx, by, size, DEFAULT_CANNONBALL_SPEED, player.facingDirection));
             // this should move to a variable
             soundManager.playClip(soundManager.shootClip);
         }

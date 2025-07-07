@@ -23,18 +23,12 @@ public class AllyPawn extends Enemy {
     @Override
     public void move(){
         if (canMove) {
-            if (x < 0) {
-                health = 0;
-                gamePanel.castleHealth -= damage / 3;
-            } else {
-                x -= speed;
-            }
-
-            if (y < 132) {
-                y += speed;
-            } else if (y > Main.HEIGHT - height - 132) {
-                y -= speed;
-            }
+                x += speed;
         }
+    }
+
+    @Override
+    public void checkPawnWallCollision(){
+
     }
 }

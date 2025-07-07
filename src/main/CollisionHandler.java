@@ -1,4 +1,5 @@
 package main;
+import Allies.AllyPawn;
 import enemies.Enemy;
 import entities.Projectile;
 import Allies.Player;
@@ -24,40 +25,26 @@ public class CollisionHandler {
                 return (playerX + playerWidth + speed >= Main.WIDTH);
             }
         }
-
         return false;
     }
 
     public boolean projectileCollision(Enemy enemy, Projectile projectile) {
-        boolean returnValue = false;
-        if (gamePanel.selectedPieceType == PieceType.ROOK) {
-            int speed = projectile.speed;
-            if (projectile.x + projectile.width + speed > enemy.x &&
-                    projectile.x - speed < enemy.x + enemy.width &&
-                    projectile.y + projectile.height + speed > enemy.y &&
-                    projectile.y - speed < enemy.y + enemy.height) {
-                returnValue = true;
-            }
-        } else {
-            int speed = projectile.speed;
-            if (projectile.x + projectile.width + speed > enemy.x &&
-                    projectile.x - speed < enemy.x + enemy.width &&
-                    projectile.y + projectile.height + speed > enemy.y &&
-                    projectile.y - speed < enemy.y + enemy.height) {
-                returnValue = true;
-            }
-        }
-        return returnValue;
+        return projectile.x + projectile.width > enemy.x &&
+            projectile.x < enemy.x + enemy.width &&
+            projectile.y + projectile.height > enemy.y &&
+            projectile.y < enemy.y + enemy.height;
     }
 
     public boolean enemyCollision(Enemy enemy, Player player){
-        int speed = player.speed;
-        if (player.x + gamePanel.pieceWidth + speed > enemy.x &&
-                player.x - speed < enemy.x + enemy.width &&
-                player.y + gamePanel.pieceHeight + speed > enemy.y &&
-                player.y - speed < enemy.y + enemy.height) {
-            return true;
-        }
-        return false;
+        return player.x + gamePanel.pieceWidth > enemy.x &&
+            player.x < enemy.x + enemy.width &&
+            player.y + gamePanel.pieceHeight > enemy.y &&
+            player.y < enemy.y + enemy.height;
+    }
+    public boolean allyCollision(Enemy enemy, Enemy pawn){
+        return pawn.x + pawn.width > enemy.x &&
+            pawn.x < enemy.x + enemy.width &&
+            pawn.y + pawn.height > enemy.y &&
+            pawn.y < enemy.y + enemy.height;
     }
 }
