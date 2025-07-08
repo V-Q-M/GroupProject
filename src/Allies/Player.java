@@ -36,8 +36,8 @@ public class Player extends AnimateObject{
     public static final int ROOK_BASE_HEALTH = 25;
     public static final int KNIGHT_BASE_HEALTH = 30;
     public static final int BISHOP_BASE_HEALTH = 20;
-    public static final int QUEEN_BASE_HEALTH = 20;
-    public static final int KING_BASE_HEALTH = 50;
+    public static final int QUEEN_BASE_HEALTH = 50;
+    public static final int KING_BASE_HEALTH = 30;
     public static final int PAWN_BASE_HEALTH = 10;
 
     // Mutable health values
