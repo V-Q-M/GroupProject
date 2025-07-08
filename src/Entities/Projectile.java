@@ -1,5 +1,7 @@
 package entities;
 
+import java.awt.image.BufferedImage;
+
 public abstract class Projectile {
     public int x;
     public int y;

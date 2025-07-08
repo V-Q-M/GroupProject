@@ -430,11 +430,11 @@ public class GamePanel extends JPanel{
     drawAbilityBar(g2d);
     drawPauseMenu(g2d);
 
-    if (gameStart) {
+    if (gameStart && !gamePaused) {
       g2d.setColor(Color.WHITE);
       drawText(g2d,0,0, startMessage);
     }
-    if (swapSoon){
+    if (swapSoon && !gamePaused){
       g2d.setColor(Color.YELLOW);
       drawText(g2d,0,0, "Swapping soon!");
     }
@@ -458,20 +458,24 @@ public class GamePanel extends JPanel{
       } else {
         g2d.setColor(Color.WHITE);
       }
-      drawText(g2d, 0, 1000, "Resume");
+      drawText(g2d, 0, 600, "Resume");
       if(keyHandler.goingDown){
         keyHandler.goingDown = false;
+        soundManager.playClip(soundManager.buttonHoverClip);
         pauseMenuIndex++;
       } else if (keyHandler.goingUp){
         keyHandler.goingUp = false;
+        soundManager.playClip(soundManager.buttonHoverClip);
         pauseMenuIndex--;
       }
       if(keyHandler.enterPressed){
         keyHandler.enterPressed = false;
         if (pauseMenuIndex % 2 == 0){
+          soundManager.playClip(soundManager.buttonClickClip);
           soundManager.stopMusic();
           Main.returnToMenu(this);
         } else if (pauseMenuIndex % 2 == 1){
+          soundManager.playClip(soundManager.buttonClickClip);
           gamePaused = false;
         }
       }
