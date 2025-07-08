@@ -30,7 +30,7 @@ public class Enemy extends AnimateObject {
         updateCooldowns();
     }
 
-    private void checkAlive(){
+    void checkAlive(){
         if (health <= 0){
             this.isDead = true;
             soundManager.playClip(soundManager.deathClip);
@@ -53,7 +53,7 @@ public class Enemy extends AnimateObject {
         }
     }
 
-    private void updateCooldowns(){
+    void updateCooldowns(){
         if (isInvulnerable && invulnerableCounter<30){
             invulnerableCounter++;
         } else {
@@ -69,7 +69,7 @@ public class Enemy extends AnimateObject {
         }
     }
 
-    private void checkPlayerCollision(){
+    void checkPlayerCollision(){
         if (!isInvulnerable) {
             switch(gamePanel.selectedPieceType){
                 case ROOK   -> {
