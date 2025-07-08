@@ -35,6 +35,11 @@ public class GamePanel extends JPanel{
   public BufferedImage enemyKingImage;
   public BufferedImage enemyQueenImage;
   public BufferedImage enemyPawnImage;
+
+  public BufferedImage cannonBallImage;
+  public BufferedImage queenParticleImage;
+  public BufferedImage knightParticleImage;
+
   // uses the enum
   public PieceType selectedPieceType;
   public int pieceWidth;
@@ -128,6 +133,13 @@ public class GamePanel extends JPanel{
           ImageIO.read(new File("res/chess-pieces-png/color/white/queen.png"));
       pawnImage =
           ImageIO.read(new File("res/chess-pieces-png/color/white/pawn.png"));
+
+      cannonBallImage =
+              ImageIO.read(new File("res/cannonball2.png"));
+      queenParticleImage =
+              ImageIO.read(new File("res/queenParticles.png"));
+      knightParticleImage =
+              ImageIO.read(new File("res/knightParticles.png"));
       enemyRookImage=
               ImageIO.read(new File("res/chess-pieces-png/color/black/rook.png"));
       enemyKnightImage=
@@ -247,6 +259,7 @@ public class GamePanel extends JPanel{
     if (castleHealth <= 0){
       gameOver = true;
       castleHealth = 0;
+      swapSoon = false;
       soundManager.stopMusic();
     }
 
@@ -338,13 +351,16 @@ public class GamePanel extends JPanel{
     // Draw all cannon balls
     g2d.setColor(Color.WHITE);
     for (Projectile b : balls) {
-      g2d.fillRect(b.x, b.y, b.width, b.height);
-      g2d.drawRect(b.x, b.y, b.width, b.height);
+      g2d.drawImage(cannonBallImage, b.x, b.y, b.width, b.height, this);
     }
     for (Projectile p : projectiles) {
-      g2d.fillRect(p.x, p.y, p.width, p.height);
-      g2d.drawRect(p.x, p.y, p.width, p.height);
+      if (selectedPieceType == PieceType.QUEEN){
+        g2d.drawImage(queenParticleImage, p.x, p.y, p.width, p.height, this);
+      } else {
+        g2d.drawImage(knightParticleImage, p.x, p.y, p.width, p.height, this);
+      }
     }
+
   }
 
   private void drawEnemies(Graphics2D g2d){
@@ -402,24 +418,64 @@ public class GamePanel extends JPanel{
   }
 
 
+  private int pauseMenuIndex;
   void drawUI(Graphics2D g2d) {
     g2d.setFont(gameFont);
 
     if (gameOver) {
       g2d.setColor(Color.RED);
-      drawText(g2d, "Game Over!");
-    }
-
-    if (gameStart) {
-      g2d.setColor(Color.WHITE);
-      drawText(g2d, startMessage);
-    }
-    if (swapSoon){
-      g2d.setColor(Color.YELLOW);
-      drawText(g2d, "Swapping soon!");
+      drawText(g2d,0,0, "Game Over!");
     }
 
     drawAbilityBar(g2d);
+    drawPauseMenu(g2d);
+
+    if (gameStart) {
+      g2d.setColor(Color.WHITE);
+      drawText(g2d,0,0, startMessage);
+    }
+    if (swapSoon){
+      g2d.setColor(Color.YELLOW);
+      drawText(g2d,0,0, "Swapping soon!");
+    }
+
+  }
+
+
+  void drawPauseMenu(Graphics2D g2d){
+    if (gamePaused){
+      g2d.setColor(new Color(0,0,0,200));
+      g2d.fillRect(0,0,Main.WIDTH, Main.HEIGHT);
+
+      if(pauseMenuIndex % 2 == 0){
+        g2d.setColor(Color.YELLOW);
+      } else {
+        g2d.setColor(Color.WHITE);
+      }
+      drawText(g2d,0,0, "Quit Game?");
+      if(pauseMenuIndex % 2 == 1){
+        g2d.setColor(Color.YELLOW);
+      } else {
+        g2d.setColor(Color.WHITE);
+      }
+      drawText(g2d, 0, 1000, "Resume");
+      if(keyHandler.goingDown){
+        keyHandler.goingDown = false;
+        pauseMenuIndex++;
+      } else if (keyHandler.goingUp){
+        keyHandler.goingUp = false;
+        pauseMenuIndex--;
+      }
+      if(keyHandler.enterPressed){
+        keyHandler.enterPressed = false;
+        if (pauseMenuIndex % 2 == 0){
+          soundManager.stopMusic();
+          Main.returnToMenu(this);
+        } else if (pauseMenuIndex % 2 == 1){
+          gamePaused = false;
+        }
+      }
+    }
   }
 
   void drawAbilityBar(Graphics2D g2d){
@@ -464,7 +520,7 @@ public class GamePanel extends JPanel{
     }
   }
 
-  void drawText(Graphics2D g2d, String text){
+  void drawText(Graphics2D g2d,int xOverride, int yOverride, String text){
     // Get font metrics for positioning
     FontMetrics fm = g2d.getFontMetrics();
     int textWidth = fm.stringWidth(text);
@@ -473,6 +529,15 @@ public class GamePanel extends JPanel{
     int x = (getWidth() - textWidth) / 2;
     int y = (getHeight() - textHeight) / 2 + fm.getAscent(); // ascent = baseline offset
 
-    g2d.drawString(text, x, y);
+    if (xOverride != 0 && yOverride != 0){
+      g2d.drawString(text, xOverride, yOverride);
+    } else if (xOverride != 0){
+      g2d.drawString(text, xOverride, y);
+    } else if (yOverride != 0){
+      g2d.drawString(text, x, yOverride);
+    }
+    else {
+      g2d.drawString(text, x, y);
+    }
   }
 }

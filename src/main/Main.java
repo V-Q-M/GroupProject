@@ -43,6 +43,13 @@ public class Main{
         frame.repaint();
     }
 
+    public static void returnToMenu(GamePanel gamePanel){
+        frame.add(new MenuPanel());
+        frame.remove(gamePanel);
+        frame.revalidate();
+        frame.repaint();
+    }
+
     public static void main(String[] args) {
         // Open the window
         openWindow();

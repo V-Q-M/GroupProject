@@ -90,10 +90,18 @@ public class Player extends AnimateObject{
         prepareForcedSwap();
     }
 
+    PieceType lastPiece;
     private void forceSwap(){
+        if (lastPiece != null && availablePieces.size() >= 1){
+            availablePieces.add(lastPiece);
+        }
         int index = random.nextInt(availablePieces.size()); // Pick a random index
         PieceType randomValue = availablePieces.get(index); // Access by index
+        lastPiece = randomValue;
         System.out.println("Random Enum: " + randomValue);
+        if (availablePieces.size() >= 2){
+           availablePieces.remove(randomValue);
+        }
         gamePanel.selectPiece(randomValue);
         swapCounter = 0;
         attackCoolDownCounter = 0;
@@ -160,7 +168,6 @@ public class Player extends AnimateObject{
             isMoving = true;
         }
 
-        System.out.println(deltaX);
         // Set facing direction based on input (last key pressed takes priority)
         if (deltaY < 0) {
             facingDirection = "up";
@@ -292,27 +299,32 @@ public class Player extends AnimateObject{
         if (rookHealth <= 0 && rookAlive){
             rookAlive = false;
             availablePieces.remove(PieceType.ROOK);
+            lastPiece = null;
             forceSwap();
         }
         if (knightHealth <= 0 && knightAlive){
             knightAlive = false;
             availablePieces.remove(PieceType.KNIGHT);
+            lastPiece = null;
             forceSwap();
         }
         if (bishopHealth <= 0 && bishopAlive){
             bishopAlive = false;
             availablePieces.remove(PieceType.BISHOP);
+            lastPiece = null;
             forceSwap();
         }
         if (queenHealth <= 0 && queenAlive){
             queenAlive = false;
             availablePieces.remove(PieceType.QUEEN);
+            lastPiece = null;
             forceSwap();
         }
         // specialcase - king dead
         if (kingHealth <= 0 && kingAlive){
             kingAlive = false;
             availablePieces.remove(PieceType.KING);
+            lastPiece = null;
             health = 0;
         }
     }

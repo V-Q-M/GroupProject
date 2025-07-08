@@ -42,8 +42,8 @@ public class EnemyManager {
     private int difficultyThreshold = 3;
     private void adjustDifficulty(){
         if (difficultyScalar > difficultyThreshold){
-           difficultyThreshold += 3;
-           spawnCoolDown-=1;
+           difficultyThreshold += 2;
+           spawnCoolDown-=10;
         }
     }
 }
