@@ -5,10 +5,10 @@ import entities.Projectile;
 import main.*;
 
 public class Enemy extends AnimateObject {
-    final int DEFAULT_CANNON_BALL_DMG = 35;
+    final int DEFAULT_CANNON_BALL_DMG = 50;
     final int DEFAULT_SLICE_DMG= 50;
     final int DEFAULT_SLAM_DMG= 100;
-    final int DEFAULT_LANCE_DMG= 50;
+    final int DEFAULT_LANCE_DMG= 75;
     public int maxHealth = 100; // need to pass it in constructor soon
 
 
