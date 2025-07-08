@@ -33,10 +33,10 @@ public class Player extends AnimateObject{
     public boolean kingAlive = true;
 
     // Base health constants
-    public static final int ROOK_BASE_HEALTH = 20;
+    public static final int ROOK_BASE_HEALTH = 25;
     public static final int KNIGHT_BASE_HEALTH = 30;
-    public static final int BISHOP_BASE_HEALTH = 10;
-    public static final int QUEEN_BASE_HEALTH = 10;
+    public static final int BISHOP_BASE_HEALTH = 20;
+    public static final int QUEEN_BASE_HEALTH = 20;
     public static final int KING_BASE_HEALTH = 50;
     public static final int PAWN_BASE_HEALTH = 10;
 
@@ -345,8 +345,11 @@ public class Player extends AnimateObject{
     }
 
     private void performKingAttack(){
+        soundManager.playClip(soundManager.summonClip);
         gamePanel.entityManager.spawnPawns(x , y - 132);
+        soundManager.playClip(soundManager.summonClip);
         gamePanel.entityManager.spawnPawns(x + 132, y);
+        soundManager.playClip(soundManager.summonClip);
         gamePanel.entityManager.spawnPawns(x , y + 132);
     }
 }

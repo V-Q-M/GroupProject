@@ -36,16 +36,23 @@ public class Main{
         frame.setVisible(true);
 
     }
-    public static void startMainGame(MenuPanel menuPanel){
+    public static void startMainGame(MenuPanel oldMenuPanel, GamePanel oldGamePanel){
         frame.add(new GamePanel());
-        frame.remove(menuPanel);
+        if (oldMenuPanel != null){
+            frame.remove(oldMenuPanel);
+        }
+        if (oldGamePanel != null){
+            frame.remove(oldGamePanel);
+        }
         frame.revalidate();
         frame.repaint();
     }
 
     public static void returnToMenu(GamePanel gamePanel){
         frame.add(new MenuPanel());
-        frame.remove(gamePanel);
+        if (gamePanel != null){
+            frame.remove(gamePanel);
+        }
         frame.revalidate();
         frame.repaint();
     }

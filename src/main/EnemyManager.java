@@ -40,10 +40,17 @@ public class EnemyManager {
     }
 
     private int difficultyThreshold = 3;
-    private void adjustDifficulty(){
-        if (difficultyScalar > difficultyThreshold){
-           difficultyThreshold += 2;
-           spawnCoolDown-=10;
+
+    private void adjustDifficulty() {
+        if (difficultyScalar > difficultyThreshold) {
+            difficultyThreshold += 2;
+
+            // Reduce cooldown by 10%, with a minimum floor
+            spawnCoolDown *= 0.9;
+
+            if (spawnCoolDown < 100) {
+                spawnCoolDown = 100; // Set a lower bound
+            }
         }
     }
 }

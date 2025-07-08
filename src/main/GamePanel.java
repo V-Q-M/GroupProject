@@ -20,6 +20,7 @@ public class GamePanel extends JPanel{
 
   private boolean DEBUG_MODE = false;
   public boolean gamePaused = false;
+  public int score = 0;
 
   // Textures of the pieces
   public BufferedImage rookImage;
@@ -159,10 +160,12 @@ public class GamePanel extends JPanel{
     }
   }
   Font gameFont;
+  Font gameFontTiny;
   private void loadFonts(){
       try {
         File fontFile = new File("res/PressStart2P.ttf");
         gameFont = Font.createFont(Font.TRUETYPE_FONT, fontFile).deriveFont(80f);
+        gameFontTiny = Font.createFont(Font.TRUETYPE_FONT, fontFile).deriveFont(20f);
       } catch (FontFormatException | IOException e) {
         e.printStackTrace();
         gameFont = new Font("Monospaced", Font.BOLD, 80); // fallback
@@ -202,6 +205,7 @@ public class GamePanel extends JPanel{
   }
 
   public void update() {
+    score+=1;
     if (!gameOver && !gamePaused) {
       if (!player.isDead) {
         player.playerUpdate();
@@ -261,6 +265,7 @@ public class GamePanel extends JPanel{
       castleHealth = 0;
       swapSoon = false;
       soundManager.stopMusic();
+      repaint();
     }
 
   }
@@ -422,28 +427,75 @@ public class GamePanel extends JPanel{
   void drawUI(Graphics2D g2d) {
     g2d.setFont(gameFont);
 
+    drawScore(g2d);
+    drawAbilityBar(g2d);
+
     if (gameOver) {
-      g2d.setColor(Color.RED);
-      drawText(g2d,0,0, "Game Over!");
+      drawGameOverScreen(g2d);
     }
 
-    drawAbilityBar(g2d);
-    drawPauseMenu(g2d);
+    if (gamePaused) {
+      drawPauseMenu(g2d);
+    }
 
     if (gameStart && !gamePaused) {
       g2d.setColor(Color.WHITE);
-      drawText(g2d,0,0, startMessage);
+      drawText(g2d,0,0, gameFont, startMessage);
     }
     if (swapSoon && !gamePaused){
       g2d.setColor(Color.YELLOW);
-      drawText(g2d,0,0, "Swapping soon!");
+      drawText(g2d,0,0, gameFont, "Swapping soon!");
     }
 
   }
+  void drawScore(Graphics2D g2d){
+    g2d.setColor(Color.WHITE);
+    drawText(g2d, 120, 50, gameFontTiny, "Score:" + score);
+  }
 
+  void drawGameOverScreen(Graphics2D g2d){
+    g2d.setColor(new Color(0,0,0,200));
+    g2d.fillRect(0,0,Main.WIDTH, Main.HEIGHT);
+
+    g2d.setColor(Color.RED);
+    drawText(g2d,0,0, gameFont, "Game Over!");
+
+    if(pauseMenuIndex % 2 == 0){
+      g2d.setColor(Color.YELLOW);
+    } else {
+      g2d.setColor(Color.WHITE);
+    }
+    drawText(g2d,0,700, gameFont, "Quit Game?");
+    if(pauseMenuIndex % 2 == 1){
+      g2d.setColor(Color.YELLOW);
+    } else {
+      g2d.setColor(Color.WHITE);
+    }
+    drawText(g2d, 0, 850, gameFont, "Restart");
+    if(keyHandler.goingDown){
+      keyHandler.goingDown = false;
+      soundManager.playClip(soundManager.buttonHoverClip);
+      pauseMenuIndex++;
+    } else if (keyHandler.goingUp){
+      keyHandler.goingUp = false;
+      soundManager.playClip(soundManager.buttonHoverClip);
+      pauseMenuIndex--;
+    }
+    if(keyHandler.enterPressed){
+      keyHandler.enterPressed = false;
+      if (pauseMenuIndex % 2 == 0){
+        soundManager.playClip(soundManager.buttonClickClip);
+        soundManager.stopMusic();
+        Main.returnToMenu(this);
+      } else if (pauseMenuIndex % 2 == 1){
+        soundManager.playClip(soundManager.buttonClickClip);
+        soundManager.stopMusic();
+        Main.startMainGame(null, this);
+      }
+    }
+  }
 
   void drawPauseMenu(Graphics2D g2d){
-    if (gamePaused){
       g2d.setColor(new Color(0,0,0,200));
       g2d.fillRect(0,0,Main.WIDTH, Main.HEIGHT);
 
@@ -452,13 +504,13 @@ public class GamePanel extends JPanel{
       } else {
         g2d.setColor(Color.WHITE);
       }
-      drawText(g2d,0,0, "Quit Game?");
+      drawText(g2d,0,0, gameFont, "Quit Game?");
       if(pauseMenuIndex % 2 == 1){
         g2d.setColor(Color.YELLOW);
       } else {
         g2d.setColor(Color.WHITE);
       }
-      drawText(g2d, 0, 600, "Resume");
+      drawText(g2d, 0, 700, gameFont, "Resume");
       if(keyHandler.goingDown){
         keyHandler.goingDown = false;
         soundManager.playClip(soundManager.buttonHoverClip);
@@ -479,7 +531,6 @@ public class GamePanel extends JPanel{
           gamePaused = false;
         }
       }
-    }
   }
 
   void drawAbilityBar(Graphics2D g2d){
@@ -524,7 +575,8 @@ public class GamePanel extends JPanel{
     }
   }
 
-  void drawText(Graphics2D g2d,int xOverride, int yOverride, String text){
+  void drawText(Graphics2D g2d,int xOverride, int yOverride, Font gameFont, String text){
+    g2d.setFont(gameFont);
     // Get font metrics for positioning
     FontMetrics fm = g2d.getFontMetrics();
     int textWidth = fm.stringWidth(text);

@@ -79,7 +79,7 @@ public class MenuPanel extends JPanel {
                 } else if (buttonIndexX % 3 == 1) {
                     System.out.println("Play");
                     soundManager.stopMusic();
-                    Main.startMainGame(this);
+                    Main.startMainGame(this, null);
                 } else if (buttonIndexX % 3 == 2) {
                     System.out.println("Quit");
                     System.exit(0);
@@ -219,8 +219,6 @@ public class MenuPanel extends JPanel {
             g2d.setColor(Color.WHITE);
         }
         drawText(g2d,Main.WIDTH/2 + 215,745, "Help");
-
-
 
     }
 

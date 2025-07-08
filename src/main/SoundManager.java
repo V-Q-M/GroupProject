@@ -17,6 +17,7 @@ public class SoundManager {
     public Clip swapClip;
     public Clip buttonHoverClip;
     public Clip buttonClickClip;
+    public Clip summonClip;
 
     public Clip menuTheme;
     public Clip mainTheme;
@@ -63,8 +64,9 @@ public class SoundManager {
         smashClip = loadClip("res/smash.wav");
         deathClip = loadClip("res/death.wav");
         swapClip  = loadClip("res/swap2.wav");
+        summonClip = loadClip("res/summon.wav");
         menuTheme = loadClip("res/menuTheme.wav");
-        mainTheme = loadClip("res/mainTheme3.wav");
+        mainTheme = loadClip("res/mainTheme2.wav");
         buttonHoverClip = loadClip("res/buttonHover.wav");
         buttonClickClip = loadClip("res/buttonClick.wav");
     }
