@@ -106,7 +106,7 @@ public class GamePanel extends JPanel{
     buildWall();
 
     // Default piece
-    selectPiece(PieceType.KING);
+    selectPiece(PieceType.ROOK);
     // Refreshrate. Might have to improve that
     new Timer(16, e -> update()).start(); // ~60 FPS
   }

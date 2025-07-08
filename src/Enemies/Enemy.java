@@ -33,6 +33,7 @@ public class Enemy extends AnimateObject {
     void checkAlive(){
         if (health <= 0){
             this.isDead = true;
+            gamePanel.score+=maxHealth;
             soundManager.playClip(soundManager.deathClip);
         }
     }
