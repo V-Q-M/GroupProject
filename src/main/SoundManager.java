@@ -4,7 +4,10 @@ import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.swing.*;
+import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 
 public class SoundManager {
     JPanel gamePanel;
@@ -58,25 +61,29 @@ public class SoundManager {
     }
 
     public void loadSounds() {
-        shootClip = loadClip("res/shoot.wav");
-        sliceClip = loadClip("res/slice1.wav");
-        hitClip   = loadClip("res/hit.wav");
-        smashClip = loadClip("res/smash.wav");
-        deathClip = loadClip("res/death.wav");
-        swapClip  = loadClip("res/swap2.wav");
-        summonClip = loadClip("res/summon.wav");
-        menuTheme = loadClip("res/menuTheme.wav");
-        mainTheme = loadClip("res/mainTheme2.wav");
-        buttonHoverClip = loadClip("res/buttonHover.wav");
-        buttonClickClip = loadClip("res/buttonClick.wav");
+        shootClip = loadClip("/shoot.wav");
+        sliceClip = loadClip("/slice1.wav");
+        hitClip   = loadClip("/hit.wav");
+        smashClip = loadClip("/smash.wav");
+        deathClip = loadClip("/death.wav");
+        swapClip  = loadClip("/swap2.wav");
+        summonClip = loadClip("/summon.wav");
+        menuTheme = loadClip("/menuTheme.wav");
+        mainTheme = loadClip("/mainTheme2.wav");
+        buttonHoverClip = loadClip("/buttonHover.wav");
+        buttonClickClip = loadClip("/buttonClick.wav");
     }
 
     private Clip loadClip(String path) {
-        try {
-            AudioInputStream audioIn = AudioSystem.getAudioInputStream(new File(path));
-            Clip clip = AudioSystem.getClip();
-            clip.open(audioIn);
-            return clip;
+        try (InputStream is = getClass().getResourceAsStream(path)) {
+            if (is == null) {
+                throw new IOException("Audio resource not found: " + path);
+            }
+            try (AudioInputStream audioIn = AudioSystem.getAudioInputStream(new BufferedInputStream(is))) {
+                Clip clip = AudioSystem.getClip();
+                clip.open(audioIn);
+                return clip;
+            }
         } catch (Exception e) {
             e.printStackTrace();
             return null;

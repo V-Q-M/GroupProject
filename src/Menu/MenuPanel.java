@@ -10,6 +10,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 
 public class MenuPanel extends JPanel {
     MenuKeyHandler keyHandler = new MenuKeyHandler(this);
@@ -125,25 +126,33 @@ public class MenuPanel extends JPanel {
     }
 
     private void loadImages() {
-        try {
-            backgroundImg =
-                    ImageIO.read(new File("res/BackGroundMenu.png"));
-
+        try (InputStream is = getClass().getResourceAsStream("/BackGroundMenu.png")) {
+            if (is == null) {
+                throw new IOException("Image resource not found: /BackGroundMenu.png");
+            }
+            backgroundImg = ImageIO.read(is);
         } catch (IOException e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(this, "Could not load images");
         }
     }
+
     Font gameFont;
     Font gameFontSmall;
-    private void loadFonts(){
+    private void loadFonts() {
         try {
-            File fontFile = new File("res/PressStart2P.ttf");
-            gameFont = Font.createFont(Font.TRUETYPE_FONT, fontFile).deriveFont(80f);
-            gameFontSmall = Font.createFont(Font.TRUETYPE_FONT, fontFile).deriveFont(40f);
+            InputStream fontStream = getClass().getResourceAsStream("/PressStart2P.ttf");
+            if (fontStream == null) {
+                throw new IOException("Font file not found in resources.");
+            }
+
+            Font baseFont = Font.createFont(Font.TRUETYPE_FONT, fontStream);
+            gameFont = baseFont.deriveFont(80f);
+            gameFontSmall = baseFont.deriveFont(40f);
         } catch (FontFormatException | IOException e) {
             e.printStackTrace();
             gameFont = new Font("Monospaced", Font.BOLD, 80); // fallback
+            gameFontSmall = new Font("Monospaced", Font.PLAIN, 40); // fallback
         }
     }
 

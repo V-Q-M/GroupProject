@@ -4,6 +4,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -116,44 +117,26 @@ public class GamePanel extends JPanel{
     }
   }
 
-
-
   // Image loader. Very simple. Might expand to ImageAtlas
   private void loadImages() {
     try {
-      rookImage =
-          ImageIO.read(new File("res/chess-pieces-png/color/white/rook.png"));
-      tileImage = ImageIO.read(new File("res/earth.png"));
-      knightImage =
-          ImageIO.read(new File("res/chess-pieces-png/color/white/knight.png"));
-      bishopImage =
-          ImageIO.read(new File("res/chess-pieces-png/color/white/bishop.png"));
-      kingImage =
-          ImageIO.read(new File("res/chess-pieces-png/color/white/king.png"));
-      queenImage =
-          ImageIO.read(new File("res/chess-pieces-png/color/white/queen.png"));
-      pawnImage =
-          ImageIO.read(new File("res/chess-pieces-png/color/white/pawn.png"));
+      rookImage = ImageIO.read(getClass().getResourceAsStream("/chess-pieces-png/color/white/rook.png"));
+      tileImage = ImageIO.read(getClass().getResourceAsStream("/earth.png"));
+      knightImage = ImageIO.read(getClass().getResourceAsStream("/chess-pieces-png/color/white/knight.png"));
+      bishopImage = ImageIO.read(getClass().getResourceAsStream("/chess-pieces-png/color/white/bishop.png"));
+      kingImage = ImageIO.read(getClass().getResourceAsStream("/chess-pieces-png/color/white/king.png"));
+      queenImage = ImageIO.read(getClass().getResourceAsStream("/chess-pieces-png/color/white/queen.png"));
+      pawnImage = ImageIO.read(getClass().getResourceAsStream("/chess-pieces-png/color/white/pawn.png"));
 
-      cannonBallImage =
-              ImageIO.read(new File("res/cannonball2.png"));
-      queenParticleImage =
-              ImageIO.read(new File("res/queenParticles.png"));
-      knightParticleImage =
-              ImageIO.read(new File("res/knightParticles.png"));
-      enemyRookImage=
-              ImageIO.read(new File("res/chess-pieces-png/color/black/rook.png"));
-      enemyKnightImage=
-              ImageIO.read(new File("res/chess-pieces-png/color/black/knight.png"));
-      enemyBishopImage=
-              ImageIO.read(new File("res/chess-pieces-png/color/black/bishop.png"));
-      enemyKingImage=
-              ImageIO.read(new File("res/chess-pieces-png/color/black/king.png"));
-      enemyQueenImage=
-              ImageIO.read(new File("res/chess-pieces-png/color/black/queen.png"));
-      enemyPawnImage =
-              ImageIO.read(new File("res/chess-pieces-png/color/black/pawn.png"));
-
+      cannonBallImage = ImageIO.read(getClass().getResourceAsStream("/cannonball2.png"));
+      queenParticleImage = ImageIO.read(getClass().getResourceAsStream("/queenParticles.png"));
+      knightParticleImage = ImageIO.read(getClass().getResourceAsStream("/knightParticles.png"));
+      enemyRookImage = ImageIO.read(getClass().getResourceAsStream("/chess-pieces-png/color/black/rook.png"));
+      enemyKnightImage = ImageIO.read(getClass().getResourceAsStream("/chess-pieces-png/color/black/knight.png"));
+      enemyBishopImage = ImageIO.read(getClass().getResourceAsStream("/chess-pieces-png/color/black/bishop.png"));
+      enemyKingImage = ImageIO.read(getClass().getResourceAsStream("/chess-pieces-png/color/black/king.png"));
+      enemyQueenImage = ImageIO.read(getClass().getResourceAsStream("/chess-pieces-png/color/black/queen.png"));
+      enemyPawnImage = ImageIO.read(getClass().getResourceAsStream("/chess-pieces-png/color/black/pawn.png"));
     } catch (IOException e) {
       e.printStackTrace();
       JOptionPane.showMessageDialog(this, "Could not load images");
@@ -161,17 +144,22 @@ public class GamePanel extends JPanel{
   }
   Font gameFont;
   Font gameFontTiny;
-  private void loadFonts(){
-      try {
-        File fontFile = new File("res/PressStart2P.ttf");
-        gameFont = Font.createFont(Font.TRUETYPE_FONT, fontFile).deriveFont(80f);
-        gameFontTiny = Font.createFont(Font.TRUETYPE_FONT, fontFile).deriveFont(20f);
-      } catch (FontFormatException | IOException e) {
-        e.printStackTrace();
-        gameFont = new Font("Monospaced", Font.BOLD, 80); // fallback
+  private void loadFonts() {
+    try {
+      InputStream fontStream = getClass().getResourceAsStream("/PressStart2P.ttf");
+      if (fontStream == null) {
+        throw new IOException("Font file not found in resources.");
       }
-  }
 
+      Font baseFont = Font.createFont(Font.TRUETYPE_FONT, fontStream);
+      gameFont = baseFont.deriveFont(80f);
+      gameFontTiny = baseFont.deriveFont(20f);
+    } catch (FontFormatException | IOException e) {
+      e.printStackTrace();
+      gameFont = new Font("Monospaced", Font.BOLD, 80); // fallback
+      gameFontTiny = new Font("Monospaced", Font.PLAIN, 20); // fallback
+    }
+  }
   // SelectPiece. Should prompt the user to pick one eventually
   public void selectPiece(PieceType changePiece) {
     selectedPieceType = changePiece;
@@ -274,9 +262,9 @@ public class GamePanel extends JPanel{
     balls.removeIf(ball -> {
       ball.moveProjectile(ball.speed);
       return ball.hasHit || ball.y + ball.height < 0
-                         || ball.y - ball.height >= Main.HEIGHT
-                         || ball.x + ball.width < 0
-                         || ball.x - ball.width >= Main.WIDTH;
+              || ball.y - ball.height >= Main.HEIGHT
+              || ball.x + ball.width < 0
+              || ball.x - ball.width >= Main.WIDTH;
     });
     // update projectiles (queens effect)
     for (Iterator<Projectile> iterator = projectiles.iterator(); iterator.hasNext(); ) {
@@ -415,7 +403,7 @@ public class GamePanel extends JPanel{
 
     // player.Player health-bar always on top
     if (!player.isDead) {
-        createHealthBar(g2d, player.x, player.y, pieceWidth, 20, playerHealth, playerMaxHealth);
+      createHealthBar(g2d, player.x, player.y, pieceWidth, 20, playerHealth, playerMaxHealth);
     }
 
     // Castle healthbar
@@ -450,7 +438,7 @@ public class GamePanel extends JPanel{
   }
   void drawScore(Graphics2D g2d){
     g2d.setColor(Color.WHITE);
-    drawText(g2d, 120, 50, gameFontTiny, "Score:" + score);
+    drawText(g2d, 120, 42, gameFontTiny, "Score:" + score);
   }
 
   void drawGameOverScreen(Graphics2D g2d){
@@ -496,41 +484,41 @@ public class GamePanel extends JPanel{
   }
 
   void drawPauseMenu(Graphics2D g2d){
-      g2d.setColor(new Color(0,0,0,200));
-      g2d.fillRect(0,0,Main.WIDTH, Main.HEIGHT);
+    g2d.setColor(new Color(0,0,0,200));
+    g2d.fillRect(0,0,Main.WIDTH, Main.HEIGHT);
 
-      if(pauseMenuIndex % 2 == 0){
-        g2d.setColor(Color.YELLOW);
-      } else {
-        g2d.setColor(Color.WHITE);
+    if(pauseMenuIndex % 2 == 0){
+      g2d.setColor(Color.YELLOW);
+    } else {
+      g2d.setColor(Color.WHITE);
+    }
+    drawText(g2d,0,0, gameFont, "Quit Game?");
+    if(pauseMenuIndex % 2 == 1){
+      g2d.setColor(Color.YELLOW);
+    } else {
+      g2d.setColor(Color.WHITE);
+    }
+    drawText(g2d, 0, 700, gameFont, "Resume");
+    if(keyHandler.goingDown){
+      keyHandler.goingDown = false;
+      soundManager.playClip(soundManager.buttonHoverClip);
+      pauseMenuIndex++;
+    } else if (keyHandler.goingUp){
+      keyHandler.goingUp = false;
+      soundManager.playClip(soundManager.buttonHoverClip);
+      pauseMenuIndex--;
+    }
+    if(keyHandler.enterPressed){
+      keyHandler.enterPressed = false;
+      if (pauseMenuIndex % 2 == 0){
+        soundManager.playClip(soundManager.buttonClickClip);
+        soundManager.stopMusic();
+        Main.returnToMenu(this);
+      } else if (pauseMenuIndex % 2 == 1){
+        soundManager.playClip(soundManager.buttonClickClip);
+        gamePaused = false;
       }
-      drawText(g2d,0,0, gameFont, "Quit Game?");
-      if(pauseMenuIndex % 2 == 1){
-        g2d.setColor(Color.YELLOW);
-      } else {
-        g2d.setColor(Color.WHITE);
-      }
-      drawText(g2d, 0, 700, gameFont, "Resume");
-      if(keyHandler.goingDown){
-        keyHandler.goingDown = false;
-        soundManager.playClip(soundManager.buttonHoverClip);
-        pauseMenuIndex++;
-      } else if (keyHandler.goingUp){
-        keyHandler.goingUp = false;
-        soundManager.playClip(soundManager.buttonHoverClip);
-        pauseMenuIndex--;
-      }
-      if(keyHandler.enterPressed){
-        keyHandler.enterPressed = false;
-        if (pauseMenuIndex % 2 == 0){
-          soundManager.playClip(soundManager.buttonClickClip);
-          soundManager.stopMusic();
-          Main.returnToMenu(this);
-        } else if (pauseMenuIndex % 2 == 1){
-          soundManager.playClip(soundManager.buttonClickClip);
-          gamePaused = false;
-        }
-      }
+    }
   }
 
   void drawAbilityBar(Graphics2D g2d){
