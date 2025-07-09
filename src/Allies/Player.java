@@ -337,11 +337,34 @@ public class Player extends AnimateObject{
         switch (gamePanel.selectedPieceType) {
             // Add new characters here
             case ROOK   -> gamePanel.entityManager.spawnCannonBall();
-            case KNIGHT -> gamePanel.entityManager.spawnKnightParticles();
             case BISHOP -> gamePanel.entityManager.spawnLance();
             case QUEEN  -> gamePanel.entityManager.spawnQueenParticles();
+            case KNIGHT -> performKnightAttack();
             case KING   -> performKingAttack();
         }
+    }
+
+    private void performKnightAttack(){
+
+        switch (facingDirection){
+            case "up" -> {
+                targetY -= 264;
+                y = targetY;
+            }
+            case "down" -> {
+                targetY += 264;
+                y = targetY;
+            }
+            case "left" -> {
+                targetX -= 264;
+                x = targetX;
+            }
+            case "right" -> {
+                targetX += 264;
+                x = targetX;
+            }
+        }
+        gamePanel.entityManager.spawnKnightParticles();
     }
 
     private void performKingAttack(){

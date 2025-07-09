@@ -47,10 +47,9 @@ public class KeyHandler implements KeyListener {
                     goingLeft = false;
                     goingUp = false;
                 }
-                //case KeyEvent.VK_SPACE -> gamePanel.performAttack();
                 case KeyEvent.VK_SPACE -> spacePressed = true;
-                case KeyEvent.VK_1 -> gamePanel.selectPiece(PieceType.ROOK);
-                case KeyEvent.VK_2 -> gamePanel.selectPiece(PieceType.QUEEN);
+                case KeyEvent.VK_ENTER -> enterPressed = true;
+                case KeyEvent.VK_ESCAPE -> escapePressed = true;
             }
         } else {
             switch (key) {
@@ -66,12 +65,9 @@ public class KeyHandler implements KeyListener {
                 case KeyEvent.VK_D, KeyEvent.VK_RIGHT, KeyEvent.VK_L -> {
                     goingRight = true;
                 }
-                //case KeyEvent.VK_SPACE -> gamePanel.performAttack();
                 case KeyEvent.VK_SPACE -> spacePressed = true;
                 case KeyEvent.VK_ENTER -> enterPressed = true;
                 case KeyEvent.VK_ESCAPE -> escapePressed = true;
-                case KeyEvent.VK_1 -> gamePanel.selectPiece(PieceType.ROOK);
-                case KeyEvent.VK_2 -> gamePanel.selectPiece(PieceType.QUEEN);
             }
         }
     }
