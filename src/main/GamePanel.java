@@ -11,6 +11,7 @@ import javax.swing.*;
 
 import Allies.Ally;
 import Allies.AllyPawn;
+import Allies.AllyRook;
 import enemies.Enemy;
 import Allies.Player;
 import entities.Projectile;
@@ -163,9 +164,15 @@ public class GamePanel extends JPanel{
   }
 
 
+  private boolean turretUpgradeUnlocked = true;
   private void buildWall(){
     for (int i = 0; i < 8; i++){
-      allies.add(new AllyPawn(this, soundManager, collisionHandler, 0, i * PIECE_HEIGHT, PIECE_HEIGHT, PIECE_HEIGHT, false));
+      allies.add(new AllyPawn(this, soundManager, collisionHandler, PIECE_HEIGHT, i * PIECE_HEIGHT, PIECE_HEIGHT, PIECE_HEIGHT, false));
+    }
+    if (turretUpgradeUnlocked){
+      int randomNum = (int) (Math.random()*7);
+      allies.add(new AllyRook(this, soundManager, collisionHandler, 0, randomNum * PIECE_HEIGHT, PIECE_HEIGHT, PIECE_HEIGHT, false));
+      allies.add(new AllyRook(this, soundManager, collisionHandler, 0, (randomNum + 1) * PIECE_HEIGHT, PIECE_HEIGHT, PIECE_HEIGHT, false));
     }
   }
 
