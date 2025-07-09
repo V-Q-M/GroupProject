@@ -430,7 +430,7 @@ public class GamePanel extends JPanel{
   void drawHealthBars(Graphics2D g2d){
     // Personal choice - only show health-bar when not at full health
     for (Enemy enemy : enemies) {
-      if (!enemy.isDead && enemy.health != 100) {
+      if (!enemy.isDead && enemy.health != enemy.maxHealth) {
         createHealthBar(g2d, enemy.x, enemy.y, enemy.width, 15, enemy.health, enemy.maxHealth);
       }
     }
