@@ -23,16 +23,14 @@ public class EntityManager {
     }
 
     int CANNON_BALL_SIZE = 64;
-    // Yeah this could get its own class later
-    public void spawnCannonBall() {
+    public void spawnCannonBall(int x, int y, String direction) {
         if (gamePanel.rookImage != null) {
             int size = CANNON_BALL_SIZE; // size of the cannonball
             // spawn at top‐center of the rook
-            int bx = player.x + (gamePanel.pieceWidth - size) / 2;
-            int by = player.y + (gamePanel.pieceHeight - size) / 2;
+            int bx = x + (gamePanel.pieceWidth - size) / 2;
+            int by = y + (gamePanel.pieceHeight - size) / 2;
             // Append balls to the list of balls
-            //gamePanel.balls.add(new CannonBall(bx, by, size, DEFAULT_CANNONBALL_SPEED, player.facingDirection));
-            gamePanel.balls.add(new CannonBall(bx, by, size, DEFAULT_CANNONBALL_SPEED, player.facingDirection));
+            gamePanel.balls.add(new CannonBall(bx, by, size, DEFAULT_CANNONBALL_SPEED, direction));
             // this should move to a variable
             soundManager.playClip(soundManager.shootClip);
         }

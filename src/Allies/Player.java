@@ -34,7 +34,7 @@ public class Player extends AnimateObject{
 
     // Base health constants
     public static final int ROOK_BASE_HEALTH = 25;
-    public static final int KNIGHT_BASE_HEALTH = 30;
+    public static final int KNIGHT_BASE_HEALTH = 50;
     public static final int BISHOP_BASE_HEALTH = 20;
     public static final int QUEEN_BASE_HEALTH = 50;
     public static final int KING_BASE_HEALTH = 30;
@@ -336,7 +336,7 @@ public class Player extends AnimateObject{
         targetY=y;
         switch (gamePanel.selectedPieceType) {
             // Add new characters here
-            case ROOK   -> gamePanel.entityManager.spawnCannonBall();
+            case ROOK   -> gamePanel.entityManager.spawnCannonBall(x, y, facingDirection);
             case BISHOP -> gamePanel.entityManager.spawnLance();
             case QUEEN  -> gamePanel.entityManager.spawnQueenParticles();
             case KNIGHT -> performKnightAttack();

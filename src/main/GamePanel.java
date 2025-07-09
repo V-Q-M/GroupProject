@@ -171,8 +171,8 @@ public class GamePanel extends JPanel{
     }
     if (turretUpgradeUnlocked){
       int randomNum = (int) (Math.random()*7);
-      allies.add(new AllyRook(this, soundManager, collisionHandler, 0, randomNum * PIECE_HEIGHT, PIECE_HEIGHT, PIECE_HEIGHT, false));
-      allies.add(new AllyRook(this, soundManager, collisionHandler, 0, (randomNum + 1) * PIECE_HEIGHT, PIECE_HEIGHT, PIECE_HEIGHT, false));
+      allies.add(new AllyRook(this, soundManager, collisionHandler, 0, randomNum * PIECE_HEIGHT, PIECE_HEIGHT, PIECE_HEIGHT));
+      allies.add(new AllyRook(this, soundManager, collisionHandler, 0, (randomNum + 1) * PIECE_HEIGHT, PIECE_HEIGHT, PIECE_HEIGHT));
     }
   }
 

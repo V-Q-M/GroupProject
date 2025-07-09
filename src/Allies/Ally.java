@@ -27,7 +27,7 @@ public class Ally extends AnimateObject {
         updateCooldowns();
     }
 
-    private void checkAlive(){
+    void checkAlive(){
         if (health <= 0){
             this.isDead = true;
             soundManager.playClip(soundManager.deathClip);
@@ -45,7 +45,7 @@ public class Ally extends AnimateObject {
         }
     }
 
-    private void updateCooldowns(){
+    void updateCooldowns(){
         if (isInvulnerable && invulnerableCounter<30){
             invulnerableCounter++;
         } else {
