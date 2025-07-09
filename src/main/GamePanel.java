@@ -2,9 +2,7 @@ package main;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -41,6 +39,15 @@ public class GamePanel extends JPanel{
   public BufferedImage cannonBallImage;
   public BufferedImage queenParticleImage;
   public BufferedImage knightParticleImage;
+
+  // text for localization
+  private String startingText = "Starting in: ";
+  private String swappingSoonText = "Swapping soon!";
+  private String scoreText = "Score:";
+  private String gameOverText = "Game Over!";
+  private String quitGameText = "Quit Game?";
+  private String restartText = "Restart?";
+  private String resumeText = "Resume?";
 
   // uses the enum
   public PieceType selectedPieceType;
@@ -101,7 +108,9 @@ public class GamePanel extends JPanel{
     this.loadImages();
     this.loadFonts();
     soundManager.loadSounds();
-    soundManager.startMusic();
+    //soundManager.startMusic();
+
+    applySettings();
 
     buildWall();
 
@@ -110,6 +119,49 @@ public class GamePanel extends JPanel{
     // Refreshrate. Might have to improve that
     new Timer(16, e -> update()).start(); // ~60 FPS
   }
+
+  private void applySettings(){
+    String[] line = readLinesFromResource("settings.txt");
+    System.out.println(line[0]);
+      if (line[0].equals("music off")) {
+        soundManager.stopMusic();
+        System.out.println("STOP");
+      } else {
+        soundManager.startMusic();
+        System.out.println("PLAY");
+      }
+      if (line[1].equals("language german")) {
+        startingText = "Starte in: ";
+        swappingSoonText = "Wechsele bald!";
+        scoreText = "Punkte:";
+        gameOverText = "Verloren!";
+        quitGameText = "Spiel verlassen?";
+        restartText = "Neustarten?";
+        resumeText = "Fortfahren?";
+      }
+  }
+
+
+  public String[] readLinesFromResource(String resourceName) {
+    try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream(resourceName);
+         BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
+
+      List<String> lines = new ArrayList<>();
+      String line;
+
+      while ((line = reader.readLine()) != null) {
+        lines.add(line);
+      }
+
+      return lines.toArray(new String[0]);
+
+    } catch (IOException | NullPointerException e) {
+      JOptionPane.showMessageDialog(this, "Failed to read resource: " + resourceName);
+      e.printStackTrace();
+      return null;
+    }
+  }
+
 
   private void buildWall(){
     for (int i = 0; i < 8; i++){
@@ -223,7 +275,7 @@ public class GamePanel extends JPanel{
   }
 
   int gameStartCounter = 0;
-  String startMessage = "Starting in: 3";
+  String startMessage = startingText + 3;
   private void gameUpdate(){
     if (gameStart) {
       if (gameStartCounter > 180) {
@@ -233,13 +285,13 @@ public class GamePanel extends JPanel{
         startMessage = "";
         gameStartCounter++;
       } else if (gameStartCounter > 120) {
-        startMessage = "Starting in: 1";
+        startMessage = startingText + 1;
         gameStartCounter++;
       } else if (gameStartCounter > 90){
         startMessage = "";
         gameStartCounter++;
       } else if (gameStartCounter > 60){
-        startMessage = "Starting in: 2";
+        startMessage = startingText + 2;
         gameStartCounter++;
       } else if (gameStartCounter > 30){
         startMessage = "";
@@ -432,13 +484,14 @@ public class GamePanel extends JPanel{
     }
     if (swapSoon && !gamePaused){
       g2d.setColor(Color.YELLOW);
-      drawText(g2d,0,0, gameFont, "Swapping soon!");
+      drawText(g2d,0,0, gameFont, swappingSoonText);
     }
-
   }
+
+
   void drawScore(Graphics2D g2d){
     g2d.setColor(Color.WHITE);
-    drawText(g2d, 120, 42, gameFontTiny, "Score:" + score);
+    drawText(g2d, 120, 42, gameFontTiny, scoreText + score);
   }
 
   void drawGameOverScreen(Graphics2D g2d){
@@ -446,20 +499,20 @@ public class GamePanel extends JPanel{
     g2d.fillRect(0,0,Main.WIDTH, Main.HEIGHT);
 
     g2d.setColor(Color.RED);
-    drawText(g2d,0,0, gameFont, "Game Over!");
+    drawText(g2d,0,0, gameFont, gameOverText);
 
     if(pauseMenuIndex % 2 == 0){
       g2d.setColor(Color.YELLOW);
     } else {
       g2d.setColor(Color.WHITE);
     }
-    drawText(g2d,0,700, gameFont, "Quit Game?");
+    drawText(g2d,0,700, gameFont, quitGameText);
     if(pauseMenuIndex % 2 == 1){
       g2d.setColor(Color.YELLOW);
     } else {
       g2d.setColor(Color.WHITE);
     }
-    drawText(g2d, 0, 850, gameFont, "Restart");
+    drawText(g2d, 0, 850, gameFont, restartText);
     if(keyHandler.goingDown){
       keyHandler.goingDown = false;
       soundManager.playClip(soundManager.buttonHoverClip);
@@ -492,13 +545,13 @@ public class GamePanel extends JPanel{
     } else {
       g2d.setColor(Color.WHITE);
     }
-    drawText(g2d,0,0, gameFont, "Quit Game?");
+    drawText(g2d,0,0, gameFont, quitGameText);
     if(pauseMenuIndex % 2 == 1){
       g2d.setColor(Color.YELLOW);
     } else {
       g2d.setColor(Color.WHITE);
     }
-    drawText(g2d, 0, 700, gameFont, "Resume");
+    drawText(g2d, 0, 700, gameFont, resumeText);
     if(keyHandler.goingDown){
       keyHandler.goingDown = false;
       soundManager.playClip(soundManager.buttonHoverClip);
