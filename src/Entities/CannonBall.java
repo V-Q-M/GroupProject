@@ -16,4 +16,19 @@ public class CannonBall extends Projectile {
     this.health = 200;
     this.skin = gamePanel.cannonBallImage;
   }
+
+  public void update(){
+    checkAlive();
+    animateBall();
+    moveProjectile(speed);
+  }
+  int animateCounter = 0;
+  public void animateBall(){
+    if (animateCounter > 30) {
+      animateCounter = 0;
+      this.y += 12;
+    } else {
+      animateCounter++;
+    }
+ }
 }

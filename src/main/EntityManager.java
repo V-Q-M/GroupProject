@@ -27,7 +27,7 @@ public class EntityManager {
             int bx = x + (gamePanel.pieceWidth - size) / 2;
             int by = y + (gamePanel.pieceHeight - size) / 2;
             // Append balls to the list of balls
-            gamePanel.projectiles.add(new CannonBall(gamePanel, bx, by, size, DEFAULT_CANNONBALL_SPEED, direction));
+            gamePanel.projectiles.add(new CannonBall(gamePanel, bx, y, size, DEFAULT_CANNONBALL_SPEED, direction));
             soundManager.playClip(soundManager.shootClip);
         }
     }

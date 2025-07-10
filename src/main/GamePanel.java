@@ -251,10 +251,30 @@ public class GamePanel extends JPanel{
     pieceWidth = selectedPiece.getWidth() * SCALE;
     pieceHeight = selectedPiece.getHeight() * SCALE;
   }
+  int animationFrame = 1;
+  int animationCounter = 0;
 
+
+  public void simpleAnimation() {
+    animationCounter++;
+
+    if (animationCounter > 60) {
+      animationCounter = 0;
+    }
+
+    if (animationCounter <= 20) {
+      animationFrame = 1;
+    } else if (animationCounter <= 40) {
+      animationFrame = 2;
+    } else {
+      animationFrame = 3;
+    }
+  }
   public void update() {
     score+=1;
     if (!gameOver && !gamePaused) {
+      simpleAnimation();
+
       if (!player.isDead) {
         player.playerUpdate();
       }
@@ -367,12 +387,17 @@ public class GamePanel extends JPanel{
     g2d.fillRect(x, y - height * 2, greenWidth, height);
   }
 
+  int animationOffset = 3;
   private void drawPlayer(Graphics2D g2d){
     // Draw selectedPiece at current position
     if (selectedPiece != null && !player.isDead) {
-      int x = player.x;
-      int y = player.y;
-      g2d.drawImage(selectedPiece, x, y, pieceWidth, pieceHeight, this);
+      if (animationFrame == 2){
+        g2d.drawImage(selectedPiece, player.x, player.y + animationOffset, pieceWidth, pieceHeight, this);
+      } else if (animationFrame == 3){
+        g2d.drawImage(selectedPiece, player.x, player.y - animationOffset, pieceWidth, pieceHeight, this);
+      } else {
+        g2d.drawImage(selectedPiece, player.x, player.y, pieceWidth, pieceHeight, this);
+      }
       // Draw hitbox
       if (DEBUG_MODE) {
         g2d.setColor(Color.red);
@@ -384,7 +409,13 @@ public class GamePanel extends JPanel{
   private void drawAllies(Graphics2D g2d){
     for (Ally ally : allies) {
       if (!ally.isDead) {
+      if (animationFrame == 2){
+        g2d.drawImage(ally.skin, ally.x, ally.y + animationOffset, ally.width, ally.height, this);
+      } else if (animationFrame == 3){
+        g2d.drawImage(ally.skin, ally.x, ally.y - animationOffset, ally.width, ally.height, this);
+      } else {
         g2d.drawImage(ally.skin, ally.x, ally.y, ally.width, ally.height, this);
+      }
         if (DEBUG_MODE){
           g2d.setColor(Color.red);
           g2d.drawRect(ally.x, ally.y, ally.width, ally.height);
@@ -409,7 +440,13 @@ public class GamePanel extends JPanel{
   private void drawEnemies(Graphics2D g2d){
     for (Enemy enemy : enemies) {
       if (!enemy.isDead) {
-        g2d.drawImage(enemy.skin, enemy.x, enemy.y, enemy.width, enemy.height, this);
+        if (animationFrame == 2){
+          g2d.drawImage(enemy.skin, enemy.x, enemy.y + animationOffset, enemy.width, enemy.height, this);
+        } else if (animationFrame == 3){
+          g2d.drawImage(enemy.skin, enemy.x, enemy.y - animationOffset, enemy.width, enemy.height, this);
+        } else {
+          g2d.drawImage(enemy.skin, enemy.x, enemy.y, enemy.width, enemy.height, this);
+        }
         if (DEBUG_MODE){
           g2d.setColor(Color.red);
           g2d.drawRect(enemy.x, enemy.y, enemy.width, enemy.height);
