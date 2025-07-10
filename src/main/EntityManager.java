@@ -1,10 +1,7 @@
 package main;
 
 import Allies.AllyPawn;
-import entities.BishopLance;
-import entities.CannonBall;
-import entities.KnightSmash;
-import entities.QueenSlice;
+import entities.*;
 import Allies.Player;
 
 public class EntityManager {
@@ -30,10 +27,20 @@ public class EntityManager {
             int bx = x + (gamePanel.pieceWidth - size) / 2;
             int by = y + (gamePanel.pieceHeight - size) / 2;
             // Append balls to the list of balls
-            gamePanel.balls.add(new CannonBall(bx, by, size, DEFAULT_CANNONBALL_SPEED, direction));
-            // this should move to a variable
+            gamePanel.projectiles.add(new CannonBall(gamePanel, bx, by, size, DEFAULT_CANNONBALL_SPEED, direction));
             soundManager.playClip(soundManager.shootClip);
         }
+    }
+
+    public void spawnEnemyCannonBall(int x, int y){
+       if (gamePanel.enemyRookImage != null) {
+           int size = CANNON_BALL_SIZE;
+           int bx = x + (gamePanel.pieceWidth - size) / 2;
+           int by = y + (gamePanel.pieceHeight - size) / 2;
+           // Append balls to the list of balls
+           gamePanel.enemyBalls.add(new EnemyCannonBall(gamePanel, bx, by, size, DEFAULT_CANNONBALL_SPEED));
+           soundManager.playClip(soundManager.shootClip);
+       }
     }
     public void spawnLance(){
         if (gamePanel.bishopImage != null) {
@@ -42,9 +49,7 @@ public class EntityManager {
             int bx = player.x + (gamePanel.pieceWidth - size) / 2;
             int by = player.y + (gamePanel.pieceHeight - size) / 2;
             // Append balls to the list of balls
-            //gamePanel.balls.add(new CannonBall(bx, by, size, DEFAULT_CANNONBALL_SPEED, player.facingDirection));
-            gamePanel.balls.add(new BishopLance(bx, by, size, DEFAULT_CANNONBALL_SPEED, player.facingDirection));
-            // this should move to a variable
+            gamePanel.projectiles.add(new BishopLance(gamePanel, bx, by, size, DEFAULT_CANNONBALL_SPEED, player.facingDirection));
             soundManager.playClip(soundManager.shootClip);
         }
     }
@@ -60,12 +65,9 @@ public class EntityManager {
                 case "left" -> player.targetX -= gamePanel.PIECE_HEIGHT * 3;
                 case "right" -> player.targetX += gamePanel.PIECE_HEIGHT * 3;
             }
-
-            // spawn at top‐center of the rook
             int bx = player.x + (gamePanel.pieceWidth  - size) / 2;
             int by = player.y + (gamePanel.pieceHeight - size) / 2;
-            // Append balls to the list of balls
-            gamePanel.projectiles.add(new QueenSlice(bx, by, size, DEFAULT_QUEEN_PARTICLE_SPEED, 20, player.facingDirection));
+            gamePanel.projectiles.add(new QueenSlice(gamePanel, bx, by, size, DEFAULT_QUEEN_PARTICLE_SPEED, 20, player.facingDirection));
             soundManager.playClip(soundManager.sliceClip);
         }
     }
@@ -77,8 +79,7 @@ public class EntityManager {
            int bx = player.x + (gamePanel.pieceWidth  - size) / 2;
            int by = player.y + (gamePanel.pieceHeight - size) / 2;
 
-           // Append balls to the list of balls
-           gamePanel.projectiles.add(new KnightSmash(bx, by, size, DEFAULT_QUEEN_PARTICLE_SPEED,50, player.facingDirection));
+           gamePanel.projectiles.add(new KnightSmash(gamePanel, bx, by, size, DEFAULT_QUEEN_PARTICLE_SPEED,50, player.facingDirection));
            soundManager.playClip(soundManager.smashClip);
        }
     }

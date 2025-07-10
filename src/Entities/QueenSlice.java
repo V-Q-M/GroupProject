@@ -1,25 +1,19 @@
 package entities;
 
+import main.GamePanel;
+
 public class QueenSlice extends Projectile{
 
   // Specialized constructor
-  public QueenSlice(int x, int y, int size, int speed, int decay, String direction) {
+  public QueenSlice(GamePanel gamePanel, int x, int y, int size, int speed, int decay, String direction) {
+    this.gamePanel = gamePanel;
     this.x = x;
     this.y = y;
     this.height = size;
     this.width = size;
     this.direction = direction;
     this.speed = speed;
-    this.decay = decay;
-  }
-
-  // Moves the ball
-  public void moveProjectile(int speed) {
-    switch (direction) {
-    case "up" -> y -= speed;
-    case "down" -> y += speed;
-    case "right" -> x += speed;
-    case "left" -> x -= speed;
-    }
+    this.health = decay;
+    this.skin = gamePanel.queenParticleImage;
   }
 }

@@ -74,6 +74,7 @@ public class GamePanel extends JPanel{
 
   // List to track cannon balls
   public final List<Projectile> balls = new ArrayList<>();
+  public final List<Projectile> enemyBalls = new ArrayList<>();
   // carries particle effects
   public final List<Projectile> projectiles = new ArrayList<>();
   // carries enemies
@@ -257,12 +258,25 @@ public class GamePanel extends JPanel{
       if (!player.isDead) {
         player.playerUpdate();
       }
-      entityUpdate();
+      //entityUpdate();
 
       // Update every enemy
       for (Enemy enemy : enemies) {
         if (!enemy.isDead) {
           enemy.update();
+        }
+      }
+
+
+      for (Projectile projectile : projectiles){
+        if (!projectile.isDead){
+          projectile.update();
+        }
+      }
+
+      for (Projectile enemyBall : enemyBalls){
+        if (!enemyBall.isDead){
+          enemyBall.update();
         }
       }
 
@@ -316,26 +330,6 @@ public class GamePanel extends JPanel{
     }
 
   }
-  private void entityUpdate(){
-    // Update cannon balls
-    balls.removeIf(ball -> {
-      ball.moveProjectile(ball.speed);
-      return ball.hasHit || ball.y + ball.height < 0
-              || ball.y - ball.height >= Main.HEIGHT
-              || ball.x + ball.width < 0
-              || ball.x - ball.width >= Main.WIDTH;
-    });
-    // update projectiles (queens effect)
-    for (Iterator<Projectile> iterator = projectiles.iterator(); iterator.hasNext(); ) {
-      Projectile projectile = iterator.next();
-      projectile.moveProjectile(projectile.speed);
-      projectile.decay--;
-      if (projectile.decay <= 0) {
-        iterator.remove();
-      }
-    }
-  }
-
 
   // Carefull. Render method
   @Override
@@ -402,17 +396,9 @@ public class GamePanel extends JPanel{
   private void drawEntities(Graphics2D g2d){
     // Draw all cannon balls
     g2d.setColor(Color.WHITE);
-    for (Projectile b : balls) {
-      g2d.drawImage(cannonBallImage, b.x, b.y, b.width, b.height, this);
+    for (Projectile projectile : projectiles) {
+        g2d.drawImage(projectile.skin, projectile.x, projectile.y, projectile.width, projectile.height, this);
     }
-    for (Projectile p : projectiles) {
-      if (selectedPieceType == PieceType.QUEEN){
-        g2d.drawImage(queenParticleImage, p.x, p.y, p.width, p.height, this);
-      } else {
-        g2d.drawImage(knightParticleImage, p.x, p.y, p.width, p.height, this);
-      }
-    }
-
   }
 
   private void drawEnemies(Graphics2D g2d){

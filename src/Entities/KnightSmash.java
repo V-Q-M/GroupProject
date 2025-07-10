@@ -1,18 +1,23 @@
 package entities;
 
+import main.GamePanel;
+import main.Main;
+
 public class KnightSmash extends Projectile {
     // Specialized constructor
-    public KnightSmash(int x, int y, int size, int speed, int decay, String direction) {
+    public KnightSmash(GamePanel gamePanel, int x, int y, int size, int speed, int decay, String direction) {
+        this.gamePanel = gamePanel;
         this.x = x;
         this.y = y;
         this.height = size;
         this.width = size;
         this.direction = direction;
         this.speed = speed;
-        this.decay = decay;
+        this.health = decay;
+        this.skin = gamePanel.knightParticleImage;
     }
 
-    // Moves the ball
+    @Override
     public void moveProjectile(int speed) {
         int spreadSpeed = speed/4;
         x -= spreadSpeed/2;
@@ -21,4 +26,5 @@ public class KnightSmash extends Projectile {
         width += spreadSpeed;
         height += spreadSpeed;
     }
+
 }

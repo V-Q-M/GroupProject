@@ -42,15 +42,25 @@ public class EnemyRook extends Enemy{
         performAttack();
     }
 
-    int attackCoolDownCounter = 0;
-    public void performAttack(){
-       if (allowAttack) {
-           if (attackCoolDownCounter > attackCoolDown){
-               attackCoolDownCounter = 0;
-               System.out.println("ROOK ATTACKS");
-           } else {
-               attackCoolDownCounter++;
-           }
-       }
+    @Override
+    void updateCooldowns(){
+        if (isInvulnerable && invulnerableCounter<30){
+            invulnerableCounter++;
+        } else {
+            isInvulnerable = false;
+            invulnerableCounter = 0;
+        }
+
+        if (attackCoolDownCounter > attackCoolDown){
+            performAttack();
+            hasAttacked = false;
+            attackCoolDownCounter = 0;
+        } else {
+            attackCoolDownCounter++;
+        }
+    }
+
+    private void performAttack() {
+        gamePanel.entityManager.spawnEnemyCannonBall(x, y);
     }
 }

@@ -1,25 +1,21 @@
 package entities;
+import main.GamePanel;
+
 
 public class CannonBall extends Projectile {
 
   // Specialized constructor
-  public CannonBall(int x, int y, int size, int speed, String direction) {
+  public CannonBall(GamePanel gamePanel, int x, int y, int size, int speed, String direction) {
+    this.gamePanel = gamePanel;
     this.x = x;
     this.y = y;
     this.width = size;
     this.height = size;
     this.direction = direction;
     this.speed = speed;
+    this.health = 300;
+    this.skin = gamePanel.cannonBallImage;
   }
 
   // Moves the ball
-  public void moveProjectile(int speed) {
-    switch (direction) {
-      case "up" -> y -= speed;
-      case "down" -> y += speed;
-      case "right" -> x += speed;
-      case "left" -> x -= speed;
-      default -> x += speed;
-    }
-  }
 }

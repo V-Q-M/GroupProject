@@ -72,54 +72,17 @@ public class Enemy extends AnimateObject {
 
     void checkPlayerCollision(){
         if (!isInvulnerable) {
-            switch(gamePanel.selectedPieceType){
-                case ROOK   -> {
-                    for (Projectile ball : gamePanel.balls) {
-                        if (collisionHandler.projectileCollision(this, ball)) {
-                            health -= DEFAULT_CANNON_BALL_DMG;
-                            isInvulnerable = true;
-                            ball.hasHit = true;
-                            soundManager.playClip(soundManager.hitClip);
-                        }
+            for (Projectile projectile : gamePanel.projectiles){
+                isInvulnerable = true;
+                soundManager.playClip(soundManager.hitClip);
+                switch (gamePanel.selectedPieceType){
+                    case ROOK -> {
+                        health -= DEFAULT_CANNON_BALL_DMG;
+                        projectile.isDead = true;
                     }
-                }
-                case KNIGHT -> {
-                    for (Projectile projectile: gamePanel.projectiles) {
-                        if ( collisionHandler.projectileCollision(this, projectile)){
-                            health -= DEFAULT_SLAM_DMG;
-                            isInvulnerable = true;
-                            soundManager.playClip(soundManager.hitClip);
-                        }
-                    }
-                }
-                case BISHOP -> {
-                    for (Projectile lance : gamePanel.balls) {
-                        if (collisionHandler.projectileCollision(this, lance)) {
-                            health -= DEFAULT_LANCE_DMG;
-                            isInvulnerable = true;
-                            lance.hasHit = true;
-                            soundManager.playClip(soundManager.hitClip);
-                        }
-                    }
-                }
-                case QUEEN  -> {
-                    for (Projectile projectile: gamePanel.projectiles) {
-                        if ( collisionHandler.projectileCollision(this, projectile)){
-                            health -= DEFAULT_SLICE_DMG;
-                            isInvulnerable = true;
-                            soundManager.playClip(soundManager.hitClip);
-                        }
-                    }
-                }
-                case KING   -> {
-                    for (Projectile ball : gamePanel.balls) {
-                        if (collisionHandler.projectileCollision(this, ball)) {
-                            health -= DEFAULT_CANNON_BALL_DMG;
-                            isInvulnerable = true;
-                            ball.hasHit = true;
-                            soundManager.playClip(soundManager.hitClip);
-                        }
-                    }
+                    case KNIGHT -> health -= DEFAULT_SLAM_DMG;
+                    case BISHOP -> health -= DEFAULT_LANCE_DMG;
+                    case QUEEN -> health -= DEFAULT_SLICE_DMG;
                 }
             }
         }
@@ -127,7 +90,7 @@ public class Enemy extends AnimateObject {
      void checkPawnWallCollision(){
         for (Ally pawn : gamePanel.allies){
             if (!pawn.isDead && collisionHandler.allyCollision(this, pawn)) {
-                health = 0;
+                health -= 100;
                 pawn.health = 0;
             }
         }
