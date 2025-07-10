@@ -78,12 +78,21 @@ public class MenuPanel extends JPanel {
             showingSettings = false;
             soundManager.playClip(soundManager.buttonClickClip);
         }
+
+        if (keyHandler.enterPressed){
+
+        }
     }
 
     private void helpMenu(){
         if (keyHandler.escapePressed){
             keyHandler.escapePressed = false;
             showingHelp = false;
+            soundManager.playClip(soundManager.buttonClickClip);
+        }
+        if (keyHandler.enterPressed){
+            keyHandler.enterPressed = false;
+            currentHelpPage++;
             soundManager.playClip(soundManager.buttonClickClip);
         }
     }
@@ -184,6 +193,7 @@ public class MenuPanel extends JPanel {
 
     Font gameFont;
     Font gameFontSmall;
+    Font gameFontTiny;
     private void loadFonts() {
         try {
             InputStream fontStream = getClass().getResourceAsStream("/PressStart2P.ttf");
@@ -194,6 +204,7 @@ public class MenuPanel extends JPanel {
             Font baseFont = Font.createFont(Font.TRUETYPE_FONT, fontStream);
             gameFont = baseFont.deriveFont(80f);
             gameFontSmall = baseFont.deriveFont(40f);
+            gameFontTiny = baseFont.deriveFont(20f);
         } catch (FontFormatException | IOException e) {
             e.printStackTrace();
             gameFont = new Font("Monospaced", Font.BOLD, 80); // fallback
@@ -212,9 +223,9 @@ public class MenuPanel extends JPanel {
         if (showingShop){
             drawShop(g2d);
         } else if (showingSettings){
-            drawShop(g2d);
+            drawSettings(g2d);
         } else if (showingHelp){
-            drawShop(g2d);
+            drawHelp(g2d);
         } else {
             drawMainMenu(g2d);
         }
@@ -226,19 +237,140 @@ public class MenuPanel extends JPanel {
         g2d.drawImage(backgroundImg, 0, 0, Main.WIDTH, Main.HEIGHT, this);
     }
 
+    private boolean hoveringMusicSettingButton = false;
+    private boolean hoveringLanguageSettingButton = false;
+
+    private String musicOnText = "Music on";
+    private String musicOffText = "Music off";
+    private String languageText = "Language English";
+
     private void drawShop(Graphics2D g2d) {
-        g2d.setFont(gameFontSmall);
+        // Background
         g2d.setColor(new Color(0,0,0,220));
         g2d.fillRect(100,100, Main.WIDTH - 200, Main.HEIGHT - 200);
+
+
+        g2d.setFont(gameFont);
+        g2d.setColor(Color.WHITE);
+        drawText(g2d,0,230, "Shop");
+
+        // Music button
+        g2d.setFont(gameFontSmall);
+        if(hoveringMusicSettingButton){
+            g2d.setColor(Color.YELLOW);
+        } else {
+            g2d.setColor(Color.WHITE);
+        }
+        drawText(g2d,150,350, "Wall upgrade [PURCHASED]");
+        g2d.setColor(Color.WHITE);
+        g2d.setFont(gameFontTiny);
+        drawText(g2d,155,400, "Purchase two turrets defending their rows with cannonballs");
+
+        // Language button
+        g2d.setFont(gameFontSmall);
+        if(hoveringLanguageSettingButton){
+            g2d.setColor(Color.YELLOW);
+        } else {
+            g2d.setColor(Color.WHITE);
+        }
+        drawText(g2d,150,500, "King upgrade [PURCHASED]");
+        g2d.setColor(Color.WHITE);
+        g2d.setFont(gameFontTiny);
+        drawText(g2d,155,550, "Purchase two more guards for the king - allowing him to attack 3 rows at once");
     }
 
+    private void drawSettings(Graphics2D g2d){
+        // Background
+        g2d.setColor(new Color(0,0,0,220));
+        g2d.fillRect(100,100, Main.WIDTH - 200, Main.HEIGHT - 200);
+
+
+        g2d.setFont(gameFont);
+        g2d.setColor(Color.WHITE);
+        drawText(g2d,0,230, "Settings");
+
+        g2d.setFont(gameFontSmall);
+        // Music button
+        if(hoveringMusicSettingButton){
+            g2d.setColor(Color.YELLOW);
+        } else {
+            g2d.setColor(Color.WHITE);
+        }
+        drawText(g2d,0,400, musicOnText);
+
+        // Language button
+        if(hoveringLanguageSettingButton){
+            g2d.setColor(Color.YELLOW);
+        } else {
+            g2d.setColor(Color.WHITE);
+        }
+        drawText(g2d,0,500, languageText);
+    }
+
+    private int currentHelpPage = 0;
+    private void drawHelp(Graphics2D g2d){
+        // Background
+        g2d.setColor(new Color(0,0,0,220));
+        g2d.fillRect(100,100, Main.WIDTH - 200, Main.HEIGHT - 200);
+
+        g2d.setFont(gameFont);
+        g2d.setColor(Color.WHITE);
+        drawText(g2d,0,230, "Help");
+
+        if (currentHelpPage % 3 == 0){
+            g2d.setFont(gameFontSmall);
+            drawText(g2d, 155, 320, "Welcome to Chess Defense!");
+            g2d.setColor(Color.WHITE);
+            g2d.setFont(gameFontTiny);
+            drawText(g2d,155,375, "The enemy Chess Pieces have started an assault on your castle and you must hold");
+            drawText(g2d,155,425, "them off for as long as possible! Will you be strong enough?");
+            g2d.setFont(gameFontSmall);
+            drawText(g2d, 155, 540, "Controls:");
+            g2d.setFont(gameFontTiny);
+            drawText(g2d,155,595, "Use the WASD or Arrow-Keys to move your pieces. ");
+            drawText(g2d,155,645, "Press SPACE to perform an attack. Each piece has it's own unique attack.");
+            drawText(g2d,155,695, "Press ESC to open the Pause menu.");
+
+            drawText(g2d,155,800, "Remember. Every few seconds your piece gets automatically switched.");
+            drawText(g2d,155,845, "Be prepared.");
+
+            drawText(g2d, 0, 950, "Press ENTER to view next page");
+        } else if (currentHelpPage % 3 == 1){
+            g2d.setFont(gameFontSmall);
+            drawText(g2d, 155, 320, "Piece Overview:");
+
+            drawText(g2d,155,405, "The Rook:");
+            g2d.setFont(gameFontTiny);
+            drawText(g2d,155,450, "Having mastered artillery - the rook has proven a reliable range option,");
+            drawText(g2d,155,500, "capable of defeating his enemies from a safe distance.");
+            g2d.setFont(gameFontSmall);
+            drawText(g2d, 155, 600, "The Knight:");
+            g2d.setFont(gameFontTiny);
+            drawText(g2d,155,645, "Having lost his sword - the knight relies on his mighty stead to strike fear");
+            drawText(g2d, 155, 695, "into his enemies.");
+
+            g2d.setFont(gameFontSmall);
+            drawText(g2d, 155, 790, "The Bishop:");
+            g2d.setFont(gameFontTiny);
+            drawText(g2d,155,835, "Having found strength in his faith - the Bishop is ready to take up arms and ");
+            drawText(g2d, 155, 885, "fight for his faith.");
+
+            drawText(g2d, 0, 950, "Press ENTER to view next page");
+        } else {
+            g2d.setFont(gameFontSmall);
+            drawText(g2d, 155, 320, "The Queen:");
+            g2d.setFont(gameFontTiny);
+        }
+        g2d.setFont(gameFontSmall);
+
+    }
 
     private void drawMainMenu(Graphics2D g2d){
         g2d.setFont(gameFont);
 
         // Title background
         g2d.setColor(new Color(0, 0, 0, 220));
-        g2d.fillRect(650, 15, Main.WIDTH - 1300, 210);
+        g2d.fillRect(650, 15, Main.WIDTH - 1300, 215);
 
         // Upper row background
         g2d.setColor(new Color(0, 0, 0, 230));
@@ -253,6 +385,7 @@ public class MenuPanel extends JPanel {
         drawText(g2d,0,120, "Chess");
         drawText(g2d,0,220, "Defense");
 
+        // Play button
         if(hoveringPlay){
             g2d.setColor(Color.YELLOW);
         } else {
@@ -260,6 +393,7 @@ public class MenuPanel extends JPanel {
         }
         drawText(g2d,0,0, "Play");
 
+        // Shop button
         if(hoveringShop){
             g2d.setColor(Color.YELLOW);
         } else {
@@ -267,6 +401,7 @@ public class MenuPanel extends JPanel {
         }
         drawText(g2d,300,0, "Shop");
 
+        // Quit button
         if(hoveringQuit){
             g2d.setColor(Color.YELLOW);
         } else {

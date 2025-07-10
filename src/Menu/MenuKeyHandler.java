@@ -68,6 +68,9 @@ public class MenuKeyHandler implements KeyListener {
             case KeyEvent.VK_D, KeyEvent.VK_RIGHT, KeyEvent.VK_L -> {
                 goingRight = false;
             }
+            case KeyEvent.VK_SPACE -> spacePressed = false;
+            case KeyEvent.VK_ESCAPE -> escapePressed = false;
+            case KeyEvent.VK_ENTER -> enterPressed = false;
         }
     }
 

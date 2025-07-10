@@ -258,13 +258,13 @@ public class GamePanel extends JPanel{
   public void simpleAnimation() {
     animationCounter++;
 
-    if (animationCounter > 60) {
+    if (animationCounter > 45) {
       animationCounter = 0;
     }
 
-    if (animationCounter <= 20) {
+    if (animationCounter <= 15) {
       animationFrame = 1;
-    } else if (animationCounter <= 40) {
+    } else if (animationCounter <= 30) {
       animationFrame = 2;
     } else {
       animationFrame = 3;
