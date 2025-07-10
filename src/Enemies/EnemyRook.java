@@ -20,7 +20,7 @@ public class EnemyRook extends Enemy{
     boolean allowAttack = false;
     @Override
     public void move(){
-        if (x < Main.WIDTH - 507){
+        if (x < Main.WIDTH - 508){
             allowAttack = true;
         } else {
             x -= speed;

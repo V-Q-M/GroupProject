@@ -35,6 +35,14 @@ public class CollisionHandler {
             projectile.y < enemy.y + enemy.height - 10;
     }
 
+
+    public boolean projectileEnemyCollision(Projectile projectile, Player player){
+        return player.x + gamePanel.pieceWidth > projectile.x &&
+                player.x < projectile.x + projectile.width &&
+                player.y + gamePanel.pieceHeight > projectile.y &&
+                player.y < projectile.y + projectile.height;
+    }
+
     public boolean enemyCollision(Enemy enemy, Player player){
         return player.x + gamePanel.pieceWidth > enemy.x &&
             player.x < enemy.x + enemy.width &&

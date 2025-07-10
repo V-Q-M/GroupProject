@@ -1,6 +1,7 @@
 package Allies;
 
 import enemies.Enemy;
+import entities.Projectile;
 import main.*;
 
 import java.util.ArrayList;
@@ -85,6 +86,7 @@ public class Player extends AnimateObject{
     public void playerUpdate(){
         movement();
         checkCollision();
+        checkProjectileCollision();
         coolDowns();
         checkAlive();
         prepareForcedSwap();
@@ -267,7 +269,7 @@ public class Player extends AnimateObject{
     private void checkCollision(){
         if (!isInvulnerable) {
             for (Enemy enemy : gamePanel.enemies) {
-                if (collisionHandler.enemyCollision(enemy, this) && !enemy.hasAttacked && !enemy.isDead) {
+                if (collisionHandler.enemyCollision(enemy, this) && !enemy.hasAttacked) {
                     enemy.hasAttacked = true;
                     takeDamage(enemy.damage);
                     isInvulnerable = true;
@@ -277,6 +279,18 @@ public class Player extends AnimateObject{
         }
     }
 
+    void checkProjectileCollision(){
+        for (Projectile projectile : gamePanel.enemyBalls){
+            System.out.println(projectile.x + " - " + projectile.y);
+            System.out.println(x + " - " + y);
+            if (collisionHandler.projectileEnemyCollision(projectile, this)){
+                takeDamage(15);
+                projectile.isDead = true;
+                gamePanel.entityManager.spawnExplosion(projectile.x, projectile.y);
+                soundManager.playClip(soundManager.hitClip);
+            }
+        }
+    }
     private void takeDamage(int damageAmount){
         switch(gamePanel.selectedPieceType){
             case ROOK -> rookHealth -= damageAmount;
@@ -348,19 +362,19 @@ public class Player extends AnimateObject{
 
         switch (facingDirection){
             case "up" -> {
-                targetY -= 264;
+                targetY -= 2 * gamePanel.pieceHeight;
                 y = targetY;
             }
             case "down" -> {
-                targetY += 264;
+                targetY += 2 * gamePanel.pieceHeight;
                 y = targetY;
             }
             case "left" -> {
-                targetX -= 264;
+                targetX -= 2 * gamePanel.pieceHeight;
                 x = targetX;
             }
             case "right" -> {
-                targetX += 264;
+                targetX += 2 * gamePanel.pieceHeight;
                 x = targetX;
             }
         }
@@ -369,10 +383,10 @@ public class Player extends AnimateObject{
 
     private void performKingAttack(){
         soundManager.playClip(soundManager.summonClip);
-        gamePanel.entityManager.spawnPawns(x , y - 132);
+        gamePanel.entityManager.spawnPawns(x , y - gamePanel.pieceHeight);
         soundManager.playClip(soundManager.summonClip);
-        gamePanel.entityManager.spawnPawns(x + 132, y);
+        gamePanel.entityManager.spawnPawns(x + gamePanel.pieceWidth, y);
         soundManager.playClip(soundManager.summonClip);
-        gamePanel.entityManager.spawnPawns(x , y + 132);
+        gamePanel.entityManager.spawnPawns(x , y + gamePanel.pieceHeight);
     }
 }

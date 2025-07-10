@@ -277,6 +277,11 @@ public class MenuPanel extends JPanel {
         g2d.setColor(Color.WHITE);
         g2d.setFont(gameFontTiny);
         drawText(g2d,155,550, "Purchase two more guards for the king - allowing him to attack 3 rows at once");
+
+        drawText(g2d,150,700, "Queen upgrade [PURCHASED]");
+        g2d.setColor(Color.WHITE);
+        g2d.setFont(gameFontTiny);
+        drawText(g2d,155,750, "Purchase an ancient talisman for the queen - allowing her to heal when defeating enemies");
     }
 
     private void drawSettings(Graphics2D g2d){

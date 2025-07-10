@@ -17,7 +17,7 @@ import entities.Projectile;
 
 public class GamePanel extends JPanel{
 
-  private boolean DEBUG_MODE = false;
+  private boolean DEBUG_MODE = true;
   public boolean gamePaused = false;
   public int score = 0;
 
@@ -116,7 +116,7 @@ public class GamePanel extends JPanel{
     buildWall();
 
     // Default piece
-    selectPiece(PieceType.ROOK);
+    selectPiece(PieceType.KNIGHT);
     // Refreshrate. Might have to improve that
     new Timer(16, e -> update()).start(); // ~60 FPS
   }
@@ -428,12 +428,21 @@ public class GamePanel extends JPanel{
     // Draw all cannon balls
     for (Projectile projectile : projectiles) {
       g2d.drawImage(projectile.skin, projectile.x, projectile.y, projectile.width, projectile.height, this);
+      if (DEBUG_MODE){
+        g2d.drawRect(projectile.x, projectile.y, projectile.width, projectile.height);
+      }
     }
     for (Projectile projectile : effects){
       g2d.drawImage(projectile.skin, projectile.x, projectile.y, projectile.width, projectile.height, this);
+      if (DEBUG_MODE){
+        g2d.drawRect(projectile.x, projectile.y, projectile.width, projectile.height);
+      }
     }
     for (Projectile projectile : enemyBalls){
       g2d.drawImage(projectile.skin, projectile.x, projectile.y, projectile.width, projectile.height, this);
+      if (DEBUG_MODE){
+        g2d.drawRect(projectile.x, projectile.y, projectile.width, projectile.height);
+      }
     }
   }
 
