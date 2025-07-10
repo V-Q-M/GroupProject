@@ -16,6 +16,4 @@ public class CannonBall extends Projectile {
     this.health = 200;
     this.skin = gamePanel.cannonBallImage;
   }
-
-  // Moves the ball
 }

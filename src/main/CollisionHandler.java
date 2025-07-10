@@ -28,7 +28,7 @@ public class CollisionHandler {
         return false;
     }
 
-    public boolean projectileCollision(Enemy enemy, Projectile projectile) {
+    public boolean projectileCollision(AnimateObject enemy, Projectile projectile) {
         return projectile.x + projectile.width > enemy.x &&
             projectile.x < enemy.x + enemy.width &&
             projectile.y + projectile.height > enemy.y + 10 &&

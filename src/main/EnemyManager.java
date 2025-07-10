@@ -35,7 +35,7 @@ public class EnemyManager {
             int randomY = (int)(Math.random() * (Main.HEIGHT / size)) * size;
 
             spawnEnemy(X,randomY, size, size, PieceType.PAWN);
-            if (difficultyScalar % 4 == 0){
+            if (difficultyScalar % 8 == 0){
                 spawnEnemy(X, randomY, size, size, PieceType.ROOK);
             }
         }

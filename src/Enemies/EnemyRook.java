@@ -13,7 +13,8 @@ public class EnemyRook extends Enemy{
         this.health = 150;
         this.maxHealth = 150;
         this.skin = gamePanel.enemyRookImage;
-        this.attackCoolDown = 120;
+        this.attackCoolDown = 300;
+        this.attackCoolDownCounter = 0;
     }
 
     boolean allowAttack = false;
@@ -39,7 +40,6 @@ public class EnemyRook extends Enemy{
         checkPlayerCollision();
         checkPawnWallCollision();
         updateCooldowns();
-        performAttack();
     }
 
     @Override

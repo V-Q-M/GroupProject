@@ -389,8 +389,10 @@ public class GamePanel extends JPanel{
 
   private void drawEntities(Graphics2D g2d){
     // Draw all cannon balls
-    g2d.setColor(Color.WHITE);
     for (Projectile projectile : projectiles) {
+      g2d.drawImage(projectile.skin, projectile.x, projectile.y, projectile.width, projectile.height, this);
+    }
+    for (Projectile projectile : enemyBalls){
       g2d.drawImage(projectile.skin, projectile.x, projectile.y, projectile.width, projectile.height, this);
     }
   }
@@ -412,6 +414,12 @@ public class GamePanel extends JPanel{
     for (Enemy enemy : enemies) {
       if (!enemy.isDead && enemy.health != enemy.maxHealth) {
         createHealthBar(g2d, enemy.x, enemy.y, enemy.width, 15, enemy.health, enemy.maxHealth);
+      }
+    }
+
+    for (Ally ally : allies){
+      if (ally.health != ally.maxHealth){
+        createHealthBar(g2d, ally.x, ally.y, ally.width, 15, ally.health, ally.maxHealth);
       }
     }
 

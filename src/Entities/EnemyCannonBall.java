@@ -21,4 +21,16 @@ public class EnemyCannonBall extends Projectile {
         x -= speed;
     }
 
+    @Override
+    public void checkAlive(){
+        if (health <= 0){
+            isDead = true;
+        } else {
+            health--;
+        }
+        if (x < 0){ // Has hit the castle
+            isDead = true;
+            gamePanel.castleHealth -= 10;
+        }
+    }
 }

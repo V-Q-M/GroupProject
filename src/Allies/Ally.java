@@ -25,12 +25,23 @@ public class Ally extends AnimateObject {
         checkAlive();
         move();
         updateCooldowns();
+        checkProjectileCollision();
     }
 
     void checkAlive(){
         if (health <= 0){
             this.isDead = true;
             soundManager.playClip(soundManager.deathClip);
+        }
+    }
+
+    void checkProjectileCollision(){
+        for (Projectile projectile : gamePanel.enemyBalls){
+            if (collisionHandler.projectileCollision(this, projectile)){
+                health -= 50;
+                projectile.isDead = true;
+                soundManager.playClip(soundManager.hitClip);
+            }
         }
     }
 
