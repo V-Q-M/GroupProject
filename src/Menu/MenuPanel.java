@@ -16,8 +16,8 @@ public class MenuPanel extends JPanel {
     SoundManager soundManager = new SoundManager(this);
     BufferedImage backgroundImg;
 
-    private int buttonIndexX = 0;
-    private int buttonIndexY = 0;
+    private int buttonIndexX = 100000;
+    private int buttonIndexY = 100000;
     // Window size
     public MenuPanel() {
         setPreferredSize(new Dimension(Main.WIDTH, Main.HEIGHT));
@@ -79,8 +79,41 @@ public class MenuPanel extends JPanel {
             soundManager.playClip(soundManager.buttonClickClip);
         }
 
-        if (keyHandler.enterPressed){
+        if (keyHandler.goingUp){
+            keyHandler.goingUp = false;
+            soundManager.playClip(soundManager.buttonHoverClip);
+            buttonIndexY--;
+        } else if (keyHandler.goingDown){
+            keyHandler.goingDown = false;
+            soundManager.playClip(soundManager.buttonHoverClip);
+            buttonIndexY++;
+        }
 
+        // Enter performs action on the button
+        if (keyHandler.enterPressed || keyHandler.spacePressed) {
+            keyHandler.enterPressed = false;
+            keyHandler.spacePressed = false;
+            soundManager.playClip(soundManager.buttonClickClip);
+
+            if (buttonIndexY % 3 == 0) {
+                System.out.println("MusicSetting");
+            } else if (buttonIndexY % 3 == 1) {
+                System.out.println("LanguageSetting");
+            } else if (buttonIndexY % 3 == 2) {
+                System.out.println("DebugSetting");
+            }
+        }
+        // Hover effect
+        resetButtons();
+        // Color buttons correctly
+        if (buttonIndexY % 3 == 0) {
+            hoveringMusicSettingButton = true;
+        }
+        if (buttonIndexY % 3 == 1) {
+            hoveringLanguageSettingButton = true;
+        }
+        if (buttonIndexY % 3 == 2) {
+            hoveringDebugSettingButton = true;
         }
     }
 
@@ -102,21 +135,21 @@ public class MenuPanel extends JPanel {
 
         if (keyHandler.goingRight){
             keyHandler.goingRight = false;
-            soundManager.playClip(soundManager.buttonHoverClip);
             buttonIndexX++;
+            soundManager.playClip(soundManager.buttonHoverClip);
         } else if (keyHandler.goingLeft){
             keyHandler.goingLeft = false;
-            soundManager.playClip(soundManager.buttonHoverClip);
             buttonIndexX--;
+            soundManager.playClip(soundManager.buttonHoverClip);
         }
         if (keyHandler.goingUp){
             keyHandler.goingUp = false;
-            soundManager.playClip(soundManager.buttonHoverClip);
             buttonIndexY--;
+            soundManager.playClip(soundManager.buttonHoverClip);
         } else if (keyHandler.goingDown){
             keyHandler.goingDown = false;
-            soundManager.playClip(soundManager.buttonHoverClip);
             buttonIndexY++;
+            soundManager.playClip(soundManager.buttonHoverClip);
         }
 
         // Enter performs action on the button
@@ -177,6 +210,11 @@ public class MenuPanel extends JPanel {
         hoveringQuit = false;
         hoveringSettings = false;
         hoveringHelp = false;
+
+        hoveringMusicSettingButton = false;
+        hoveringLanguageSettingButton = false;
+        hoveringDebugSettingButton = false;
+
     }
 
     private void loadImages() {
@@ -239,10 +277,12 @@ public class MenuPanel extends JPanel {
 
     private boolean hoveringMusicSettingButton = false;
     private boolean hoveringLanguageSettingButton = false;
+    private boolean hoveringDebugSettingButton = false;
 
     private String musicOnText = "Music on";
     private String musicOffText = "Music off";
     private String languageText = "Language English";
+    private String debugText = "Debugmode off";
 
     private void drawShop(Graphics2D g2d) {
         // Background
@@ -278,10 +318,11 @@ public class MenuPanel extends JPanel {
         g2d.setFont(gameFontTiny);
         drawText(g2d,155,550, "Purchase two more guards for the king - allowing him to attack 3 rows at once");
 
-        drawText(g2d,150,700, "Queen upgrade [PURCHASED]");
+        g2d.setFont(gameFontSmall);
+        drawText(g2d,150,650, "Queen upgrade [PURCHASED]");
         g2d.setColor(Color.WHITE);
         g2d.setFont(gameFontTiny);
-        drawText(g2d,155,750, "Purchase an ancient talisman for the queen - allowing her to heal when defeating enemies");
+        drawText(g2d,155,700, "Purchase an ancient talisman for the queen - allowing her to heal when defeating enemies");
     }
 
     private void drawSettings(Graphics2D g2d){
@@ -310,6 +351,14 @@ public class MenuPanel extends JPanel {
             g2d.setColor(Color.WHITE);
         }
         drawText(g2d,0,500, languageText);
+
+        // Debugmode button
+        if(hoveringDebugSettingButton){
+            g2d.setColor(Color.YELLOW);
+        } else {
+            g2d.setColor(Color.WHITE);
+        }
+        drawText(g2d,0,600, debugText);
     }
 
     private int currentHelpPage = 0;
