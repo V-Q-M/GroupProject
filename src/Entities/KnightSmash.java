@@ -5,7 +5,7 @@ import main.Main;
 
 public class KnightSmash extends Projectile {
     // Specialized constructor
-    public KnightSmash(GamePanel gamePanel, int x, int y, int size, int speed, int decay, String direction) {
+    public KnightSmash(GamePanel gamePanel, int x, int y, int size, int speed, int decay, int damage, String direction) {
         this.gamePanel = gamePanel;
         this.x = x;
         this.y = y;
@@ -14,6 +14,7 @@ public class KnightSmash extends Projectile {
         this.direction = direction;
         this.speed = speed;
         this.health = decay;
+        this.damage = damage;
         this.skin = gamePanel.knightParticleImage;
     }
 

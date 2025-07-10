@@ -5,10 +5,6 @@ import entities.Projectile;
 import main.*;
 
 public class Enemy extends AnimateObject {
-    final int DEFAULT_CANNON_BALL_DMG = 50;
-    final int DEFAULT_SLICE_DMG= 50;
-    final int DEFAULT_SLAM_DMG= 100;
-    final int DEFAULT_LANCE_DMG= 75;
     public int maxHealth = 100; // need to pass it in constructor soon
 
 
@@ -76,16 +72,11 @@ public class Enemy extends AnimateObject {
                 if (collisionHandler.projectileCollision(this, projectile)) {
                     isInvulnerable = true;
                     soundManager.playClip(soundManager.hitClip);
+                    health -= projectile.damage;
 
-                    switch (gamePanel.selectedPieceType) {
-                        case ROOK -> {
-                            health -= DEFAULT_CANNON_BALL_DMG;
+                    if (projectile.diesOnHit) {
                             gamePanel.entityManager.spawnExplosion(projectile.x, projectile.y);
                             projectile.isDead = true;
-                        }
-                        case KNIGHT -> health -= DEFAULT_SLAM_DMG;
-                        case BISHOP -> health -= DEFAULT_LANCE_DMG;
-                        case QUEEN -> health -= DEFAULT_SLICE_DMG;
                     }
                 }
             }

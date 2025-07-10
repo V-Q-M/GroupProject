@@ -16,6 +16,8 @@ public abstract class Projectile {
     public int health = 100;
     public String direction;
     public boolean isDead = false;
+    public int damage;
+    public boolean diesOnHit = false;
     public BufferedImage skin;
 
     public void moveProjectile(int speed) {

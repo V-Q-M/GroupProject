@@ -10,8 +10,19 @@ public class EntityManager {
     KeyHandler keyHandler;
     Player player;
 
-    int DEFAULT_CANNONBALL_SPEED = 10;
-    int DEFAULT_QUEEN_PARTICLE_SPEED = 20;
+    final int DEFAULT_CANNONBALL_SPEED = 10;
+    final int DEFAULT_LANCE_SPEED = 10;
+    final int DEFAULT_QUEEN_PARTICLE_SPEED = 20;
+
+    final int DEFAULT_TIME_TO_DECAY_QUEEN = 20;
+    final int DEFAULT_TIME_TO_DECAY_KNIGHT = 50;
+
+    final int DEFAULT_CANNON_BALL_DMG = 50;
+    final int DEFAULT_SLICE_DMG= 50;
+    final int DEFAULT_SLAM_DMG= 100;
+    final int DEFAULT_LANCE_DMG= 75;
+
+
     public EntityManager(GamePanel gamePanel, KeyHandler keyHandler, SoundManager soundManager, Player player) {
        this.gamePanel = gamePanel;
        this.soundManager = soundManager;
@@ -26,7 +37,7 @@ public class EntityManager {
             // spawn at top‐center of the rook
             int bx = x + (gamePanel.pieceWidth - size) / 2;
             // Append balls to the list of balls
-            gamePanel.projectiles.add(new CannonBall(gamePanel, bx, y, size, DEFAULT_CANNONBALL_SPEED, direction));
+            gamePanel.projectiles.add(new CannonBall(gamePanel, bx, y, size, DEFAULT_CANNONBALL_SPEED, DEFAULT_CANNON_BALL_DMG, direction));
             soundManager.playClip(soundManager.shootClip);
         }
     }
@@ -35,7 +46,7 @@ public class EntityManager {
        if (gamePanel.enemyRookImage != null) {
            int size = CANNON_BALL_SIZE;
            int bx = x + (gamePanel.pieceWidth - size) / 2;
-           gamePanel.enemyBalls.add(new EnemyCannonBall(gamePanel, bx, y, size, DEFAULT_CANNONBALL_SPEED));
+           gamePanel.enemyBalls.add(new EnemyCannonBall(gamePanel, bx, y, size, DEFAULT_CANNONBALL_SPEED, DEFAULT_CANNON_BALL_DMG));
            soundManager.playClip(soundManager.shootClip);
        }
     }
@@ -57,7 +68,7 @@ public class EntityManager {
             int bx = player.x + (gamePanel.pieceWidth - size) / 2;
             int by = player.y + (gamePanel.pieceHeight - size) / 2;
             // Append balls to the list of balls
-            gamePanel.projectiles.add(new BishopLance(gamePanel, bx, by, size, DEFAULT_CANNONBALL_SPEED, player.facingDirection));
+            gamePanel.projectiles.add(new BishopLance(gamePanel, bx, by, size, DEFAULT_LANCE_SPEED ,DEFAULT_LANCE_DMG, player.facingDirection));
             soundManager.playClip(soundManager.shootClip);
         }
     }
@@ -75,7 +86,7 @@ public class EntityManager {
             }
             int bx = player.x + (gamePanel.pieceWidth  - size) / 2;
             int by = player.y + (gamePanel.pieceHeight - size) / 2;
-            gamePanel.projectiles.add(new QueenSlice(gamePanel, bx, by, size, DEFAULT_QUEEN_PARTICLE_SPEED, 20, player.facingDirection));
+            gamePanel.projectiles.add(new QueenSlice(gamePanel, bx, by, size, DEFAULT_QUEEN_PARTICLE_SPEED, DEFAULT_TIME_TO_DECAY_QUEEN, DEFAULT_SLICE_DMG,player.facingDirection));
             soundManager.playClip(soundManager.sliceClip);
         }
     }
@@ -87,7 +98,7 @@ public class EntityManager {
            int bx = player.x + (gamePanel.pieceWidth  - size) / 2;
            int by = player.y + (gamePanel.pieceHeight - size) / 2;
 
-           gamePanel.projectiles.add(new KnightSmash(gamePanel, bx, by, size, DEFAULT_QUEEN_PARTICLE_SPEED,50, player.facingDirection));
+           gamePanel.projectiles.add(new KnightSmash(gamePanel, bx, by, size, DEFAULT_QUEEN_PARTICLE_SPEED, DEFAULT_TIME_TO_DECAY_KNIGHT, DEFAULT_SLAM_DMG, player.facingDirection));
            soundManager.playClip(soundManager.smashClip);
        }
     }

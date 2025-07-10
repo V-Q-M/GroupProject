@@ -5,7 +5,7 @@ import main.GamePanel;
 public class CannonBall extends Projectile {
 
   // Specialized constructor
-  public CannonBall(GamePanel gamePanel, int x, int y, int size, int speed, String direction) {
+  public CannonBall(GamePanel gamePanel, int x, int y, int size, int speed, int damage, String direction) {
     this.gamePanel = gamePanel;
     this.x = x;
     this.y = y;
@@ -14,6 +14,8 @@ public class CannonBall extends Projectile {
     this.direction = direction;
     this.speed = speed;
     this.health = 200;
+    this.damage = damage;
+    this.diesOnHit = true;
     this.skin = gamePanel.cannonBallImage;
   }
 

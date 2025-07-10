@@ -4,7 +4,7 @@ import main.GamePanel;
 
 public class EnemyCannonBall extends Projectile {
 
-    public EnemyCannonBall(GamePanel gamePanel, int x, int y, int size, int speed) {
+    public EnemyCannonBall(GamePanel gamePanel, int x, int y, int size, int speed, int damage) {
         this.gamePanel = gamePanel;
         this.x = x;
         this.y = y;
@@ -13,6 +13,7 @@ public class EnemyCannonBall extends Projectile {
         this.gamePanel = gamePanel;
         this.health = 200;
         this.speed = speed;
+        this.damage = damage;
         this.skin = gamePanel.cannonBallImage;
     }
 
