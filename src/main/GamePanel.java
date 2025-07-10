@@ -17,7 +17,7 @@ import entities.Projectile;
 
 public class GamePanel extends JPanel{
 
-  private boolean DEBUG_MODE = true;
+  private boolean DEBUG_MODE = false;
   public boolean gamePaused = false;
   public int score = 0;
 
@@ -85,7 +85,6 @@ public class GamePanel extends JPanel{
   boolean gameStart = true;
   public boolean swapSoon = false;
   public int castleHealth = 100;
-  //public int castleHealth = 10;
   public boolean gameOver = false;
 
   KeyHandler keyHandler = new KeyHandler(this);
@@ -550,20 +549,20 @@ public class GamePanel extends JPanel{
     g2d.fillRect(0,0,Main.WIDTH, Main.HEIGHT);
 
     g2d.setColor(Color.RED);
-    drawText(g2d,0,0, gameFont, gameOverText);
+    drawText(g2d,0,320, gameFont, gameOverText);
 
     if(pauseMenuIndex % 2 == 0){
       g2d.setColor(Color.YELLOW);
     } else {
       g2d.setColor(Color.WHITE);
     }
-    drawText(g2d,0,700, gameFont, quitGameText);
+    drawText(g2d,0,550, gameFont, quitGameText);
     if(pauseMenuIndex % 2 == 1){
       g2d.setColor(Color.YELLOW);
     } else {
       g2d.setColor(Color.WHITE);
     }
-    drawText(g2d, 0, 850, gameFont, restartText);
+    drawText(g2d, 0, 700, gameFont, restartText);
     if(keyHandler.goingDown){
       keyHandler.goingDown = false;
       soundManager.playClip(soundManager.buttonHoverClip);
