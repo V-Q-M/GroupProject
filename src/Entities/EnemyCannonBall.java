@@ -17,6 +17,22 @@ public class EnemyCannonBall extends Projectile {
     }
 
     @Override
+    public void update(){
+        checkAlive();
+        animateBall();
+        moveProjectile(speed);
+    }
+    int animateCounter = 0;
+
+    public void animateBall(){
+        if (animateCounter > 30) {
+            animateCounter = 0;
+            this.y += 12;
+        } else {
+            animateCounter++;
+        }
+    }
+    @Override
     public void moveProjectile(int speed) {
         x -= speed;
     }

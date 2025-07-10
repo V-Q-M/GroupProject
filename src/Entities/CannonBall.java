@@ -17,12 +17,14 @@ public class CannonBall extends Projectile {
     this.skin = gamePanel.cannonBallImage;
   }
 
+  @Override
   public void update(){
     checkAlive();
     animateBall();
     moveProjectile(speed);
   }
   int animateCounter = 0;
+
   public void animateBall(){
     if (animateCounter > 30) {
       animateCounter = 0;

@@ -25,7 +25,6 @@ public class EntityManager {
             int size = CANNON_BALL_SIZE; // size of the cannonball
             // spawn at top‐center of the rook
             int bx = x + (gamePanel.pieceWidth - size) / 2;
-            int by = y + (gamePanel.pieceHeight - size) / 2;
             // Append balls to the list of balls
             gamePanel.projectiles.add(new CannonBall(gamePanel, bx, y, size, DEFAULT_CANNONBALL_SPEED, direction));
             soundManager.playClip(soundManager.shootClip);
@@ -36,9 +35,7 @@ public class EntityManager {
        if (gamePanel.enemyRookImage != null) {
            int size = CANNON_BALL_SIZE;
            int bx = x + (gamePanel.pieceWidth - size) / 2;
-           int by = y + (gamePanel.pieceHeight - size) / 2;
-           // Append balls to the list of balls
-           gamePanel.enemyBalls.add(new EnemyCannonBall(gamePanel, bx, by, size, DEFAULT_CANNONBALL_SPEED));
+           gamePanel.enemyBalls.add(new EnemyCannonBall(gamePanel, bx, y, size, DEFAULT_CANNONBALL_SPEED));
            soundManager.playClip(soundManager.shootClip);
        }
     }
