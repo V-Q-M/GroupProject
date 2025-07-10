@@ -140,6 +140,9 @@ public class GamePanel extends JPanel{
       restartText = "Neustarten?";
       resumeText = "Fortfahren?";
     }
+    if (line[2].equals("debug on")){
+      DEBUG_MODE = true;
+    }
   }
 
 

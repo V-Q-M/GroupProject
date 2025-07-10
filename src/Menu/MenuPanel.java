@@ -1,15 +1,17 @@
 package Menu;
 
 import main.Main;
-import main.PieceType;
 import main.SoundManager;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
 
 public class MenuPanel extends JPanel {
     MenuKeyHandler keyHandler = new MenuKeyHandler(this);
@@ -18,6 +20,21 @@ public class MenuPanel extends JPanel {
 
     private int buttonIndexX = 100000;
     private int buttonIndexY = 100000;
+
+
+    private String playText = "Play";
+    private String shopText = "Shop";
+    private String quitText = "Quit";
+    private String settingsText = "Settings";
+    private String helpText = "Help";
+
+    private String musicOnText = "Music on";
+    private String musicOffText = "Music off";
+    private String languageEnglishText = "Language English";
+    private String languageGermanText = "Language German";
+    private String debugOffText = "Debugmode off";
+    private String debugOnText = "Debugmode on";
+
     // Window size
     public MenuPanel() {
         setPreferredSize(new Dimension(Main.WIDTH, Main.HEIGHT));
@@ -28,10 +45,61 @@ public class MenuPanel extends JPanel {
         this.loadImages();
         this.loadFonts();
         soundManager.loadSounds();
-        soundManager.startMenuMusic();
+        //soundManager.startMenuMusic();
+        applySettings();
 
         // Refreshrate. Might have to improve that
         new Timer(16, e -> update()).start(); // ~60 FPS
+    }
+
+    private void applySettings(){
+        String[] line = readLinesFromResource("settings.txt");
+        System.out.println(line[0]);
+        if (line[0].equals("music off")) {
+            soundManager.stopMusic();
+            musicOff = true;
+        } else {
+            soundManager.startMenuMusic();
+            musicOff = false;
+        }
+        if (line[1].equals("language german")) {
+            languageGerman = true;
+            playText = "Start";
+            shopText = "Shop";
+            quitText = "Verlassen";
+            settingsText = "Einstellungen";
+            helpText = "Hilfe";
+
+            musicOnText = "Musik an";
+            musicOffText = "Musik aus";
+            languageEnglishText = "Sprache Englisch";
+            languageGermanText = "Sprache Deutsch";
+            debugOffText = "Debugmodus aus";
+            debugOnText = "Debugmodus an";
+        }
+        if (line[2].equals("debug on")){
+            debugMode = true;
+        }
+    }
+
+    public String[] readLinesFromResource(String resourceName) {
+        try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream(resourceName);
+             BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
+
+            java.util.List<String> lines = new ArrayList<>();
+            String line;
+
+            while ((line = reader.readLine()) != null) {
+                lines.add(line);
+            }
+
+            return lines.toArray(new String[0]);
+
+        } catch (IOException | NullPointerException e) {
+            JOptionPane.showMessageDialog(this, "Failed to read resource: " + resourceName);
+            e.printStackTrace();
+            return null;
+        }
     }
 
     private void update(){
@@ -72,6 +140,10 @@ public class MenuPanel extends JPanel {
         }
     }
 
+    private boolean musicOff = false;
+    private boolean languageGerman = false;
+    private boolean debugMode = false;
+
     private void settingsMenu(){
         if (keyHandler.escapePressed){
             keyHandler.escapePressed = false;
@@ -97,10 +169,14 @@ public class MenuPanel extends JPanel {
 
             if (buttonIndexY % 3 == 0) {
                 System.out.println("MusicSetting");
+                musicOff = !musicOff;
             } else if (buttonIndexY % 3 == 1) {
                 System.out.println("LanguageSetting");
+                languageGerman = !languageGerman;
+
             } else if (buttonIndexY % 3 == 2) {
                 System.out.println("DebugSetting");
+                debugMode = !debugMode;
             }
         }
         // Hover effect
@@ -160,22 +236,22 @@ public class MenuPanel extends JPanel {
 
             if (buttonIndexY % 2 == 0) {
                 if (buttonIndexX % 3 == 0) {
-                    System.out.println("Shop");
+                    System.out.println(shopText);
                     showingShop = true;
                 } else if (buttonIndexX % 3 == 1) {
-                    System.out.println("Play");
+                    System.out.println(playText);
                     soundManager.stopMusic();
                     Main.startMainGame(this, null);
                 } else if (buttonIndexX % 3 == 2) {
-                    System.out.println("Quit");
+                    System.out.println(quitText);
                     System.exit(0);
                 }
             } else if (buttonIndexY % 2 == 1){
                 if (buttonIndexX % 2 == 0) {
-                    System.out.println("Settings");
+                    System.out.println(settingsText);
                     showingSettings = true;
                 } else if (buttonIndexX % 2 == 1) {
-                    System.out.println("Help");
+                    System.out.println(helpText);
                     showingHelp = true;
                 }
             }
@@ -279,10 +355,6 @@ public class MenuPanel extends JPanel {
     private boolean hoveringLanguageSettingButton = false;
     private boolean hoveringDebugSettingButton = false;
 
-    private String musicOnText = "Music on";
-    private String musicOffText = "Music off";
-    private String languageText = "Language English";
-    private String debugText = "Debugmode off";
 
     private void drawShop(Graphics2D g2d) {
         // Background
@@ -342,7 +414,11 @@ public class MenuPanel extends JPanel {
         } else {
             g2d.setColor(Color.WHITE);
         }
-        drawText(g2d,0,400, musicOnText);
+        if(musicOff){
+            drawText(g2d,0,400, musicOffText);
+        } else {
+            drawText(g2d,0,400, musicOnText);
+        }
 
         // Language button
         if(hoveringLanguageSettingButton){
@@ -350,15 +426,22 @@ public class MenuPanel extends JPanel {
         } else {
             g2d.setColor(Color.WHITE);
         }
-        drawText(g2d,0,500, languageText);
-
+        if(languageGerman){
+            drawText(g2d,0,500, languageGermanText);
+        } else {
+            drawText(g2d,0,500, languageEnglishText);
+        }
         // Debugmode button
         if(hoveringDebugSettingButton){
             g2d.setColor(Color.YELLOW);
         } else {
             g2d.setColor(Color.WHITE);
         }
-        drawText(g2d,0,600, debugText);
+        if(debugMode){
+            drawText(g2d,0,600, debugOnText);
+        } else {
+            drawText(g2d,0,600, debugOffText);
+        }
     }
 
     private int currentHelpPage = 0;
@@ -445,7 +528,7 @@ public class MenuPanel extends JPanel {
         } else {
             g2d.setColor(Color.WHITE);
         }
-        drawText(g2d,0,0, "Play");
+        drawText(g2d,0,0, playText);
 
         // Shop button
         if(hoveringShop){
@@ -453,7 +536,7 @@ public class MenuPanel extends JPanel {
         } else {
             g2d.setColor(Color.WHITE);
         }
-        drawText(g2d,300,0, "Shop");
+        drawText(g2d,300,0, shopText);
 
         // Quit button
         if(hoveringQuit){
@@ -461,7 +544,7 @@ public class MenuPanel extends JPanel {
         } else {
             g2d.setColor(Color.WHITE);
         }
-        drawText(g2d,Main.WIDTH/2 + 400,0, "Quit");
+        drawText(g2d,Main.WIDTH/2 + 400,0, quitText);
 
         g2d.setFont(gameFontSmall);
         if(hoveringSettings){
@@ -469,14 +552,14 @@ public class MenuPanel extends JPanel {
         } else {
             g2d.setColor(Color.WHITE);
         }
-        drawText(g2d, 545, 745, "Settings");
+        drawText(g2d, 545, 745, settingsText);
 
         if(hoveringHelp){
             g2d.setColor(Color.YELLOW);
         } else {
             g2d.setColor(Color.WHITE);
         }
-        drawText(g2d,Main.WIDTH/2 + 215,745, "Help");
+        drawText(g2d,Main.WIDTH/2 + 215,745, helpText);
 
     }
 
