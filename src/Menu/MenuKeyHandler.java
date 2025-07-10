@@ -12,6 +12,7 @@ public class MenuKeyHandler implements KeyListener {
     public boolean goingDown = false;
     public boolean spacePressed = false;
     public boolean enterPressed = false;
+    public boolean escapePressed = false;
 
     public MenuKeyHandler(MenuPanel menuPanel){
         this.menuPanel = menuPanel;
@@ -47,6 +48,7 @@ public class MenuKeyHandler implements KeyListener {
                 }
                 //case KeyEvent.VK_SPACE -> gamePanel.performAttack();
                 case KeyEvent.VK_SPACE -> spacePressed = true;
+                case KeyEvent.VK_ESCAPE -> escapePressed = true;
                 case KeyEvent.VK_ENTER -> enterPressed = true;
             }
     }

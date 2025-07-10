@@ -8,7 +8,6 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -45,9 +44,51 @@ public class MenuPanel extends JPanel {
     private boolean hoveringQuit = false;
     private boolean hoveringSettings = false;
     private boolean hoveringHelp = false;
-    private boolean shopMode = false;
+    private boolean showingShop = false;
+    private boolean showingHelp = false;
+    private boolean showingSettings = false;
+
+
+
 
     private void updateMenuState(){
+        if (showingShop){
+            shopMenu();
+        } else if (showingSettings){
+            settingsMenu();
+        } else if (showingHelp){
+            helpMenu();
+        } else {
+            mainMenu();
+        }
+    }
+
+
+    private void shopMenu(){
+        if (keyHandler.escapePressed){
+            keyHandler.escapePressed = false;
+            showingShop = false;
+            soundManager.playClip(soundManager.buttonClickClip);
+        }
+    }
+
+    private void settingsMenu(){
+        if (keyHandler.escapePressed){
+            keyHandler.escapePressed = false;
+            showingSettings = false;
+            soundManager.playClip(soundManager.buttonClickClip);
+        }
+    }
+
+    private void helpMenu(){
+        if (keyHandler.escapePressed){
+            keyHandler.escapePressed = false;
+            showingHelp = false;
+            soundManager.playClip(soundManager.buttonClickClip);
+        }
+    }
+
+    private void mainMenu(){
         // Pressing a key increments or decrements index
 
         if (keyHandler.goingRight){
@@ -70,13 +111,15 @@ public class MenuPanel extends JPanel {
         }
 
         // Enter performs action on the button
-        if (keyHandler.enterPressed){
+        if (keyHandler.enterPressed || keyHandler.spacePressed){
             keyHandler.enterPressed = false;
+            keyHandler.spacePressed = false;
             soundManager.playClip(soundManager.buttonClickClip);
+
             if (buttonIndexY % 2 == 0) {
                 if (buttonIndexX % 3 == 0) {
                     System.out.println("Shop");
-                    shopMode = true;
+                    showingShop = true;
                 } else if (buttonIndexX % 3 == 1) {
                     System.out.println("Play");
                     soundManager.stopMusic();
@@ -88,8 +131,10 @@ public class MenuPanel extends JPanel {
             } else if (buttonIndexY % 2 == 1){
                 if (buttonIndexX % 2 == 0) {
                     System.out.println("Settings");
+                    showingSettings = true;
                 } else if (buttonIndexX % 2 == 1) {
                     System.out.println("Help");
+                    showingHelp = true;
                 }
             }
         }
@@ -163,9 +208,17 @@ public class MenuPanel extends JPanel {
         Graphics2D g2d = (Graphics2D)g;
 
         drawBackground(g2d);
-        drawUI(g2d);
-    }
 
+        if (showingShop){
+            drawShop(g2d);
+        } else if (showingSettings){
+            drawShop(g2d);
+        } else if (showingHelp){
+            drawShop(g2d);
+        } else {
+            drawMainMenu(g2d);
+        }
+    }
 
     private void drawBackground(Graphics2D g2d){
         //g2d.setColor(Color.DARK_GRAY);
@@ -173,7 +226,14 @@ public class MenuPanel extends JPanel {
         g2d.drawImage(backgroundImg, 0, 0, Main.WIDTH, Main.HEIGHT, this);
     }
 
-    private void drawUI(Graphics2D g2d){
+    private void drawShop(Graphics2D g2d) {
+        g2d.setFont(gameFontSmall);
+        g2d.setColor(new Color(0,0,0,220));
+        g2d.fillRect(100,100, Main.WIDTH - 200, Main.HEIGHT - 200);
+    }
+
+
+    private void drawMainMenu(Graphics2D g2d){
         g2d.setFont(gameFont);
 
         // Title background

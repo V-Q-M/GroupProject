@@ -439,18 +439,16 @@ public class GamePanel extends JPanel{
 
   private void drawEnemies(Graphics2D g2d){
     for (Enemy enemy : enemies) {
-      if (!enemy.isDead) {
-        if (animationFrame == 2){
-          g2d.drawImage(enemy.skin, enemy.x, enemy.y + animationOffset, enemy.width, enemy.height, this);
-        } else if (animationFrame == 3){
-          g2d.drawImage(enemy.skin, enemy.x, enemy.y - animationOffset, enemy.width, enemy.height, this);
-        } else {
-          g2d.drawImage(enemy.skin, enemy.x, enemy.y, enemy.width, enemy.height, this);
-        }
-        if (DEBUG_MODE){
-          g2d.setColor(Color.red);
-          g2d.drawRect(enemy.x, enemy.y, enemy.width, enemy.height);
-        }
+      if (animationFrame == 2){
+        g2d.drawImage(enemy.skin, enemy.x, enemy.y + animationOffset, enemy.width, enemy.height, this);
+      } else if (animationFrame == 3){
+        g2d.drawImage(enemy.skin, enemy.x, enemy.y - animationOffset, enemy.width, enemy.height, this);
+      } else {
+        g2d.drawImage(enemy.skin, enemy.x, enemy.y, enemy.width, enemy.height, this);
+      }
+      if (DEBUG_MODE){
+        g2d.setColor(Color.red);
+        g2d.drawRect(enemy.x, enemy.y, enemy.width, enemy.height);
       }
     }
   }
@@ -458,7 +456,7 @@ public class GamePanel extends JPanel{
   void drawHealthBars(Graphics2D g2d){
     // Personal choice - only show health-bar when not at full health
     for (Enemy enemy : enemies) {
-      if (!enemy.isDead && enemy.health != enemy.maxHealth) {
+      if (enemy.health != enemy.maxHealth) {
         createHealthBar(g2d, enemy.x, enemy.y, enemy.width, 15, enemy.health, enemy.maxHealth);
       }
     }
