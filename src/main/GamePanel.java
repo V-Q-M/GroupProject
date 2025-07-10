@@ -4,7 +4,6 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -125,22 +124,22 @@ public class GamePanel extends JPanel{
   private void applySettings(){
     String[] line = readLinesFromResource("settings.txt");
     System.out.println(line[0]);
-      if (line[0].equals("music off")) {
-        soundManager.stopMusic();
-        System.out.println("STOP");
-      } else {
-        soundManager.startMusic();
-        System.out.println("PLAY");
-      }
-      if (line[1].equals("language german")) {
-        startingText = "Starte in: ";
-        swappingSoonText = "Wechsele bald!";
-        scoreText = "Punkte:";
-        gameOverText = "Verloren!";
-        quitGameText = "Spiel verlassen?";
-        restartText = "Neustarten?";
-        resumeText = "Fortfahren?";
-      }
+    if (line[0].equals("music off")) {
+      soundManager.stopMusic();
+      System.out.println("STOP");
+    } else {
+      soundManager.startMusic();
+      System.out.println("PLAY");
+    }
+    if (line[1].equals("language german")) {
+      startingText = "Starte in: ";
+      swappingSoonText = "Wechsele bald!";
+      scoreText = "Punkte:";
+      gameOverText = "Verloren!";
+      quitGameText = "Spiel verlassen?";
+      restartText = "Neustarten?";
+      resumeText = "Fortfahren?";
+    }
   }
 
 
@@ -220,7 +219,7 @@ public class GamePanel extends JPanel{
       gameFontTiny = new Font("Monospaced", Font.PLAIN, 20); // fallback
     }
   }
-  // SelectPiece. Should prompt the user to pick one eventually
+
   public void selectPiece(PieceType changePiece) {
     selectedPieceType = changePiece;
     player.swapCounter = 0;
@@ -258,33 +257,28 @@ public class GamePanel extends JPanel{
       if (!player.isDead) {
         player.playerUpdate();
       }
-      //entityUpdate();
-
       // Update every enemy
       for (Enemy enemy : enemies) {
-        if (!enemy.isDead) {
-          enemy.update();
-        }
+        enemy.update();
       }
+      enemies.removeIf(enemy -> enemy.isDead);
 
 
       for (Projectile projectile : projectiles){
-        if (!projectile.isDead){
-          projectile.update();
-        }
+        projectile.update();
       }
+      projectiles.removeIf(projectile -> projectile.isDead);
 
       for (Projectile enemyBall : enemyBalls){
-        if (!enemyBall.isDead){
-          enemyBall.update();
-        }
+        enemyBall.update();
       }
+      enemyBalls.removeIf(enemyBall -> enemyBall.isDead);
 
       for (Ally ally : allies){
-        if (!ally.isDead){
-          ally.update();
-        }
+        ally.update();
       }
+      allies.removeIf(ally -> ally.isDead);
+
       enemyManager.updateSpawner();
       gameUpdate();
     }
@@ -397,7 +391,7 @@ public class GamePanel extends JPanel{
     // Draw all cannon balls
     g2d.setColor(Color.WHITE);
     for (Projectile projectile : projectiles) {
-        g2d.drawImage(projectile.skin, projectile.x, projectile.y, projectile.width, projectile.height, this);
+      g2d.drawImage(projectile.skin, projectile.x, projectile.y, projectile.width, projectile.height, this);
     }
   }
 

@@ -35,7 +35,7 @@ public abstract class Projectile {
     }
 
     public void checkAlive(){
-        if (health <= 0 || x < 0 || x > Main.WIDTH || y < 0 || y > Main.HEIGHT){
+        if (health <= 0){
             isDead = true;
         } else {
             health--;

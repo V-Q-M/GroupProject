@@ -13,7 +13,7 @@ public class CannonBall extends Projectile {
     this.height = size;
     this.direction = direction;
     this.speed = speed;
-    this.health = 300;
+    this.health = 200;
     this.skin = gamePanel.cannonBallImage;
   }
 
