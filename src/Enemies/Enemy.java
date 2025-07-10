@@ -73,12 +73,14 @@ public class Enemy extends AnimateObject {
     void checkPlayerCollision(){
         if (!isInvulnerable) {
             for (Projectile projectile : gamePanel.projectiles) {
-                if (!projectile.isDead && collisionHandler.projectileCollision(this, projectile)) {
+                if (collisionHandler.projectileCollision(this, projectile)) {
                     isInvulnerable = true;
                     soundManager.playClip(soundManager.hitClip);
+
                     switch (gamePanel.selectedPieceType) {
                         case ROOK -> {
                             health -= DEFAULT_CANNON_BALL_DMG;
+                            gamePanel.entityManager.spawnExplosion(projectile.x, projectile.y);
                             projectile.isDead = true;
                         }
                         case KNIGHT -> health -= DEFAULT_SLAM_DMG;

@@ -37,6 +37,7 @@ public class GamePanel extends JPanel{
   public BufferedImage enemyPawnImage;
 
   public BufferedImage cannonBallImage;
+  public BufferedImage explosionImage;
   public BufferedImage queenParticleImage;
   public BufferedImage knightParticleImage;
 
@@ -71,11 +72,10 @@ public class GamePanel extends JPanel{
   // Im scaling 32x32 Textures so that they look nicer
   final int SCALE = 8;
 
-  // List to track cannon balls
-  public final List<Projectile> balls = new ArrayList<>();
   public final List<Projectile> enemyBalls = new ArrayList<>();
   // carries particle effects
   public final List<Projectile> projectiles = new ArrayList<>();
+  public final List<Projectile> effects = new ArrayList<>();
   // carries enemies
   public final List<Enemy>  enemies = new ArrayList<>();
   // carries wall
@@ -188,6 +188,7 @@ public class GamePanel extends JPanel{
       pawnImage = ImageIO.read(getClass().getResourceAsStream("/chess-pieces-png/color/white/pawn.png"));
 
       cannonBallImage = ImageIO.read(getClass().getResourceAsStream("/cannonball2.png"));
+      explosionImage = ImageIO.read(getClass().getResourceAsStream("/explosion.png"));
       queenParticleImage = ImageIO.read(getClass().getResourceAsStream("/queenParticles.png"));
       knightParticleImage = ImageIO.read(getClass().getResourceAsStream("/knightParticles.png"));
       enemyRookImage = ImageIO.read(getClass().getResourceAsStream("/chess-pieces-png/color/black/rook.png"));
@@ -257,22 +258,27 @@ public class GamePanel extends JPanel{
       if (!player.isDead) {
         player.playerUpdate();
       }
-      // Update every enemy
-      for (Enemy enemy : enemies) {
-        enemy.update();
-      }
-      enemies.removeIf(enemy -> enemy.isDead);
-
 
       for (Projectile projectile : projectiles){
         projectile.update();
       }
       projectiles.removeIf(projectile -> projectile.isDead);
 
+      for (Projectile effect : effects){
+        effect.update();
+      }
+      effects.removeIf(effect -> effect.isDead);
+
       for (Projectile enemyBall : enemyBalls){
         enemyBall.update();
       }
       enemyBalls.removeIf(enemyBall -> enemyBall.isDead);
+
+      // Update every enemy
+      for (Enemy enemy : enemies) {
+        enemy.update();
+      }
+      enemies.removeIf(enemy -> enemy.isDead);
 
       for (Ally ally : allies){
         ally.update();
@@ -390,6 +396,9 @@ public class GamePanel extends JPanel{
   private void drawEntities(Graphics2D g2d){
     // Draw all cannon balls
     for (Projectile projectile : projectiles) {
+      g2d.drawImage(projectile.skin, projectile.x, projectile.y, projectile.width, projectile.height, this);
+    }
+    for (Projectile projectile : effects){
       g2d.drawImage(projectile.skin, projectile.x, projectile.y, projectile.width, projectile.height, this);
     }
     for (Projectile projectile : enemyBalls){

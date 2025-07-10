@@ -15,7 +15,6 @@ public abstract class Projectile {
     public int speed;
     public int health = 100;
     public String direction;
-    public boolean hasHit = false;
     public boolean isDead = false;
     public BufferedImage skin;
 

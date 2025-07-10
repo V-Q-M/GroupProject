@@ -42,6 +42,17 @@ public class EntityManager {
            soundManager.playClip(soundManager.shootClip);
        }
     }
+
+    public void spawnExplosion(int x, int y){
+        if (gamePanel.explosionImage != null){
+            int size = CANNON_BALL_SIZE;
+            int bx = x + (gamePanel.pieceWidth - size) / 2;
+            gamePanel.effects.add(new Explosion(gamePanel, bx, y, size));
+            soundManager.playClip(soundManager.shootClip);
+        }
+
+    }
+
     public void spawnLance(){
         if (gamePanel.bishopImage != null) {
             int size = CANNON_BALL_SIZE; // size of the cannonball

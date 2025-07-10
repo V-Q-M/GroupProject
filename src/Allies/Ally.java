@@ -40,6 +40,7 @@ public class Ally extends AnimateObject {
             if (collisionHandler.projectileCollision(this, projectile)){
                 health -= 50;
                 projectile.isDead = true;
+                gamePanel.entityManager.spawnExplosion(projectile.x, projectile.y);
                 soundManager.playClip(soundManager.hitClip);
             }
         }
