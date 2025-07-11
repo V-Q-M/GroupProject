@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class Player extends AnimateObject{
+public class Player extends livingBeing {
     GamePanel gamePanel;
     KeyHandler keyHandler;
     SoundManager soundManager;

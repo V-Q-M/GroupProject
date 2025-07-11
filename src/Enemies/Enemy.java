@@ -4,7 +4,7 @@ import Allies.Ally;
 import entities.Projectile;
 import main.*;
 
-public class Enemy extends AnimateObject {
+public abstract class Enemy extends livingBeing {
     public int maxHealth = 100; // need to pass it in constructor soon
 
 
@@ -56,6 +56,7 @@ public class Enemy extends AnimateObject {
         } else {
            isInvulnerable = false;
            invulnerableCounter = 0;
+           this.skin = baseSkin;
         }
 
         if (hasAttacked && attackCoolDownCounter < attackCoolDown){
@@ -71,6 +72,7 @@ public class Enemy extends AnimateObject {
             for (Projectile projectile : gamePanel.projectiles) {
                 if (collisionHandler.projectileCollision(this, projectile)) {
                     isInvulnerable = true;
+                    this.skin = hurtSkin;
                     soundManager.playClip(soundManager.hitClip);
                     health -= projectile.damage;
 

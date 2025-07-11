@@ -3,10 +3,7 @@ package Allies;
 import entities.Projectile;
 import main.*;
 
-public class Ally extends AnimateObject {
-    final int DEFAULT_CANNON_BALL_DMG = 35;
-    final int DEFAULT_SLICE_DMG= 50;
-    final int DEFAULT_SLAM_DMG= 100;
+public abstract class Ally extends livingBeing {
     public int maxHealth = 100; // need to pass it in constructor soon
     public boolean canMove = false;
 
@@ -63,6 +60,7 @@ public class Ally extends AnimateObject {
         } else {
             isInvulnerable = false;
             invulnerableCounter = 0;
+            this.skin = baseSkin;
         }
 
         if (hasAttacked && attackCoolDownCounter < attackCoolDown){

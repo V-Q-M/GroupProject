@@ -10,7 +10,9 @@ public class EnemyPawn extends Enemy {
         this.damage = 10;
         this.speed = 3;
         this.health = 100;
-        this.skin = gamePanel.enemyPawnImage;
+        this.baseSkin = gamePanel.enemyPawnImage;
+        this.hurtSkin = gamePanel.enemyPawnHurtImage;
+        this.skin = baseSkin;
         this.attackCoolDown = 80;
     }
 }

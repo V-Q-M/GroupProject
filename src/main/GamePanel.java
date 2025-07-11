@@ -29,18 +29,26 @@ public class GamePanel extends JPanel{
 
   // Textures of the player pieces
   public BufferedImage rookImage;
+  public BufferedImage rookHurtImage;
   public BufferedImage knightImage;
+  public BufferedImage knightHurtImage;
   public BufferedImage bishopImage;
+  public BufferedImage bishopHurtImage;
   public BufferedImage kingImage;
+  public BufferedImage kingHurtImage;
   public BufferedImage queenImage;
+  public BufferedImage queenHurtImage;
   public BufferedImage pawnImage;
+  public BufferedImage pawnHurtImage;
   // Enemy textures
   public BufferedImage enemyRookImage;
+  public BufferedImage enemyRookHurtImage;
   public BufferedImage enemyKnightImage;
   public BufferedImage enemyBishopImage;
   public BufferedImage enemyKingImage;
   public BufferedImage enemyQueenImage;
   public BufferedImage enemyPawnImage;
+  public BufferedImage enemyPawnHurtImage;
 
   // Projectile textures
   public BufferedImage cannonBallImage;
@@ -200,18 +208,26 @@ public class GamePanel extends JPanel{
       tileImage = ImageIO.read(getClass().getResourceAsStream("/background/earth.png"));
 
       rookImage = ImageIO.read(getClass().getResourceAsStream("/chess-pieces/white/rook.png"));
+      rookHurtImage = ImageIO.read(getClass().getResourceAsStream("/chess-pieces/white/rook_hurt.png"));
       knightImage = ImageIO.read(getClass().getResourceAsStream("/chess-pieces/white/knight.png"));
+      knightHurtImage = ImageIO.read(getClass().getResourceAsStream("/chess-pieces/white/knight_hurt.png"));
       bishopImage = ImageIO.read(getClass().getResourceAsStream("/chess-pieces/white/bishop.png"));
+      bishopHurtImage = ImageIO.read(getClass().getResourceAsStream("/chess-pieces/white/bishop_hurt.png"));
       kingImage = ImageIO.read(getClass().getResourceAsStream("/chess-pieces/white/king.png"));
+      kingHurtImage = ImageIO.read(getClass().getResourceAsStream("/chess-pieces/white/king_hurt.png"));
       queenImage = ImageIO.read(getClass().getResourceAsStream("/chess-pieces/white/queen.png"));
+      queenHurtImage = ImageIO.read(getClass().getResourceAsStream("/chess-pieces/white/queen_hurt.png"));
       pawnImage = ImageIO.read(getClass().getResourceAsStream("/chess-pieces/white/pawn.png"));
+      pawnHurtImage = ImageIO.read(getClass().getResourceAsStream("/chess-pieces/white/pawn_hurt.png"));
 
       enemyRookImage = ImageIO.read(getClass().getResourceAsStream("/chess-pieces/black/rook.png"));
+      enemyRookHurtImage = ImageIO.read(getClass().getResourceAsStream("/chess-pieces/black/rook_hurt.png"));
       enemyKnightImage = ImageIO.read(getClass().getResourceAsStream("/chess-pieces/black/knight.png"));
       enemyBishopImage = ImageIO.read(getClass().getResourceAsStream("/chess-pieces/black/bishop.png"));
       enemyKingImage = ImageIO.read(getClass().getResourceAsStream("/chess-pieces/black/king.png"));
       enemyQueenImage = ImageIO.read(getClass().getResourceAsStream("/chess-pieces/black/queen.png"));
       enemyPawnImage = ImageIO.read(getClass().getResourceAsStream("/chess-pieces/black/pawn.png"));
+      enemyPawnHurtImage = ImageIO.read(getClass().getResourceAsStream("/chess-pieces/black/pawn_hurt.png"));
 
       cannonBallImage = ImageIO.read(getClass().getResourceAsStream("/particles/cannonball2.png"));
       explosionImage = ImageIO.read(getClass().getResourceAsStream("/particles/explosion.png"));
@@ -419,14 +435,14 @@ public class GamePanel extends JPanel{
     g2d.fillRect(x, y - height * 2, greenWidth, height);
   }
 
-  int animationOffset = 3;
+  int animationOffset = 2;
   private void drawPlayer(Graphics2D g2d){
     // Draw selectedPiece at current position
     if (selectedPiece != null && !player.isDead) {
       if (animationFrame == 2){
-        g2d.drawImage(selectedPiece, player.x, player.y + animationOffset, pieceWidth, pieceHeight, this);
+        g2d.drawImage(selectedPiece, player.x - animationOffset, player.y + animationOffset, pieceWidth + animationOffset * 2, pieceHeight, this);
       } else if (animationFrame == 3){
-        g2d.drawImage(selectedPiece, player.x, player.y - animationOffset, pieceWidth, pieceHeight, this);
+        g2d.drawImage(selectedPiece, player.x + animationOffset, player.y - animationOffset, pieceWidth - animationOffset * 2, pieceHeight, this);
       } else {
         g2d.drawImage(selectedPiece, player.x, player.y, pieceWidth, pieceHeight, this);
       }
@@ -441,9 +457,9 @@ public class GamePanel extends JPanel{
   private void drawAllies(Graphics2D g2d){
     for (Ally ally : allies) {
       if (animationFrame == 2){
-        g2d.drawImage(ally.skin, ally.x, ally.y + animationOffset, ally.width, ally.height, this);
+        g2d.drawImage(ally.skin, ally.x - animationOffset, ally.y + animationOffset, ally.width + animationOffset * 2, ally.height, this);
       } else if (animationFrame == 3){
-        g2d.drawImage(ally.skin, ally.x, ally.y - animationOffset, ally.width, ally.height, this);
+        g2d.drawImage(ally.skin, ally.x + animationOffset, ally.y - animationOffset, ally.width - animationOffset * 2, ally.height, this);
       } else {
         g2d.drawImage(ally.skin, ally.x, ally.y, ally.width, ally.height, this);
       }
@@ -479,9 +495,9 @@ public class GamePanel extends JPanel{
   private void drawEnemies(Graphics2D g2d){
     for (Enemy enemy : enemies) {
       if (animationFrame == 2){
-        g2d.drawImage(enemy.skin, enemy.x, enemy.y + animationOffset, enemy.width, enemy.height, this);
+        g2d.drawImage(enemy.skin, enemy.x - animationOffset, enemy.y - animationOffset, enemy.width + animationOffset * 2, enemy.height, this);
       } else if (animationFrame == 3){
-        g2d.drawImage(enemy.skin, enemy.x, enemy.y - animationOffset, enemy.width, enemy.height, this);
+        g2d.drawImage(enemy.skin, enemy.x + animationOffset, enemy.y + animationOffset, enemy.width - animationOffset * 2, enemy.height, this);
       } else {
         g2d.drawImage(enemy.skin, enemy.x, enemy.y, enemy.width, enemy.height, this);
       }

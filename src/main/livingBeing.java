@@ -2,7 +2,7 @@ package main;
 
 import java.awt.image.BufferedImage;
 
-public class AnimateObject {
+public abstract class livingBeing {
     public GamePanel gamePanel;
     public SoundManager soundManager;
     public CollisionHandler collisionHandler;
@@ -13,6 +13,9 @@ public class AnimateObject {
     public int attackCoolDown;
 
     public BufferedImage skin;
+    public BufferedImage baseSkin;
+    public BufferedImage hurtSkin;
+
 
     public int speed, damage, health;
 }

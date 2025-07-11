@@ -1,10 +1,8 @@
 package entities;
 
 import main.GamePanel;
-import main.Main;
 
 import java.awt.image.BufferedImage;
-
 
 public abstract class Projectile {
     public GamePanel gamePanel;

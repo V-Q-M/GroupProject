@@ -12,7 +12,9 @@ public class AllyRook extends Ally {
         this.speed = 3;
         this.health = 150;
         this.maxHealth = 150;
-        this.skin = gamePanel.rookImage;
+        this.baseSkin = gamePanel.rookImage;
+        this.hurtSkin = gamePanel.rookHurtImage;
+        this.skin = baseSkin;
         this.attackCoolDown = 200;
         this.attackCoolDownCounter = (int) (Math.random() * 100); // Makes it so that the rooks arent shooting in sync (looks goofy)
     }
