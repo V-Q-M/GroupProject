@@ -6,6 +6,7 @@ META-INF/
 MANIFEST.MF
 /.idea/
 /GroupProject.iml
+/res/sketch
 
 ### Eclipse ###
 .apt_generated
