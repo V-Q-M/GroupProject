@@ -15,6 +15,7 @@ public class Player extends AnimateObject{
     CollisionHandler collisionHandler;
 
     public boolean isDead = false;
+    // Is used to avoid being attacked a billion times at once
     public boolean isInvulnerable;
     private int invulnerableCounter;
 
@@ -22,11 +23,14 @@ public class Player extends AnimateObject{
     public final int DASH_SPEED = 16;
     public final int LEAP_SPEED = 8;
 
+    // Used for the queen ability
     public boolean queenDashing = false;
     private int queenDashingCounter = 0;
 
+    // Castlehealth
     public int health = 100;
 
+    // Are the pieces alive?
     public boolean rookAlive = true;
     public boolean bishopAlive = true;
     public boolean knightAlive = true;
@@ -49,18 +53,21 @@ public class Player extends AnimateObject{
     public int kingHealth = KING_BASE_HEALTH;
     public int pawnHealth = PAWN_BASE_HEALTH;
 
+    // Used in the swap feature
     public int swapCounter = 0;
 
     public String facingDirection = "down";
     public String facingDirectionX = "right";
-    public String facingDirectionY = "down";
 
     private boolean hasAttacked = false;
     private int attackCoolDownCounter = 0;
+
+    // Very important. Manages the grid based walking
     public int targetX;
     public int targetY;
     private boolean isMoving = false;
 
+    // Used in the swap feature
     Random random = new Random();
     ArrayList<PieceType> availablePieces = new ArrayList<>(List.of(
             PieceType.ROOK,
@@ -69,6 +76,7 @@ public class Player extends AnimateObject{
             PieceType.QUEEN,
             PieceType.KING
     ));
+    PieceType lastPiece;
 
     public Player(GamePanel gamePanel, KeyHandler keyHandler, SoundManager soundManager,  CollisionHandler collisionHandler, int startPositionX, int startPositionY){
         this.gamePanel = gamePanel;
@@ -92,7 +100,6 @@ public class Player extends AnimateObject{
         prepareForcedSwap();
     }
 
-    PieceType lastPiece;
     private void forceSwap(){
         if (lastPiece != null && availablePieces.size() >= 1){
             availablePieces.add(lastPiece);
@@ -130,20 +137,20 @@ public class Player extends AnimateObject{
         }
     }
 
-
-    private boolean notReachedBorder(){
-        return !collisionHandler.borderCollision(x, y, gamePanel.pieceWidth, gamePanel.pieceHeight, speed, facingDirection);
+    private boolean reachedBorder(){
+        return collisionHandler.borderCollision(x, y, gamePanel.pieceWidth, gamePanel.pieceHeight, speed, facingDirection);
     }
 
     private void movement() {
         if (!isMoving) {
-            if (gamePanel.selectedPieceType == PieceType.BISHOP){
+            if (gamePanel.selectedPieceType == PieceType.BISHOP){ // Is extra because he can only move diagonally
                 analyzeInputBishop();
             } else {
                 analyzeInput();
             }
         }
 
+        // Grid based movement
         if (x == targetX && y == targetY) {
             isMoving = false;
         } else {
@@ -164,7 +171,7 @@ public class Player extends AnimateObject{
         if (keyHandler.goingLeft) deltaX -= gamePanel.PIECE_HEIGHT;
         if (keyHandler.goingRight) deltaX += gamePanel.PIECE_HEIGHT;
 
-        if ((deltaX != 0 || deltaY != 0) && notReachedBorder()) {
+        if ((deltaX != 0 || deltaY != 0) && !reachedBorder()) {
             targetX += deltaX;
             targetY += deltaY;
             isMoving = true;
@@ -196,7 +203,7 @@ public class Player extends AnimateObject{
         }
     }
 
-
+    // Bishop has diagonal only movement
     private void analyzeInputBishop() {
         int deltaX = 0;
         int deltaY = 0;
@@ -226,7 +233,7 @@ public class Player extends AnimateObject{
         }
 
         // Only move if diagonal keys were pressed
-        if ((deltaX != 0 && deltaY != 0) && notReachedBorder()) {
+        if ((deltaX != 0 && deltaY != 0) && !reachedBorder()) {
             targetX += deltaX;
             targetY += deltaY;
             isMoving = true;
@@ -279,10 +286,8 @@ public class Player extends AnimateObject{
         }
     }
 
-    void checkProjectileCollision(){
+    private void checkProjectileCollision(){
         for (Projectile projectile : gamePanel.enemyBalls){
-            System.out.println(projectile.x + " - " + projectile.y);
-            System.out.println(x + " - " + y);
             if (collisionHandler.projectileEnemyCollision(projectile, this)){
                 takeDamage(15);
                 projectile.isDead = true;
@@ -291,6 +296,7 @@ public class Player extends AnimateObject{
             }
         }
     }
+
     private void takeDamage(int damageAmount){
         switch(gamePanel.selectedPieceType){
             case ROOK -> rookHealth -= damageAmount;
@@ -301,7 +307,6 @@ public class Player extends AnimateObject{
             case PAWN -> pawnHealth -= damageAmount;
         }
     }
-
 
     private void checkAlive(){
         if (health <= 0){
@@ -344,10 +349,11 @@ public class Player extends AnimateObject{
     }
 
     void performAttack() {
-        x = ((x + 127) / 128) * 128;
-        y = ((y + 127) / 128) * 128;
-        targetX=x;
-        targetY=y;
+        //
+        //x = ((x + 127) / 128) * 128;
+        //y = ((y + 127) / 128) * 128;
+        //targetX=x;
+        //targetY=y;
         switch (gamePanel.selectedPieceType) {
             // Add new characters here
             case ROOK   -> gamePanel.entityManager.spawnCannonBall(x, y, facingDirection);

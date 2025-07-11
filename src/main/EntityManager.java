@@ -79,14 +79,14 @@ public class EntityManager {
             player.queenDashing = true;
             player.isInvulnerable = true;
             switch(player.facingDirection){
-                case "up" -> player.targetY -= gamePanel.PIECE_HEIGHT * 3;
-                case "down" -> player.targetY += gamePanel.PIECE_HEIGHT * 3;
-                case "left" -> player.targetX -= gamePanel.PIECE_HEIGHT * 3;
-                case "right" -> player.targetX += gamePanel.PIECE_HEIGHT * 3;
+                case "up" -> player.targetY -= gamePanel.PIECE_HEIGHT * 2;
+                case "down" -> player.targetY += gamePanel.PIECE_HEIGHT * 2;
+                case "left" -> player.targetX -= gamePanel.PIECE_HEIGHT * 2;
+                case "right" -> player.targetX += gamePanel.PIECE_HEIGHT * 2;
             }
             int bx = player.x + (gamePanel.pieceWidth  - size) / 2;
             int by = player.y + (gamePanel.pieceHeight - size) / 2;
-            gamePanel.projectiles.add(new QueenSlice(gamePanel, bx, by, size, DEFAULT_QUEEN_PARTICLE_SPEED, DEFAULT_TIME_TO_DECAY_QUEEN, DEFAULT_SLICE_DMG,player.facingDirection));
+            gamePanel.projectiles.add(new QueenSlice(gamePanel, bx, by, size, DEFAULT_QUEEN_PARTICLE_SPEED, DEFAULT_TIME_TO_DECAY_QUEEN, DEFAULT_SLICE_DMG, gamePanel.queenParticleImage, player.facingDirection));
             soundManager.playClip(soundManager.sliceClip);
         }
     }
