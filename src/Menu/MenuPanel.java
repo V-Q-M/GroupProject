@@ -37,6 +37,10 @@ public class MenuPanel extends JPanel {
     private boolean hoveringLanguageSettingButton = false;
     private boolean hoveringDebugSettingButton = false;
 
+    private boolean hoveringShopItemOne = false;
+    private boolean hoveringShopItemTwo = false;
+    private boolean hoveringShopItemThree = false;
+
     // If one of these is on, it shows that side menu
     private boolean showingShop = false;
     private boolean showingHelp = false;
@@ -148,6 +152,43 @@ public class MenuPanel extends JPanel {
             showingShop = false;
             soundManager.playClip(soundManager.buttonClickClip);
         }
+        else if (keyHandler.goingUp){
+            keyHandler.goingUp = false;
+            buttonIndexY--;
+            soundManager.playClip(soundManager.buttonHoverClip);
+        } else if (keyHandler.goingDown){
+            keyHandler.goingDown = false;
+            buttonIndexY++;
+            soundManager.playClip(soundManager.buttonHoverClip);
+        }
+
+        // Enter performs action on the button
+        if (keyHandler.enterPressed || keyHandler.spacePressed) {
+            keyHandler.enterPressed = false;
+            keyHandler.spacePressed = false;
+            soundManager.playClip(soundManager.buttonClickClip);
+
+            if (buttonIndexY % 3 == 0) {
+                System.out.println("Item01");
+            } else if (buttonIndexY % 3 == 1) {
+                System.out.println("Item02");
+
+            } else if (buttonIndexY % 3 == 2) {
+                System.out.println("Item03");
+            }
+        }
+        // Hover effect
+        resetButtons();
+        // Color buttons correctly
+        if (buttonIndexY % 3 == 0) {
+            hoveringShopItemOne = true;
+        }
+        else if (buttonIndexY % 3 == 1) {
+            hoveringShopItemTwo = true;
+        }
+        else if (buttonIndexY % 3 == 2) {
+            hoveringShopItemThree = true;
+        }
     }
 
     private boolean musicOff = false;
@@ -160,8 +201,7 @@ public class MenuPanel extends JPanel {
             showingSettings = false;
             soundManager.playClip(soundManager.buttonClickClip);
         }
-
-        if (keyHandler.goingUp){
+        else if (keyHandler.goingUp){
             keyHandler.goingUp = false;
             soundManager.playClip(soundManager.buttonHoverClip);
             buttonIndexY--;
@@ -195,10 +235,10 @@ public class MenuPanel extends JPanel {
         if (buttonIndexY % 3 == 0) {
             hoveringMusicSettingButton = true;
         }
-        if (buttonIndexY % 3 == 1) {
+        else if (buttonIndexY % 3 == 1) {
             hoveringLanguageSettingButton = true;
         }
-        if (buttonIndexY % 3 == 2) {
+        else if (buttonIndexY % 3 == 2) {
             hoveringDebugSettingButton = true;
         }
     }
@@ -209,9 +249,13 @@ public class MenuPanel extends JPanel {
             showingHelp = false;
             soundManager.playClip(soundManager.buttonClickClip);
         }
-        if (keyHandler.enterPressed){
-            keyHandler.enterPressed = false;
+        else if (keyHandler.goingRight){
+            keyHandler.goingRight = false;
             currentHelpPage++;
+            soundManager.playClip(soundManager.buttonClickClip);
+        } else if (keyHandler.goingLeft){
+            keyHandler.goingLeft = false;
+            currentHelpPage--;
             soundManager.playClip(soundManager.buttonClickClip);
         }
     }
@@ -219,15 +263,6 @@ public class MenuPanel extends JPanel {
     private void updateMainMenu(){
         // Pressing a key increments or decrements index
 
-        if (keyHandler.goingRight){
-            keyHandler.goingRight = false;
-            buttonIndexX++;
-            soundManager.playClip(soundManager.buttonHoverClip);
-        } else if (keyHandler.goingLeft){
-            keyHandler.goingLeft = false;
-            buttonIndexX--;
-            soundManager.playClip(soundManager.buttonHoverClip);
-        }
         if (keyHandler.goingUp){
             keyHandler.goingUp = false;
             buttonIndexY--;
@@ -290,6 +325,10 @@ public class MenuPanel extends JPanel {
         hoveringMusicSettingButton = false;
         hoveringLanguageSettingButton = false;
         hoveringDebugSettingButton = false;
+
+        hoveringShopItemOne = false;
+        hoveringShopItemTwo = false;
+        hoveringShopItemThree = false;
 
     }
 
@@ -356,9 +395,9 @@ public class MenuPanel extends JPanel {
         g2d.setColor(Color.WHITE);
         drawText(g2d,0,230, "Shop");
 
-        // Music button
+        // Wall upgrade Button
         g2d.setFont(gameFontSmall);
-        if(hoveringMusicSettingButton){
+        if(hoveringShopItemOne){
             g2d.setColor(Color.YELLOW);
         } else {
             g2d.setColor(Color.WHITE);
@@ -368,9 +407,9 @@ public class MenuPanel extends JPanel {
         g2d.setFont(gameFontTiny);
         drawText(g2d,155,400, "Purchase two turrets defending their rows with cannonballs");
 
-        // Language button
+        // King upgrade Button
         g2d.setFont(gameFontSmall);
-        if(hoveringLanguageSettingButton){
+        if(hoveringShopItemTwo){
             g2d.setColor(Color.YELLOW);
         } else {
             g2d.setColor(Color.WHITE);
@@ -381,6 +420,11 @@ public class MenuPanel extends JPanel {
         drawText(g2d,155,550, "Purchase two more guards for the king - allowing him to attack 3 rows at once");
 
         g2d.setFont(gameFontSmall);
+        if (hoveringShopItemThree){
+            g2d.setColor(Color.YELLOW);
+        } else {
+            g2d.setColor(Color.WHITE);
+        }
         drawText(g2d,150,650, "Queen upgrade [LOCKED]");
         g2d.setColor(Color.WHITE);
         g2d.setFont(gameFontTiny);
@@ -433,6 +477,7 @@ public class MenuPanel extends JPanel {
         } else {
             drawText(g2d,0,600, debugOffText);
         }
+        g2d.setColor(Color.WHITE);
         g2d.setFont(gameFontTiny);
         drawText(g2d, 0, 950, "Press ESCAPE to return to the main menu");
     }
@@ -464,7 +509,9 @@ public class MenuPanel extends JPanel {
             drawText(g2d,155,800, "Remember. Every few seconds your piece gets automatically switched.");
             drawText(g2d,155,845, "Be prepared.");
 
-            drawText(g2d, 0, 950, "Press ENTER to view next page");
+            drawText(g2d, 155, 950, "Press <- to view previous page");
+            drawText(g2d, 1250, 950, "Press -> to view next page");
+
         } else if (currentHelpPage % 3 == 1){
             g2d.setFont(gameFontSmall);
             drawText(g2d, 155, 320, "Piece Overview:");
@@ -485,7 +532,8 @@ public class MenuPanel extends JPanel {
             drawText(g2d,155,835, "Having found strength in his faith - the Bishop is ready to take up arms and ");
             drawText(g2d, 155, 885, "fight for his faith.");
 
-            drawText(g2d, 0, 950, "Press ENTER to view next page");
+            drawText(g2d, 155, 950, "Press <- to view previous page");
+            drawText(g2d, 1250, 950, "Press -> to view next page");
         } else {
             g2d.setFont(gameFontSmall);
             drawText(g2d, 155, 320, "The Queen:");
