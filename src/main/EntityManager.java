@@ -4,6 +4,8 @@ import Allies.AllyPawn;
 import entities.*;
 import Allies.Player;
 
+import java.awt.image.BufferedImage;
+
 public class EntityManager {
     GamePanel gamePanel;
     SoundManager soundManager;
@@ -15,7 +17,7 @@ public class EntityManager {
     final int DEFAULT_QUEEN_PARTICLE_SPEED = 20;
 
     final int DEFAULT_TIME_TO_DECAY_QUEEN = 20;
-    final int DEFAULT_TIME_TO_DECAY_KNIGHT = 50;
+    final int DEFAULT_TIME_TO_DECAY_KNIGHT = 44;
 
     final int DEFAULT_CANNON_BALL_DMG = 50;
     final int DEFAULT_SLICE_DMG= 50;
@@ -72,21 +74,12 @@ public class EntityManager {
             soundManager.playClip(soundManager.shootClip);
         }
     }
-    public void spawnQueenParticles() {
+    public void spawnQueenParticles(BufferedImage skin) {
         if (gamePanel.queenImage != null) {
             int size = 132; // size of the cannonball
-            player.speed = player.DASH_SPEED;
-            player.queenDashing = true;
-            player.isInvulnerable = true;
-            switch(player.facingDirection){
-                case "up" -> player.targetY -= gamePanel.PIECE_HEIGHT * 2;
-                case "down" -> player.targetY += gamePanel.PIECE_HEIGHT * 2;
-                case "left" -> player.targetX -= gamePanel.PIECE_HEIGHT * 2;
-                case "right" -> player.targetX += gamePanel.PIECE_HEIGHT * 2;
-            }
             int bx = player.x + (gamePanel.pieceWidth  - size) / 2;
             int by = player.y + (gamePanel.pieceHeight - size) / 2;
-            gamePanel.projectiles.add(new QueenSlice(gamePanel, bx, by, size, DEFAULT_QUEEN_PARTICLE_SPEED, DEFAULT_TIME_TO_DECAY_QUEEN, DEFAULT_SLICE_DMG, gamePanel.queenParticleImage, player.facingDirection));
+            gamePanel.projectiles.add(new QueenSlice(gamePanel, bx, by, size, DEFAULT_QUEEN_PARTICLE_SPEED, DEFAULT_TIME_TO_DECAY_QUEEN, DEFAULT_SLICE_DMG, skin, player.facingDirection));
             soundManager.playClip(soundManager.sliceClip);
         }
     }

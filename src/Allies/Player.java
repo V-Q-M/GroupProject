@@ -4,6 +4,7 @@ import enemies.Enemy;
 import entities.Projectile;
 import main.*;
 
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -358,10 +359,38 @@ public class Player extends AnimateObject{
             // Add new characters here
             case ROOK   -> gamePanel.entityManager.spawnCannonBall(x, y, facingDirection);
             case BISHOP -> gamePanel.entityManager.spawnLance();
-            case QUEEN  -> gamePanel.entityManager.spawnQueenParticles();
+            case QUEEN  -> performQueenAttack();
             case KNIGHT -> performKnightAttack();
             case KING   -> performKingAttack();
         }
+    }
+
+    private void performQueenAttack(){
+        BufferedImage skin;
+
+        speed = DASH_SPEED;
+        queenDashing = true;
+        isInvulnerable = true;
+        switch(facingDirection){
+            case "up" -> {
+                targetY -= gamePanel.PIECE_HEIGHT * 2;
+                skin = gamePanel.queenParticleImageUp;
+            }
+            case "down" -> {
+                targetY += gamePanel.PIECE_HEIGHT * 2;
+                skin = gamePanel.queenParticleImageDown;
+            }
+            case "left" -> {
+                targetX -= gamePanel.PIECE_HEIGHT * 2;
+                skin = gamePanel.queenParticleImageLeft;
+            }
+            default -> {
+                targetX += gamePanel.PIECE_HEIGHT * 2;
+                skin = gamePanel.queenParticleImageRight;
+            }
+        }
+
+        gamePanel.entityManager.spawnQueenParticles(skin);
     }
 
     private void performKnightAttack(){

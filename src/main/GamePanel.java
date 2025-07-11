@@ -45,7 +45,10 @@ public class GamePanel extends JPanel{
   // Projectile textures
   public BufferedImage cannonBallImage;
   public BufferedImage explosionImage;
-  public BufferedImage queenParticleImage;
+  public BufferedImage queenParticleImageUp;
+  public BufferedImage queenParticleImageDown;
+  public BufferedImage queenParticleImageLeft;
+  public BufferedImage queenParticleImageRight;
   public BufferedImage knightParticleImage;
 
   // text for localization
@@ -127,7 +130,7 @@ public class GamePanel extends JPanel{
     buildWall();
 
     // Default piece
-    selectPiece(PieceType.ROOK);
+    selectPiece(PieceType.QUEEN);
 
     // Refreshrate. Might have to improve that
     new Timer(16, e -> update()).start(); // ~60 FPS
@@ -212,7 +215,10 @@ public class GamePanel extends JPanel{
 
       cannonBallImage = ImageIO.read(getClass().getResourceAsStream("/particles/cannonball2.png"));
       explosionImage = ImageIO.read(getClass().getResourceAsStream("/particles/explosion.png"));
-      queenParticleImage = ImageIO.read(getClass().getResourceAsStream("/particles/queenParticles.png"));
+      queenParticleImageUp = ImageIO.read(getClass().getResourceAsStream("/particles/queenParticlesUp.png"));
+      queenParticleImageDown = ImageIO.read(getClass().getResourceAsStream("/particles/queenParticlesDown.png"));
+      queenParticleImageLeft = ImageIO.read(getClass().getResourceAsStream("/particles/queenParticlesLeft.png"));
+      queenParticleImageRight = ImageIO.read(getClass().getResourceAsStream("/particles/queenParticlesRight.png"));
       knightParticleImage = ImageIO.read(getClass().getResourceAsStream("/particles/knightParticles.png"));
 
     } catch (IOException e) {

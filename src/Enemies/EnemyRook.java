@@ -44,7 +44,7 @@ public class EnemyRook extends Enemy{
 
     @Override
     void updateCooldowns(){
-        if (isInvulnerable && invulnerableCounter<30){
+        if (isInvulnerable && invulnerableCounter<45){
             invulnerableCounter++;
         } else {
             isInvulnerable = false;
