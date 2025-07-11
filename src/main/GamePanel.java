@@ -91,7 +91,7 @@ public class GamePanel extends JPanel{
   CollisionHandler collisionHandler = new CollisionHandler(this);
   SoundManager soundManager = new SoundManager(this);
 
-  int startX = PIECE_HEIGHT;
+  int startX = PIECE_HEIGHT*4;
   int startY = PIECE_HEIGHT*4;
 
   Player player = new Player(this, keyHandler, soundManager, collisionHandler, startX, startY);
@@ -172,33 +172,35 @@ public class GamePanel extends JPanel{
       allies.add(new AllyPawn(this, soundManager, collisionHandler, PIECE_HEIGHT, i * PIECE_HEIGHT, PIECE_HEIGHT, PIECE_HEIGHT, false));
     }
     if (turretUpgradeUnlocked){
-      int randomNum = (int) (Math.random()*7);
-      allies.add(new AllyRook(this, soundManager, collisionHandler, 0, randomNum * PIECE_HEIGHT, PIECE_HEIGHT, PIECE_HEIGHT));
-      allies.add(new AllyRook(this, soundManager, collisionHandler, 0, (randomNum + 1) * PIECE_HEIGHT, PIECE_HEIGHT, PIECE_HEIGHT));
+      //int randomNum = (int) (Math.random()*7);
+      allies.add(new AllyRook(this, soundManager, collisionHandler, 0, 0, PIECE_HEIGHT, PIECE_HEIGHT));
+      allies.add(new AllyRook(this, soundManager, collisionHandler, 0, 7 * PIECE_HEIGHT, PIECE_HEIGHT, PIECE_HEIGHT));
     }
   }
 
   // Image loader. Very simple. Might expand to ImageAtlas
   private void loadImages() {
     try {
-      rookImage = ImageIO.read(getClass().getResourceAsStream("/chess-pieces-png/color/white/rook.png"));
-      tileImage = ImageIO.read(getClass().getResourceAsStream("/earth.png"));
-      knightImage = ImageIO.read(getClass().getResourceAsStream("/chess-pieces-png/color/white/knight.png"));
-      bishopImage = ImageIO.read(getClass().getResourceAsStream("/chess-pieces-png/color/white/bishop.png"));
-      kingImage = ImageIO.read(getClass().getResourceAsStream("/chess-pieces-png/color/white/king.png"));
-      queenImage = ImageIO.read(getClass().getResourceAsStream("/chess-pieces-png/color/white/queen.png"));
-      pawnImage = ImageIO.read(getClass().getResourceAsStream("/chess-pieces-png/color/white/pawn.png"));
+      tileImage = ImageIO.read(getClass().getResourceAsStream("/background/earth.png"));
 
-      cannonBallImage = ImageIO.read(getClass().getResourceAsStream("/cannonball2.png"));
-      explosionImage = ImageIO.read(getClass().getResourceAsStream("/explosion.png"));
-      queenParticleImage = ImageIO.read(getClass().getResourceAsStream("/queenParticles.png"));
-      knightParticleImage = ImageIO.read(getClass().getResourceAsStream("/knightParticles.png"));
-      enemyRookImage = ImageIO.read(getClass().getResourceAsStream("/chess-pieces-png/color/black/rook.png"));
-      enemyKnightImage = ImageIO.read(getClass().getResourceAsStream("/chess-pieces-png/color/black/knight.png"));
-      enemyBishopImage = ImageIO.read(getClass().getResourceAsStream("/chess-pieces-png/color/black/bishop.png"));
-      enemyKingImage = ImageIO.read(getClass().getResourceAsStream("/chess-pieces-png/color/black/king.png"));
-      enemyQueenImage = ImageIO.read(getClass().getResourceAsStream("/chess-pieces-png/color/black/queen.png"));
-      enemyPawnImage = ImageIO.read(getClass().getResourceAsStream("/chess-pieces-png/color/black/pawn.png"));
+      rookImage = ImageIO.read(getClass().getResourceAsStream("/chess-pieces/white/rook.png"));
+      knightImage = ImageIO.read(getClass().getResourceAsStream("/chess-pieces/white/knight.png"));
+      bishopImage = ImageIO.read(getClass().getResourceAsStream("/chess-pieces/white/bishop.png"));
+      kingImage = ImageIO.read(getClass().getResourceAsStream("/chess-pieces/white/king.png"));
+      queenImage = ImageIO.read(getClass().getResourceAsStream("/chess-pieces/white/queen.png"));
+      pawnImage = ImageIO.read(getClass().getResourceAsStream("/chess-pieces/white/pawn.png"));
+
+      enemyRookImage = ImageIO.read(getClass().getResourceAsStream("/chess-pieces/black/rook.png"));
+      enemyKnightImage = ImageIO.read(getClass().getResourceAsStream("/chess-pieces/black/knight.png"));
+      enemyBishopImage = ImageIO.read(getClass().getResourceAsStream("/chess-pieces/black/bishop.png"));
+      enemyKingImage = ImageIO.read(getClass().getResourceAsStream("/chess-pieces/black/king.png"));
+      enemyQueenImage = ImageIO.read(getClass().getResourceAsStream("/chess-pieces/black/queen.png"));
+      enemyPawnImage = ImageIO.read(getClass().getResourceAsStream("/chess-pieces/black/pawn.png"));
+
+      cannonBallImage = ImageIO.read(getClass().getResourceAsStream("/particles/cannonball2.png"));
+      explosionImage = ImageIO.read(getClass().getResourceAsStream("/particles/explosion.png"));
+      queenParticleImage = ImageIO.read(getClass().getResourceAsStream("/particles/queenParticles.png"));
+      knightParticleImage = ImageIO.read(getClass().getResourceAsStream("/particles/knightParticles.png"));
     } catch (IOException e) {
       e.printStackTrace();
       JOptionPane.showMessageDialog(this, "Could not load images");
@@ -208,7 +210,7 @@ public class GamePanel extends JPanel{
   Font gameFontTiny;
   private void loadFonts() {
     try {
-      InputStream fontStream = getClass().getResourceAsStream("/PressStart2P.ttf");
+      InputStream fontStream = getClass().getResourceAsStream("/fonts/PressStart2P.ttf");
       if (fontStream == null) {
         throw new IOException("Font file not found in resources.");
       }

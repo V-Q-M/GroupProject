@@ -61,17 +61,17 @@ public class SoundManager {
     }
 
     public void loadSounds() {
-        shootClip = loadClip("/shoot.wav");
-        sliceClip = loadClip("/slice1.wav");
-        hitClip   = loadClip("/hit.wav");
-        smashClip = loadClip("/smash.wav");
-        deathClip = loadClip("/death.wav");
-        swapClip  = loadClip("/swap2.wav");
-        summonClip = loadClip("/summon.wav");
-        menuTheme = loadClip("/menuTheme.wav");
-        mainTheme = loadClip("/mainTheme2.wav");
-        buttonHoverClip = loadClip("/buttonHover.wav");
-        buttonClickClip = loadClip("/buttonClick.wav");
+        shootClip = loadClip("/sounds/shoot.wav");
+        sliceClip = loadClip("/sounds/slice1.wav");
+        hitClip   = loadClip("/sounds/hit.wav");
+        smashClip = loadClip("/sounds/smash.wav");
+        deathClip = loadClip("/sounds/death.wav");
+        swapClip  = loadClip("/sounds/swap2.wav");
+        summonClip = loadClip("/sounds/summon.wav");
+        menuTheme = loadClip("/sounds/menuTheme.wav");
+        mainTheme = loadClip("/sounds/mainTheme2.wav");
+        buttonHoverClip = loadClip("/sounds/buttonHover.wav");
+        buttonClickClip = loadClip("/sounds/buttonClick.wav");
     }
 
     private Clip loadClip(String path) {

@@ -294,9 +294,9 @@ public class MenuPanel extends JPanel {
     }
 
     private void loadImages() {
-        try (InputStream is = getClass().getResourceAsStream("/BackGroundMenu.png")) {
+        try (InputStream is = getClass().getResourceAsStream("/background/BackGroundMenu.png")) {
             if (is == null) {
-                throw new IOException("Image resource not found: /BackGroundMenu.png");
+                throw new IOException("Image resource not found: /background/BackGroundMenu.png");
             }
             backgroundImg = ImageIO.read(is);
         } catch (IOException e) {
@@ -310,7 +310,7 @@ public class MenuPanel extends JPanel {
     Font gameFontTiny;
     private void loadFonts() {
         try {
-            InputStream fontStream = getClass().getResourceAsStream("/PressStart2P.ttf");
+            InputStream fontStream = getClass().getResourceAsStream("/fonts/PressStart2P.ttf");
             if (fontStream == null) {
                 throw new IOException("Font file not found in resources.");
             }
