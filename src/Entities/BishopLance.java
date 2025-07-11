@@ -2,10 +2,12 @@ package entities;
 
 import main.GamePanel;
 
+import java.awt.image.BufferedImage;
+
 public class BishopLance extends Projectile{
 
     // Specialized constructor
-    public BishopLance(GamePanel gamePanel, int x, int y, int size, int speed, int damage, String direction) {
+    public BishopLance(GamePanel gamePanel, int x, int y, int size, int speed, int damage, BufferedImage skin, String direction) {
         this.gamePanel = gamePanel;
         this.x = x;
         this.y = y;
@@ -14,7 +16,7 @@ public class BishopLance extends Projectile{
         this.direction = direction;
         this.speed = speed;
         this.damage = damage;
-        this.skin = gamePanel.cannonBallImage;
+        this.skin = skin;
     }
 
     // Moves the ball

@@ -63,15 +63,15 @@ public class EntityManager {
 
     }
 
-    public void spawnLance(){
+    public void spawnLance(BufferedImage skin){
         if (gamePanel.bishopImage != null) {
-            int size = CANNON_BALL_SIZE; // size of the cannonball
+            int size = 96; // size of the cannonball
             // spawn at top‐center of the rook
             int bx = player.x + (gamePanel.pieceWidth - size) / 2;
             int by = player.y + (gamePanel.pieceHeight - size) / 2;
             // Append balls to the list of balls
-            gamePanel.projectiles.add(new BishopLance(gamePanel, bx, by, size, DEFAULT_LANCE_SPEED ,DEFAULT_LANCE_DMG, player.facingDirection));
-            soundManager.playClip(soundManager.shootClip);
+            gamePanel.projectiles.add(new BishopLance(gamePanel, bx, by, size, DEFAULT_LANCE_SPEED ,DEFAULT_LANCE_DMG, skin, player.facingDirection));
+            soundManager.playClip(soundManager.holyClip);
         }
     }
     public void spawnQueenParticles(BufferedImage skin) {

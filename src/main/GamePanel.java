@@ -43,10 +43,8 @@ public class GamePanel extends JPanel{
   // Enemy textures
   public BufferedImage enemyRookImage;
   public BufferedImage enemyRookHurtImage;
-  public BufferedImage enemyKnightImage;
-  public BufferedImage enemyBishopImage;
   public BufferedImage enemyKingImage;
-  public BufferedImage enemyQueenImage;
+  public BufferedImage enemyKingHurtImage;
   public BufferedImage enemyPawnImage;
   public BufferedImage enemyPawnHurtImage;
 
@@ -57,6 +55,10 @@ public class GamePanel extends JPanel{
   public BufferedImage queenParticleImageDown;
   public BufferedImage queenParticleImageLeft;
   public BufferedImage queenParticleImageRight;
+  public BufferedImage bishopParticleImageUpLeft;
+  public BufferedImage bishopParticleImageUpRight;
+  public BufferedImage bishopParticleImageDownLeft;
+  public BufferedImage bishopParticleImageDownRight;
   public BufferedImage knightParticleImage;
 
   // text for localization
@@ -138,7 +140,7 @@ public class GamePanel extends JPanel{
     buildWall();
 
     // Default piece
-    selectPiece(PieceType.QUEEN);
+    selectPiece(PieceType.BISHOP);
 
     // Refreshrate. Might have to improve that
     new Timer(16, e -> update()).start(); // ~60 FPS
@@ -222,10 +224,8 @@ public class GamePanel extends JPanel{
 
       enemyRookImage = ImageIO.read(getClass().getResourceAsStream("/chess-pieces/black/rook.png"));
       enemyRookHurtImage = ImageIO.read(getClass().getResourceAsStream("/chess-pieces/black/rook_hurt.png"));
-      enemyKnightImage = ImageIO.read(getClass().getResourceAsStream("/chess-pieces/black/knight.png"));
-      enemyBishopImage = ImageIO.read(getClass().getResourceAsStream("/chess-pieces/black/bishop.png"));
       enemyKingImage = ImageIO.read(getClass().getResourceAsStream("/chess-pieces/black/king.png"));
-      enemyQueenImage = ImageIO.read(getClass().getResourceAsStream("/chess-pieces/black/queen.png"));
+      enemyKingHurtImage = ImageIO.read(getClass().getResourceAsStream("/chess-pieces/black/king_hurt.png"));
       enemyPawnImage = ImageIO.read(getClass().getResourceAsStream("/chess-pieces/black/pawn.png"));
       enemyPawnHurtImage = ImageIO.read(getClass().getResourceAsStream("/chess-pieces/black/pawn_hurt.png"));
 
@@ -235,6 +235,10 @@ public class GamePanel extends JPanel{
       queenParticleImageDown = ImageIO.read(getClass().getResourceAsStream("/particles/queenParticlesDown.png"));
       queenParticleImageLeft = ImageIO.read(getClass().getResourceAsStream("/particles/queenParticlesLeft.png"));
       queenParticleImageRight = ImageIO.read(getClass().getResourceAsStream("/particles/queenParticlesRight.png"));
+      bishopParticleImageUpLeft = ImageIO.read(getClass().getResourceAsStream("/particles/bishopLanceUpLeft.png"));
+      bishopParticleImageUpRight = ImageIO.read(getClass().getResourceAsStream("/particles/bishopLanceUpRight.png"));
+      bishopParticleImageDownLeft = ImageIO.read(getClass().getResourceAsStream("/particles/bishopLanceDownLeft.png"));
+      bishopParticleImageDownRight = ImageIO.read(getClass().getResourceAsStream("/particles/bishopLanceDownRight.png"));
       knightParticleImage = ImageIO.read(getClass().getResourceAsStream("/particles/knightParticles.png"));
 
     } catch (IOException e) {

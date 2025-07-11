@@ -358,11 +358,32 @@ public class Player extends livingBeing {
         switch (gamePanel.selectedPieceType) {
             // Add new characters here
             case ROOK   -> gamePanel.entityManager.spawnCannonBall(x, y, facingDirection);
-            case BISHOP -> gamePanel.entityManager.spawnLance();
+            case BISHOP -> performBishopAttack();
             case QUEEN  -> performQueenAttack();
             case KNIGHT -> performKnightAttack();
             case KING   -> performKingAttack();
         }
+    }
+
+    private void performBishopAttack(){
+        BufferedImage skin;
+        switch(facingDirection){
+            case "up-left" -> {
+                skin = gamePanel.bishopParticleImageUpLeft;
+            }
+            case "up-right" -> {
+                skin = gamePanel.bishopParticleImageUpRight;
+            }
+            case "down-left" -> {
+                skin = gamePanel.bishopParticleImageDownLeft;
+            }
+            default -> {
+                skin = gamePanel.bishopParticleImageDownRight;
+            }
+        }
+
+
+        gamePanel.entityManager.spawnLance(skin);
     }
 
     private void performQueenAttack(){

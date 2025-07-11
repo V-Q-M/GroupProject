@@ -17,9 +17,6 @@ public class EnemyManager {
         switch (type){
             case PieceType.PAWN   -> gamePanel.enemies.add(new EnemyPawn(gamePanel, gamePanel.soundManager, gamePanel.collisionHandler, x, y, width, height));
             case PieceType.ROOK   -> gamePanel.enemies.add(new EnemyRook(gamePanel, gamePanel.soundManager, gamePanel.collisionHandler, x, y, width, height));
-            case PieceType.BISHOP -> gamePanel.enemies.add(new EnemyBishop(gamePanel, gamePanel.soundManager, gamePanel.collisionHandler, x, y, width, height));
-            case PieceType.KNIGHT -> gamePanel.enemies.add(new EnemyKnight(gamePanel, gamePanel.soundManager, gamePanel.collisionHandler, x, y, width, height));
-            case PieceType.QUEEN  -> gamePanel.enemies.add(new EnemyQueen(gamePanel, gamePanel.soundManager, gamePanel.collisionHandler, x, y, width, height));
             case PieceType.KING   -> gamePanel.enemies.add(new EnemyKing(gamePanel, gamePanel.soundManager, gamePanel.collisionHandler, x, y, width, height));
         }
     }

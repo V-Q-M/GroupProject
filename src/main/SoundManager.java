@@ -15,6 +15,7 @@ public class SoundManager {
     public Clip sliceClip;
     public Clip hitClip;
     public Clip smashClip;
+    public Clip holyClip;
     public Clip deathClip;
     public Clip swapClip;
     public Clip buttonHoverClip;
@@ -64,6 +65,7 @@ public class SoundManager {
         sliceClip = loadClip("/sounds/slice1.wav");
         hitClip   = loadClip("/sounds/hit.wav");
         smashClip = loadClip("/sounds/smash.wav");
+        holyClip = loadClip("/sounds/holyLance.wav");
         deathClip = loadClip("/sounds/death.wav");
         swapClip  = loadClip("/sounds/swap2.wav");
         summonClip = loadClip("/sounds/summon.wav");
