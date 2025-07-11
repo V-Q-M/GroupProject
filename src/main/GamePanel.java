@@ -70,6 +70,8 @@ public class GamePanel extends JPanel{
   private String restartText = "Restart?";
   private String resumeText = "Resume?";
 
+  private boolean almostLost = false;
+
   // uses the enum
   public PieceType selectedPieceType;
   public int pieceWidth;
@@ -276,6 +278,13 @@ public class GamePanel extends JPanel{
 
   public void update() {
     score+=1;
+
+    if (castleHealth <= 20) {
+      almostLost = true;
+    } else {
+      almostLost = false;
+    }
+
     if (!gameOver && !gamePaused) {
       simpleAnimation();
 
@@ -546,6 +555,11 @@ public class GamePanel extends JPanel{
     if (swapSoon && !gamePaused){
       g2d.setColor(Color.YELLOW);
       drawText(g2d,0,0, gameFont, swappingSoonText);
+    }
+
+    if (almostLost){
+      g2d.setColor(new Color(200, 0 ,0, 40));
+      g2d.fillRect(0,0, Main.WIDTH, Main.HEIGHT);
     }
   }
 
