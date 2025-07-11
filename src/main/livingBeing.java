@@ -16,6 +16,9 @@ public abstract class livingBeing {
     public BufferedImage baseSkin;
     public BufferedImage hurtSkin;
 
+    public int recoveryTime = 30;
+    public int recoveryMarkerTime = 15;
+
 
     public int speed, damage, health;
 }

@@ -21,11 +21,14 @@ public class AllyRook extends Ally {
 
     @Override
     void updateCooldowns(){
-        if (isInvulnerable && invulnerableCounter<30){
+        if (isInvulnerable){
+            if (invulnerableCounter >= recoveryTime){
+                isInvulnerable = false;
+                invulnerableCounter = 0;
+            } else if (invulnerableCounter > recoveryMarkerTime){
+                this.skin = baseSkin;
+            }
             invulnerableCounter++;
-        } else {
-            isInvulnerable = false;
-            invulnerableCounter = 0;
         }
 
         if (attackCoolDownCounter > attackCoolDown){

@@ -37,6 +37,8 @@ public abstract class Ally extends livingBeing {
             if (collisionHandler.projectileCollision(this, projectile)){
                 health -= 50;
                 projectile.isDead = true;
+                this.isInvulnerable = true;
+                this.skin = hurtSkin;
                 gamePanel.entityManager.spawnExplosion(projectile.x, projectile.y);
                 soundManager.playClip(soundManager.hitClip);
             }
@@ -55,12 +57,14 @@ public abstract class Ally extends livingBeing {
     }
 
     void updateCooldowns(){
-        if (isInvulnerable && invulnerableCounter<30){
+        if (isInvulnerable){
+            if (invulnerableCounter >= recoveryTime){
+                isInvulnerable = false;
+                invulnerableCounter = 0;
+            } else if (invulnerableCounter > recoveryMarkerTime){
+                this.skin = baseSkin;
+            }
             invulnerableCounter++;
-        } else {
-            isInvulnerable = false;
-            invulnerableCounter = 0;
-            this.skin = baseSkin;
         }
 
         if (hasAttacked && attackCoolDownCounter < attackCoolDown){

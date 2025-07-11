@@ -51,13 +51,16 @@ public abstract class Enemy extends livingBeing {
     }
 
     void updateCooldowns(){
-        if (isInvulnerable && invulnerableCounter<30){
+        if (isInvulnerable){
+            if (invulnerableCounter >= recoveryTime){
+                isInvulnerable = false;
+                invulnerableCounter = 0;
+            }  else if (invulnerableCounter > recoveryMarkerTime) {
+                this.skin = baseSkin;
+            }
             invulnerableCounter++;
-        } else {
-           isInvulnerable = false;
-           invulnerableCounter = 0;
-           this.skin = baseSkin;
         }
+
 
         if (hasAttacked && attackCoolDownCounter < attackCoolDown){
             attackCoolDownCounter++;

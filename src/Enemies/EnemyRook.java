@@ -17,6 +17,7 @@ public class EnemyRook extends Enemy{
         this.skin = baseSkin;
         this.attackCoolDown = 300;
         this.attackCoolDownCounter = 0;
+        this.recoveryTime = 45;
     }
 
     boolean allowAttack = false;
@@ -46,12 +47,15 @@ public class EnemyRook extends Enemy{
 
     @Override
     void updateCooldowns(){
-        if (isInvulnerable && invulnerableCounter<45){
-            invulnerableCounter++;
-        } else {
-            isInvulnerable = false;
-            invulnerableCounter = 0;
-            this.skin = baseSkin;
+
+        if (isInvulnerable){
+            if (invulnerableCounter >= recoveryTime){
+                isInvulnerable = false;
+                invulnerableCounter = 0;
+            } else if (invulnerableCounter > recoveryMarkerTime) {
+                this.skin = baseSkin;
+            }
+            invulnerableCounter ++;
         }
 
         if (attackCoolDownCounter > attackCoolDown){

@@ -24,6 +24,15 @@ public class Player extends livingBeing {
     public final int DASH_SPEED = 16;
     public final int LEAP_SPEED = 8;
 
+    // Ability Cooldowns
+    private final int ROOK_ABILITY_COOLDOWN = 60;
+    private final int KNIGHT_ABILITY_COOLDOWN = 120;
+    private final int QUEEN_ABILITY_COOLDOWN = 40;
+    private final int KING_ABILITY_COOLDOWN = 240;
+
+    // Initializes it
+    public int abilityCoolDown = ROOK_ABILITY_COOLDOWN;
+
     // Used for the queen ability
     public boolean queenDashing = false;
     private int queenDashingCounter = 0;
@@ -90,6 +99,7 @@ public class Player extends livingBeing {
         this.targetY = startPositionY;
         this.height = gamePanel.pieceHeight;
         this.width  = gamePanel.pieceWidth;
+        this.speed = BASE_MOVE_SPEED;
     }
 
     public void playerUpdate(){
@@ -112,7 +122,7 @@ public class Player extends livingBeing {
         if (availablePieces.size() >= 2){
            availablePieces.remove(randomValue);
         }
-        gamePanel.selectPiece(randomValue);
+        selectPiece(randomValue);
         swapCounter = 0;
         attackCoolDownCounter = 0;
         hasAttacked = false;
@@ -137,6 +147,52 @@ public class Player extends livingBeing {
             swapCounter++;
         }
     }
+
+    public void selectPiece(PieceType changePiece) {
+        gamePanel.selectedPieceType = changePiece;
+        swapCounter = 0;
+        soundManager.playClip(soundManager.swapClip);
+        gamePanel.swapSoon = false;
+        switch (changePiece) {
+            case PieceType.ROOK -> {
+
+                //gamePanel.selectedPiece = gamePanel.rookImage;
+                this.baseSkin = gamePanel.rookImage;
+                this.hurtSkin = gamePanel.rookHurtImage;
+
+                abilityCoolDown = ROOK_ABILITY_COOLDOWN;
+            }
+            case PieceType.QUEEN -> {
+                //gamePanel.selectedPiece = gamePanel.queenImage;
+                abilityCoolDown = QUEEN_ABILITY_COOLDOWN;
+                this.baseSkin = gamePanel.queenImage;
+                this.hurtSkin = gamePanel.queenHurtImage;
+            }
+            case PieceType.KING -> {
+                //gamePanel.selectedPiece = gamePanel.kingImage;
+                abilityCoolDown = KING_ABILITY_COOLDOWN;
+                this.baseSkin = gamePanel.kingImage;
+                this.hurtSkin = gamePanel.kingHurtImage;
+            }
+            case PieceType.KNIGHT -> {
+                //gamePanel.selectedPiece = gamePanel.knightImage;
+                abilityCoolDown = KNIGHT_ABILITY_COOLDOWN;
+                this.baseSkin = gamePanel.knightImage;
+                this.hurtSkin = gamePanel.knightHurtImage;
+            }
+            case PieceType.BISHOP -> {
+                //gamePanel.selectedPiece = gamePanel.bishopImage;
+                abilityCoolDown = ROOK_ABILITY_COOLDOWN;
+                this.baseSkin = gamePanel.bishopImage;
+                this.hurtSkin = gamePanel.bishopHurtImage;
+            }
+        }
+        this.skin = baseSkin;
+        //gamePanel.pieceHeight = gamePanel.selectedPiece.getHeight() * gamePanel.SCALE;
+        gamePanel.pieceWidth = skin.getWidth() * gamePanel.SCALE;
+        gamePanel.pieceHeight = skin.getHeight() * gamePanel.SCALE;
+    }
+
 
     private boolean reachedBorder(){
         return collisionHandler.borderCollision(x, y, gamePanel.pieceWidth, gamePanel.pieceHeight, speed, facingDirection);
@@ -251,27 +307,36 @@ public class Player extends livingBeing {
     }
 
     private void coolDowns(){
-        if (queenDashing && queenDashingCounter <= 20){
-            queenDashingCounter ++;
-        } else {
-            queenDashing = false;
-            queenDashingCounter = 0;
-            isInvulnerable = false;
-            speed = BASE_MOVE_SPEED;
+        if (isInvulnerable){
+            if (invulnerableCounter >= recoveryTime){
+                isInvulnerable = false;
+                invulnerableCounter = 0;
+            } else if (invulnerableCounter > recoveryMarkerTime) {
+                this.skin = baseSkin;
+            }
+            invulnerableCounter ++;
         }
 
-        if (hasAttacked && attackCoolDownCounter < gamePanel.abilityCoolDown){
+        if (queenDashing){
+           if (queenDashingCounter <= 20) {
+               queenDashingCounter ++;
+           } else {
+               queenDashing = false;
+               queenDashingCounter = 0;
+               isInvulnerable = false;
+               speed = BASE_MOVE_SPEED;
+           }
+        }
+
+        if (hasAttacked && attackCoolDownCounter < abilityCoolDown){
             attackCoolDownCounter++;
         } else {
             hasAttacked = false;
             attackCoolDownCounter = 0;
         }
-        if (isInvulnerable && invulnerableCounter<30){
-            invulnerableCounter++;
-        } else {
-            isInvulnerable = false;
-            invulnerableCounter = 0;
-        }
+
+
+
     }
 
     private void checkCollision(){
@@ -281,6 +346,7 @@ public class Player extends livingBeing {
                     enemy.hasAttacked = true;
                     takeDamage(enemy.damage);
                     isInvulnerable = true;
+                    this.skin = hurtSkin;
                     soundManager.playClip(soundManager.hitClip);
                 }
             }

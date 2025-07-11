@@ -15,7 +15,7 @@ public class AllyPawn extends Ally {
         this.health = 100;
         this.baseSkin = gamePanel.pawnImage;
         this.hurtSkin = gamePanel.pawnHurtImage;
-        this.skin = hurtSkin;
+        this.skin = baseSkin;
         this.attackCoolDown = 80;
         this.canMove = canMove;
     }

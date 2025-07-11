@@ -75,24 +75,16 @@ public class GamePanel extends JPanel{
   public int pieceWidth;
   public int pieceHeight;
 
-  // Ability Cooldowns
-  private final int ROOK_ABILITY_COOLDOWN = 60;
-  private final int KNIGHT_ABILITY_COOLDOWN = 120;
-  private final int QUEEN_ABILITY_COOLDOWN = 40;
-  private final int KING_ABILITY_COOLDOWN = 240;
-
-  // Initializes it
-  public int abilityCoolDown = ROOK_ABILITY_COOLDOWN;
 
   // Builds the background
   private BufferedImage tileImage;
 
   // This will hold the actual player.Player piece
-  private BufferedImage selectedPiece;
+  public BufferedImage selectedPiece;
   public int PIECE_HEIGHT = 4 * 32;
 
   // Im scaling 32x32 Textures so that they look nicer
-  final int SCALE = 8;
+  public final int SCALE = 8;
 
   // carries particle effects
   public final List<Projectile> projectiles = new ArrayList<>();
@@ -139,8 +131,7 @@ public class GamePanel extends JPanel{
     // Builds the pawnwall on the left
     buildWall();
 
-    // Default piece
-    selectPiece(PieceType.BISHOP);
+    player.selectPiece(PieceType.BISHOP);
 
     // Refreshrate. Might have to improve that
     new Timer(16, e -> update()).start(); // ~60 FPS
@@ -263,36 +254,6 @@ public class GamePanel extends JPanel{
     }
   }
 
-  public void selectPiece(PieceType changePiece) {
-    selectedPieceType = changePiece;
-    player.swapCounter = 0;
-    soundManager.playClip(soundManager.swapClip);
-    swapSoon = false;
-    switch (changePiece) {
-      case PieceType.ROOK -> {
-        selectedPiece = rookImage;
-        abilityCoolDown = ROOK_ABILITY_COOLDOWN;
-      }
-      case PieceType.QUEEN -> {
-        selectedPiece = queenImage;
-        abilityCoolDown = QUEEN_ABILITY_COOLDOWN;
-      }
-      case PieceType.KING -> {
-        selectedPiece = kingImage;
-        abilityCoolDown = KING_ABILITY_COOLDOWN;
-      }
-      case PieceType.KNIGHT -> {
-        selectedPiece = knightImage;
-        abilityCoolDown = KNIGHT_ABILITY_COOLDOWN;
-      }
-      case PieceType.BISHOP -> {
-        selectedPiece = bishopImage;
-        abilityCoolDown = ROOK_ABILITY_COOLDOWN;
-      }
-    }
-    pieceWidth = selectedPiece.getWidth() * SCALE;
-    pieceHeight = selectedPiece.getHeight() * SCALE;
-  }
 
   // A simple bobbing animation
   int animationFrame = 1;
@@ -442,13 +403,13 @@ public class GamePanel extends JPanel{
   int animationOffset = 2;
   private void drawPlayer(Graphics2D g2d){
     // Draw selectedPiece at current position
-    if (selectedPiece != null && !player.isDead) {
+    if (player.skin != null && !player.isDead) {
       if (animationFrame == 2){
-        g2d.drawImage(selectedPiece, player.x - animationOffset, player.y + animationOffset, pieceWidth + animationOffset * 2, pieceHeight, this);
+        g2d.drawImage(player.skin, player.x - animationOffset, player.y + animationOffset, pieceWidth + animationOffset * 2, pieceHeight, this);
       } else if (animationFrame == 3){
-        g2d.drawImage(selectedPiece, player.x + animationOffset, player.y - animationOffset, pieceWidth - animationOffset * 2, pieceHeight, this);
+        g2d.drawImage(player.skin, player.x + animationOffset, player.y - animationOffset, pieceWidth - animationOffset * 2, pieceHeight, this);
       } else {
-        g2d.drawImage(selectedPiece, player.x, player.y, pieceWidth, pieceHeight, this);
+        g2d.drawImage(player.skin, player.x, player.y, pieceWidth, pieceHeight, this);
       }
       // Draw hitbox
       if (DEBUG_MODE) {
@@ -598,7 +559,7 @@ public class GamePanel extends JPanel{
     g2d.fillRect(0,0,Main.WIDTH, Main.HEIGHT);
 
     g2d.setColor(Color.RED);
-    drawText(g2d,0,320, gameFont, gameOverText);
+    drawText(g2d,0,340, gameFont, gameOverText);
 
     if(pauseMenuIndex % 2 == 0){
       g2d.setColor(Color.YELLOW);
@@ -611,7 +572,7 @@ public class GamePanel extends JPanel{
     } else {
       g2d.setColor(Color.WHITE);
     }
-    drawText(g2d, 0, 700, gameFont, restartText);
+    drawText(g2d, 0, 680, gameFont, restartText);
     if(keyHandler.goingDown){
       keyHandler.goingDown = false;
       soundManager.playClip(soundManager.buttonHoverClip);
