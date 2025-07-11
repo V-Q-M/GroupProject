@@ -294,7 +294,7 @@ public class MenuPanel extends JPanel {
     }
 
     private void loadImages() {
-        try (InputStream is = getClass().getResourceAsStream("/background/BackGroundMenu.png")) {
+        try (InputStream is = getClass().getResourceAsStream("/background/BackgroundMenu.png")) {
             if (is == null) {
                 throw new IOException("Image resource not found: /background/BackGroundMenu.png");
             }
@@ -385,6 +385,7 @@ public class MenuPanel extends JPanel {
         g2d.setColor(Color.WHITE);
         g2d.setFont(gameFontTiny);
         drawText(g2d,155,700, "Purchase an ancient talisman for the queen - allowing her to heal on enemies");
+        drawText(g2d, 0, 950, "Press ESCAPE to return to the main menu");
     }
 
     private void drawSettings(Graphics2D g2d){
@@ -432,6 +433,8 @@ public class MenuPanel extends JPanel {
         } else {
             drawText(g2d,0,600, debugOffText);
         }
+        g2d.setFont(gameFontTiny);
+        drawText(g2d, 0, 950, "Press ESCAPE to return to the main menu");
     }
 
     private int currentHelpPage = 0;
