@@ -349,7 +349,7 @@ public class Player extends AnimateObject{
     }
 
     void performAttack() {
-        //
+        // should be obsolete
         //x = ((x + 127) / 128) * 128;
         //y = ((y + 127) / 128) * 128;
         //targetX=x;

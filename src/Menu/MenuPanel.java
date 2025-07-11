@@ -392,10 +392,10 @@ public class MenuPanel extends JPanel {
         drawText(g2d,155,550, "Purchase two more guards for the king - allowing him to attack 3 rows at once");
 
         g2d.setFont(gameFontSmall);
-        drawText(g2d,150,650, "Queen upgrade [PURCHASED]");
+        drawText(g2d,150,650, "Queen upgrade [LOCKED]");
         g2d.setColor(Color.WHITE);
         g2d.setFont(gameFontTiny);
-        drawText(g2d,155,700, "Purchase an ancient talisman for the queen - allowing her to heal when defeating enemies");
+        drawText(g2d,155,700, "Purchase an ancient talisman for the queen - allowing her to heal on enemies");
     }
 
     private void drawSettings(Graphics2D g2d){
@@ -479,7 +479,7 @@ public class MenuPanel extends JPanel {
 
             drawText(g2d,155,405, "The Rook:");
             g2d.setFont(gameFontTiny);
-            drawText(g2d,155,450, "Having mastered artillery - the rook has proven a reliable range option,");
+            drawText(g2d,155,450, "Having mastered artillery - the rook has proven to be a reliable range option,");
             drawText(g2d,155,500, "capable of defeating his enemies from a safe distance.");
             g2d.setFont(gameFontSmall);
             drawText(g2d, 155, 600, "The Knight:");
@@ -498,6 +498,16 @@ public class MenuPanel extends JPanel {
             g2d.setFont(gameFontSmall);
             drawText(g2d, 155, 320, "The Queen:");
             g2d.setFont(gameFontTiny);
+            drawText(g2d, 155, 365, "Having been secretly trained in the art of sword fighting - the queen is as mobile");
+            drawText(g2d, 155, 410, "as she is deadly, striking down those, who dare cross her way.");
+
+            g2d.setFont(gameFontSmall);
+            drawText(g2d, 155, 500, "The King:");
+            g2d.setFont(gameFontTiny);
+            drawText(g2d, 155, 545, "Having served his people for many years - the King utilizes his royal guard ");
+            drawText(g2d, 155, 590, "to defeat those who dare attack him.");
+
+            drawText(g2d, 0, 950, "Press ESCAPE to return to the main menu");
         }
         g2d.setFont(gameFontSmall);
 
