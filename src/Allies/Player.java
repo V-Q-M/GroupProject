@@ -25,10 +25,10 @@ public class Player extends livingBeing {
     public final int LEAP_SPEED = 8;
 
     // Ability Cooldowns
-    private final int ROOK_ABILITY_COOLDOWN = 60;
-    private final int KNIGHT_ABILITY_COOLDOWN = 120;
-    private final int QUEEN_ABILITY_COOLDOWN = 40;
-    private final int KING_ABILITY_COOLDOWN = 240;
+    private final int ROOK_ABILITY_COOLDOWN = 50;
+    private final int KNIGHT_ABILITY_COOLDOWN = 150;
+    private final int QUEEN_ABILITY_COOLDOWN = 30;
+    private final int KING_ABILITY_COOLDOWN = 250;
 
     // Initializes it
     public int abilityCoolDown = ROOK_ABILITY_COOLDOWN;
