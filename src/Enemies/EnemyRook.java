@@ -12,7 +12,9 @@ public class EnemyRook extends Enemy{
         this.speed = 2;
         this.health = 150;
         this.maxHealth = 150;
-        this.skin = gamePanel.enemyRookImage;
+        this.baseSkin = gamePanel.enemyRookImage;
+        this.hurtSkin = gamePanel.enemyRookHurtImage;
+        this.skin = baseSkin;
         this.attackCoolDown = 300;
         this.attackCoolDownCounter = 0;
     }
@@ -49,6 +51,7 @@ public class EnemyRook extends Enemy{
         } else {
             isInvulnerable = false;
             invulnerableCounter = 0;
+            this.skin = baseSkin;
         }
 
         if (attackCoolDownCounter > attackCoolDown){
