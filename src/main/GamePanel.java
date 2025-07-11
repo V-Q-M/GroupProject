@@ -537,7 +537,7 @@ public class GamePanel extends JPanel{
   void drawUI(Graphics2D g2d) {
     g2d.setFont(gameFont);
 
-    drawScore(g2d);
+    drawScoreBar(g2d);
     drawAbilityBar(g2d);
 
     if (gameOver) {
@@ -563,9 +563,19 @@ public class GamePanel extends JPanel{
     }
   }
 
-  private void drawScore(Graphics2D g2d){
+  private int nextLevelGoal = 50000;
+  private void drawScoreBar(Graphics2D g2d){
+    int progress = (int) (690 * (float) score / nextLevelGoal);
+    g2d.setColor(Color.BLACK);
+    g2d.fillRect(0,Main.HEIGHT - 53, Main.WIDTH, 53);
+
+    g2d.setColor(Color.GRAY);
+    g2d.fillRect(700, Main.HEIGHT -15, Main.WIDTH - 1400, 5);
     g2d.setColor(Color.WHITE);
-    drawText(g2d, 120, 42, gameFontTiny, scoreText + score);
+    g2d.fillOval(700 + progress, Main.HEIGHT -20, 15, 15);
+
+    g2d.setColor(Color.WHITE);
+    drawText(g2d, 10, Main.HEIGHT -12, gameFontTiny, scoreText + score);
   }
 
   private void drawGameOverScreen(Graphics2D g2d){
@@ -651,7 +661,7 @@ public class GamePanel extends JPanel{
   private void drawAbilityBar(Graphics2D g2d){
     // A bit of a dumb solution. If the piece is dead it gets drawn beneath the bar
     // making it appear greyed out. If its alive its drawn above the bar, looking active
-    int xPos = 666;
+    int xPos = 645;
     int yPos = Main.HEIGHT - 132;
 
     if (!player.rookAlive){
