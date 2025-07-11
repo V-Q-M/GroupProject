@@ -8,27 +8,33 @@ import java.util.List;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
-import Allies.Ally;
-import Allies.AllyPawn;
-import Allies.AllyRook;
+import Allies.*;
 import enemies.Enemy;
-import Allies.Player;
 import entities.Projectile;
 
 public class GamePanel extends JPanel{
 
+  // Game variables
   private boolean DEBUG_MODE = false;
   public boolean gamePaused = false;
   public int score = 0;
 
-  // Textures of the pieces
+  boolean gameStart = true;
+  public boolean swapSoon = false;
+  public int castleHealth = 100;
+  public boolean gameOver = false;
+
+  private Font gameFont;
+  private Font gameFontTiny;
+
+  // Textures of the player pieces
   public BufferedImage rookImage;
   public BufferedImage knightImage;
   public BufferedImage bishopImage;
   public BufferedImage kingImage;
   public BufferedImage queenImage;
   public BufferedImage pawnImage;
-
+  // Enemy textures
   public BufferedImage enemyRookImage;
   public BufferedImage enemyKnightImage;
   public BufferedImage enemyBishopImage;
@@ -36,6 +42,7 @@ public class GamePanel extends JPanel{
   public BufferedImage enemyQueenImage;
   public BufferedImage enemyPawnImage;
 
+  // Projectile textures
   public BufferedImage cannonBallImage;
   public BufferedImage explosionImage;
   public BufferedImage queenParticleImage;
@@ -55,14 +62,16 @@ public class GamePanel extends JPanel{
   public int pieceWidth;
   public int pieceHeight;
 
+  // Ability Cooldowns
   private final int ROOK_ABILITY_COOLDOWN = 60;
   private final int KNIGHT_ABILITY_COOLDOWN = 120;
   private final int QUEEN_ABILITY_COOLDOWN = 40;
   private final int KING_ABILITY_COOLDOWN = 240;
 
+  // Initializes it
   public int abilityCoolDown = ROOK_ABILITY_COOLDOWN;
 
-  // Part of the background
+  // Builds the background
   private BufferedImage tileImage;
 
   // This will hold the actual player.Player piece
@@ -72,31 +81,34 @@ public class GamePanel extends JPanel{
   // Im scaling 32x32 Textures so that they look nicer
   final int SCALE = 8;
 
-  public final List<Projectile> enemyBalls = new ArrayList<>();
   // carries particle effects
   public final List<Projectile> projectiles = new ArrayList<>();
   public final List<Projectile> effects = new ArrayList<>();
+  // Carry enemy projectiles separate so that the player doesn't have to loop through all projectiles
+  public final List<Projectile> enemyBalls = new ArrayList<>();
   // carries enemies
   public final List<Enemy>  enemies = new ArrayList<>();
-  // carries wall
+  // carries wall and allies
   public final List<Ally> allies = new ArrayList<>();
 
-  // Gamelogic here
-  boolean gameStart = true;
-  public boolean swapSoon = false;
-  public int castleHealth = 100;
-  public boolean gameOver = false;
-
+  // Necessary managers
   KeyHandler keyHandler = new KeyHandler(this);
   CollisionHandler collisionHandler = new CollisionHandler(this);
   SoundManager soundManager = new SoundManager(this);
 
+  // Start position at ca. center
   int startX = PIECE_HEIGHT*4;
   int startY = PIECE_HEIGHT*4;
 
+  // Rest of managers and player
   Player player = new Player(this, keyHandler, soundManager, collisionHandler, startX, startY);
   EnemyManager enemyManager = new EnemyManager(this);
   public EntityManager entityManager = new EntityManager(this, keyHandler, soundManager, player);
+
+  // Upgrades. Available in the shop
+  private boolean turretUpgradeUnlocked = true;
+  private boolean kingUpgradeUnlocked = true;
+  private boolean queenUpgradeUnlocked = false;
 
   public GamePanel() {
     // Window size
@@ -105,21 +117,23 @@ public class GamePanel extends JPanel{
     requestFocusInWindow();
     addKeyListener(keyHandler);
 
+    // setup
     this.loadImages();
     this.loadFonts();
     soundManager.loadSounds();
-    //soundManager.startMusic();
-
     applySettings();
 
+    // Builds the pawnwall on the left
     buildWall();
 
     // Default piece
     selectPiece(PieceType.ROOK);
+
     // Refreshrate. Might have to improve that
     new Timer(16, e -> update()).start(); // ~60 FPS
   }
 
+  // Reads the settings from a txt file and overwrites the default values
   private void applySettings(){
     String[] line = readLinesFromResource("settings.txt");
     System.out.println(line[0]);
@@ -144,7 +158,7 @@ public class GamePanel extends JPanel{
     }
   }
 
-
+  // Helper method for reading files
   public String[] readLinesFromResource(String resourceName) {
     try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream(resourceName);
          BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
@@ -165,8 +179,7 @@ public class GamePanel extends JPanel{
     }
   }
 
-
-  private boolean turretUpgradeUnlocked = true;
+  // The pawn wall on the left, including the two turrets /rooks
   private void buildWall(){
     for (int i = 0; i < 8; i++){
       allies.add(new AllyPawn(this, soundManager, collisionHandler, PIECE_HEIGHT, i * PIECE_HEIGHT, PIECE_HEIGHT, PIECE_HEIGHT, false));
@@ -201,13 +214,12 @@ public class GamePanel extends JPanel{
       explosionImage = ImageIO.read(getClass().getResourceAsStream("/particles/explosion.png"));
       queenParticleImage = ImageIO.read(getClass().getResourceAsStream("/particles/queenParticles.png"));
       knightParticleImage = ImageIO.read(getClass().getResourceAsStream("/particles/knightParticles.png"));
+
     } catch (IOException e) {
       e.printStackTrace();
       JOptionPane.showMessageDialog(this, "Could not load images");
     }
   }
-  Font gameFont;
-  Font gameFontTiny;
   private void loadFonts() {
     try {
       InputStream fontStream = getClass().getResourceAsStream("/fonts/PressStart2P.ttf");
@@ -255,10 +267,10 @@ public class GamePanel extends JPanel{
     pieceWidth = selectedPiece.getWidth() * SCALE;
     pieceHeight = selectedPiece.getHeight() * SCALE;
   }
+
+  // A simple bobbing animation
   int animationFrame = 1;
   int animationCounter = 0;
-
-
   public void simpleAnimation() {
     animationCounter++;
 
@@ -274,6 +286,7 @@ public class GamePanel extends JPanel{
       animationFrame = 3;
     }
   }
+
   public void update() {
     score+=1;
     if (!gameOver && !gamePaused) {
@@ -288,17 +301,18 @@ public class GamePanel extends JPanel{
       }
       projectiles.removeIf(projectile -> projectile.isDead);
 
+      // Effects are separate to avoid bugs
       for (Projectile effect : effects){
         effect.update();
       }
       effects.removeIf(effect -> effect.isDead);
 
+      // Enemy projectiles are seperate to avoid looping through all projectiles for player
       for (Projectile enemyBall : enemyBalls){
         enemyBall.update();
       }
       enemyBalls.removeIf(enemyBall -> enemyBall.isDead);
 
-      // Update every enemy
       for (Enemy enemy : enemies) {
         enemy.update();
       }
@@ -321,30 +335,37 @@ public class GamePanel extends JPanel{
 
   int gameStartCounter = 0;
   String startMessage = startingText + 3;
+  private void startMessagePopUP(){
+    if (gameStartCounter > 180) {
+      gameStart = false;
+      gameStartCounter = 0;
+    } else if (gameStartCounter > 150) {
+      startMessage = "";
+      gameStartCounter++;
+    } else if (gameStartCounter > 120) {
+      startMessage = startingText + 1;
+      gameStartCounter++;
+    } else if (gameStartCounter > 90){
+      startMessage = "";
+      gameStartCounter++;
+    } else if (gameStartCounter > 60){
+      startMessage = startingText + 2;
+      gameStartCounter++;
+    } else if (gameStartCounter > 30){
+      startMessage = "";
+      gameStartCounter++;
+    } else {
+      gameStartCounter++;
+    }
+  }
+
+
   private void gameUpdate(){
     if (gameStart) {
-      if (gameStartCounter > 180) {
-        gameStart = false;
-        gameStartCounter = 0;
-      } else if (gameStartCounter > 150) {
-        startMessage = "";
-        gameStartCounter++;
-      } else if (gameStartCounter > 120) {
-        startMessage = startingText + 1;
-        gameStartCounter++;
-      } else if (gameStartCounter > 90){
-        startMessage = "";
-        gameStartCounter++;
-      } else if (gameStartCounter > 60){
-        startMessage = startingText + 2;
-        gameStartCounter++;
-      } else if (gameStartCounter > 30){
-        startMessage = "";
-        gameStartCounter++;
-      } else {
-        gameStartCounter++;
-      }
+      startMessagePopUP();
     }
+
+    // Prepare for game over
     if (castleHealth <= 0){
       gameOver = true;
       castleHealth = 0;
@@ -383,6 +404,7 @@ public class GamePanel extends JPanel{
     }
   }
 
+  // Helper method for building health-bars
   private void createHealthBar(Graphics2D g2d, int x, int y, int width, int height, int health, int maxHealth){
     g2d.setColor(Color.red);
     g2d.fillRect(x, y - height * 2, width, height);
@@ -412,7 +434,6 @@ public class GamePanel extends JPanel{
 
   private void drawAllies(Graphics2D g2d){
     for (Ally ally : allies) {
-      if (!ally.isDead) {
       if (animationFrame == 2){
         g2d.drawImage(ally.skin, ally.x, ally.y + animationOffset, ally.width, ally.height, this);
       } else if (animationFrame == 3){
@@ -420,16 +441,15 @@ public class GamePanel extends JPanel{
       } else {
         g2d.drawImage(ally.skin, ally.x, ally.y, ally.width, ally.height, this);
       }
-        if (DEBUG_MODE){
-          g2d.setColor(Color.red);
-          g2d.drawRect(ally.x, ally.y, ally.width, ally.height);
-        }
+      // Draw hitbox
+      if (DEBUG_MODE){
+        g2d.setColor(Color.red);
+        g2d.drawRect(ally.x, ally.y, ally.width, ally.height);
       }
     }
   }
 
   private void drawEntities(Graphics2D g2d){
-    // Draw all cannon balls
     for (Projectile projectile : projectiles) {
       g2d.drawImage(projectile.skin, projectile.x, projectile.y, projectile.width, projectile.height, this);
       if (DEBUG_MODE){
@@ -459,6 +479,7 @@ public class GamePanel extends JPanel{
       } else {
         g2d.drawImage(enemy.skin, enemy.x, enemy.y, enemy.width, enemy.height, this);
       }
+      // draw hitbox
       if (DEBUG_MODE){
         g2d.setColor(Color.red);
         g2d.drawRect(enemy.x, enemy.y, enemy.width, enemy.height);
@@ -466,6 +487,7 @@ public class GamePanel extends JPanel{
     }
   }
 
+  // Renders the healthbars
   void drawHealthBars(Graphics2D g2d){
     // Personal choice - only show health-bar when not at full health
     for (Enemy enemy : enemies) {
@@ -480,8 +502,8 @@ public class GamePanel extends JPanel{
       }
     }
 
-    int playerHealth = player.health;
-    int playerMaxHealth = player.health;
+    int playerHealth = 100;
+    int playerMaxHealth = 100;
     switch(selectedPieceType){
       case ROOK -> {
         playerHealth = player.rookHealth;
@@ -540,13 +562,12 @@ public class GamePanel extends JPanel{
     }
   }
 
-
-  void drawScore(Graphics2D g2d){
+  private void drawScore(Graphics2D g2d){
     g2d.setColor(Color.WHITE);
     drawText(g2d, 120, 42, gameFontTiny, scoreText + score);
   }
 
-  void drawGameOverScreen(Graphics2D g2d){
+  private void drawGameOverScreen(Graphics2D g2d){
     g2d.setColor(new Color(0,0,0,200));
     g2d.fillRect(0,0,Main.WIDTH, Main.HEIGHT);
 
@@ -588,7 +609,7 @@ public class GamePanel extends JPanel{
     }
   }
 
-  void drawPauseMenu(Graphics2D g2d){
+  private void drawPauseMenu(Graphics2D g2d){
     g2d.setColor(new Color(0,0,0,200));
     g2d.fillRect(0,0,Main.WIDTH, Main.HEIGHT);
 
@@ -626,7 +647,7 @@ public class GamePanel extends JPanel{
     }
   }
 
-  void drawAbilityBar(Graphics2D g2d){
+  private void drawAbilityBar(Graphics2D g2d){
     // A bit of a dumb solution. If the piece is dead it gets drawn beneath the bar
     // making it appear greyed out. If its alive its drawn above the bar, looking active
     int xPos = 666;
@@ -668,7 +689,8 @@ public class GamePanel extends JPanel{
     }
   }
 
-  void drawText(Graphics2D g2d,int xOverride, int yOverride, Font gameFont, String text){
+  // Helper method for rendering formatted text
+  private void drawText(Graphics2D g2d,int xOverride, int yOverride, Font gameFont, String text){
     g2d.setFont(gameFont);
     // Get font metrics for positioning
     FontMetrics fm = g2d.getFontMetrics();

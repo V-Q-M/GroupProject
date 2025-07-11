@@ -18,16 +18,37 @@ public class MenuPanel extends JPanel {
     SoundManager soundManager = new SoundManager(this);
     BufferedImage backgroundImg;
 
+    Font gameFont;
+    Font gameFontSmall;
+    Font gameFontTiny;
+
     private int buttonIndexX = 100000;
     private int buttonIndexY = 100000;
 
 
+    // Tracking the yellow hover effect
+    private boolean hoveringPlay = false;
+    private boolean hoveringShop = false;
+    private boolean hoveringQuit = false;
+    private boolean hoveringSettings = false;
+    private boolean hoveringHelp = false;
+
+    private boolean hoveringMusicSettingButton = false;
+    private boolean hoveringLanguageSettingButton = false;
+    private boolean hoveringDebugSettingButton = false;
+
+    // If one of these is on, it shows that side menu
+    private boolean showingShop = false;
+    private boolean showingHelp = false;
+    private boolean showingSettings = false;
+
+    // Carries the text values of the main menu
     private String playText = "Play";
     private String shopText = "Shop";
     private String quitText = "Quit";
     private String settingsText = "Settings";
     private String helpText = "Help";
-
+    // Same for side menus
     private String musicOnText = "Music on";
     private String musicOffText = "Music off";
     private String languageEnglishText = "Language English";
@@ -52,6 +73,7 @@ public class MenuPanel extends JPanel {
         new Timer(16, e -> update()).start(); // ~60 FPS
     }
 
+    // Reads the settings from a txt file and overwrites the default values
     private void applySettings(){
         String[] line = readLinesFromResource("settings.txt");
         System.out.println(line[0]);
@@ -82,6 +104,7 @@ public class MenuPanel extends JPanel {
         }
     }
 
+    // Helper method for reading files
     public String[] readLinesFromResource(String resourceName) {
         try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream(resourceName);
              BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
@@ -107,32 +130,19 @@ public class MenuPanel extends JPanel {
         repaint();
     }
 
-    private boolean hoveringPlay = false;
-    private boolean hoveringShop = false;
-    private boolean hoveringQuit = false;
-    private boolean hoveringSettings = false;
-    private boolean hoveringHelp = false;
-    private boolean showingShop = false;
-    private boolean showingHelp = false;
-    private boolean showingSettings = false;
-
-
-
-
     private void updateMenuState(){
         if (showingShop){
-            shopMenu();
+            updateShopMenu();
         } else if (showingSettings){
-            settingsMenu();
+            updateSettingsMenu();
         } else if (showingHelp){
-            helpMenu();
+            updateHelpMenu();
         } else {
-            mainMenu();
+            updateMainMenu();
         }
     }
 
-
-    private void shopMenu(){
+    private void updateShopMenu(){
         if (keyHandler.escapePressed){
             keyHandler.escapePressed = false;
             showingShop = false;
@@ -144,7 +154,7 @@ public class MenuPanel extends JPanel {
     private boolean languageGerman = false;
     private boolean debugMode = false;
 
-    private void settingsMenu(){
+    private void updateSettingsMenu(){
         if (keyHandler.escapePressed){
             keyHandler.escapePressed = false;
             showingSettings = false;
@@ -193,7 +203,7 @@ public class MenuPanel extends JPanel {
         }
     }
 
-    private void helpMenu(){
+    private void updateHelpMenu(){
         if (keyHandler.escapePressed){
             keyHandler.escapePressed = false;
             showingHelp = false;
@@ -206,7 +216,7 @@ public class MenuPanel extends JPanel {
         }
     }
 
-    private void mainMenu(){
+    private void updateMainMenu(){
         // Pressing a key increments or decrements index
 
         if (keyHandler.goingRight){
@@ -280,6 +290,7 @@ public class MenuPanel extends JPanel {
         }
     }
 
+    // Helper method that removes hovering effects
     private void resetButtons(){
         hoveringShop = false;
         hoveringPlay = false;
@@ -305,9 +316,6 @@ public class MenuPanel extends JPanel {
         }
     }
 
-    Font gameFont;
-    Font gameFontSmall;
-    Font gameFontTiny;
     private void loadFonts() {
         try {
             InputStream fontStream = getClass().getResourceAsStream("/fonts/PressStart2P.ttf");
@@ -346,15 +354,8 @@ public class MenuPanel extends JPanel {
     }
 
     private void drawBackground(Graphics2D g2d){
-        //g2d.setColor(Color.DARK_GRAY);
-        //g2d.fillRect(0, 0, Main.WIDTH, Main.HEIGHT);
         g2d.drawImage(backgroundImg, 0, 0, Main.WIDTH, Main.HEIGHT, this);
     }
-
-    private boolean hoveringMusicSettingButton = false;
-    private boolean hoveringLanguageSettingButton = false;
-    private boolean hoveringDebugSettingButton = false;
-
 
     private void drawShop(Graphics2D g2d) {
         // Background
@@ -563,6 +564,7 @@ public class MenuPanel extends JPanel {
 
     }
 
+    // Helper method for drawing formatted text
     void drawText(Graphics2D g2d, int x, int y, String text){
         // Get font metrics for positioning
         FontMetrics fm = g2d.getFontMetrics();
