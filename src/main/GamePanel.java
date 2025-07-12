@@ -82,8 +82,6 @@ public class GamePanel extends JPanel{
   private BufferedImage tileImage;
   private BufferedImage bottomBarImage;
 
-  // This will hold the actual player.Player piece
-  public BufferedImage selectedPiece;
   public int PIECE_HEIGHT = 4 * 32;
 
   // Im scaling 32x32 Textures so that they look nicer
@@ -114,9 +112,9 @@ public class GamePanel extends JPanel{
   public EntityManager entityManager = new EntityManager(this, keyHandler, soundManager, player);
 
   // Upgrades. Available in the shop
-  private boolean turretUpgradeUnlocked = true;
-  private boolean kingUpgradeUnlocked = true;
-  private boolean queenUpgradeUnlocked = false;
+  private final boolean turretUpgradeUnlocked = true;
+  private final boolean kingUpgradeUnlocked = true;
+  private final boolean queenUpgradeUnlocked = false;
 
   public GamePanel() {
     // Window size
@@ -162,31 +160,6 @@ public class GamePanel extends JPanel{
       DEBUG_MODE = true;
     }
   }
-  // Reads the settings from a txt file and overwrites the default values
-  private void applySettings(){
-    String[] line = FileManager.readLinesFromTempFile();
-    System.out.println(line[0]);
-    if (line[0].equals("music off")) {
-      soundManager.stopMusic();
-      System.out.println("STOP");
-    } else {
-      soundManager.startMusic();
-      System.out.println("PLAY");
-    }
-    if (line[1].equals("language german")) {
-      startingText = "Starte in: ";
-      swappingSoonText = "Wechsele bald!";
-      scoreText = "Punkte:";
-      gameOverText = "Verloren!";
-      quitGameText = "Spiel verlassen?";
-      restartText = "Neustarten?";
-      resumeText = "Fortfahren?";
-    }
-    if (line[2].equals("debug on")){
-      DEBUG_MODE = true;
-    }
-  }
-
 
   // The pawn wall on the left, including the two turrets /rooks
   private void buildWall(){
@@ -567,17 +540,8 @@ public class GamePanel extends JPanel{
     }
   }
 
-  //private int nextLevelGoal = 50000;
   private void drawBottomBar(Graphics2D g2d){
-   // int progress = (int) (690 * (float) score / nextLevelGoal);
-    //g2d.setColor(Color.DARK_GRAY);
-    //g2d.fillRect(0,Main.HEIGHT - 56, Main.WIDTH, 56);
     g2d.drawImage(bottomBarImage,0, Main.HEIGHT - 56,  this);
-
-    //g2d.setColor(Color.GRAY);
-    //g2d.fillRect(700, Main.HEIGHT -15, Main.WIDTH - 1400, 5);
-    //g2d.setColor(Color.WHITE);
-    //g2d.fillOval(700 + progress, Main.HEIGHT -20, 15, 15);
 
     g2d.setColor(Color.WHITE);
     drawText(g2d, 10, Main.HEIGHT -12, gameFontTiny, scoreText + score);

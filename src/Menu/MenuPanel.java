@@ -49,18 +49,6 @@ public class MenuPanel extends JPanel {
     private boolean showingSettings = false;
 
     // Carries the text values of the main menu
-    private String playText = "Play";
-    private String shopText = "Shop";
-    private String quitText = "Quit";
-    private String settingsText = "Settings";
-    private String helpText = "Help";
-    // Same for side menus
-    private String musicOnText = "Music on";
-    private String musicOffText = "Music off";
-    private String languageEnglishText = "Language English";
-    private String languageGermanText = "Language German";
-    private String debugOffText = "Hitboxes off";
-    private String debugOnText = "Hitboxes on (developer mode)";
 
     // Window size
     public MenuPanel() {
@@ -116,33 +104,9 @@ public class MenuPanel extends JPanel {
                 SettingsManager.musicOff = false;
             }
             if (line[1].equals("language german")) {
-                SettingsManager.languageGerman = true;
-                playText = "Start";
-                shopText = "Shop";
-                quitText = "Verlassen";
-                settingsText = "Einstellungen";
-                helpText = "Hilfe";
-
-                musicOnText = "Musik an";
-                musicOffText = "Musik aus";
-                languageEnglishText = "Sprache Englisch";
-                languageGermanText = "Sprache Deutsch";
-                debugOffText = "Hitboxen aus";
-                debugOnText = "Hitboxen an (Entwicklermodus)";
+                SettingsManager.switchToGerman();
             } else {
-                SettingsManager.languageGerman = false;
-                playText = "Play";
-                shopText = "Shop";
-                quitText = "Quit";
-                settingsText = "Settings";
-                helpText = "Help";
-
-                musicOnText = "Music on";
-                musicOffText = "Music off";
-                languageEnglishText = "Language English";
-                languageGermanText = "Language German";
-                debugOffText = "Hitboxes off";
-                debugOnText = "Hitboxes on (developer mode)";
+                SettingsManager.switchToEnglish();
             }
             if (line[2].equals("debug on")) {
                 SettingsManager.debugMode = true;
@@ -239,9 +203,6 @@ public class MenuPanel extends JPanel {
             keyHandler.enterPressed = false;
             keyHandler.spacePressed = false;
             soundManager.playClip(soundManager.buttonClickClip);
-            //String newSettings[] = {"music off", "language german", "debug on"};
-
-            String newSettings[] = new String[3];
 
             if (buttonIndexY % 3 == 0) {
                 System.out.println("MusicSetting");
@@ -312,20 +273,20 @@ public class MenuPanel extends JPanel {
             soundManager.playClip(soundManager.buttonClickClip);
 
             if (buttonIndexY % 5 == 0) {
-                System.out.println(playText);
+                System.out.println(SettingsManager.playText);
                 soundManager.stopMusic();
                 Main.startMainGame(this, null);
             } else if (buttonIndexY % 5 == 1) {
-                System.out.println(shopText);
+                System.out.println(SettingsManager.shopText);
                 showingShop = true;
             } else if (buttonIndexY % 5 == 2) {
-                System.out.println(settingsText);
+                System.out.println(SettingsManager.settingsText);
                 showingSettings = true;
             } else if (buttonIndexY % 5 == 3) {
-                System.out.println(helpText);
+                System.out.println(SettingsManager.helpText);
                 showingHelp = true;
             } else if (buttonIndexY % 5 == 4) {
-                System.out.println(quitText);
+                System.out.println(SettingsManager.quitText);
                 System.exit(0);
             }
         }
@@ -434,10 +395,10 @@ public class MenuPanel extends JPanel {
         } else {
             g2d.setColor(Color.WHITE);
         }
-        drawText(g2d,150,350, "Wall upgrade [PURCHASED]");
+        drawText(g2d,150,350, SettingsManager.wallUpgradeText);
         g2d.setColor(Color.WHITE);
         g2d.setFont(gameFontTiny);
-        drawText(g2d,155,400, "Purchase two turrets defending their rows with cannonballs");
+        drawText(g2d,155,400, SettingsManager.wallUpgradeDescriptionText);
 
         // King upgrade Button
         g2d.setFont(gameFontSmall);
@@ -446,10 +407,10 @@ public class MenuPanel extends JPanel {
         } else {
             g2d.setColor(Color.WHITE);
         }
-        drawText(g2d,150,500, "King upgrade [PURCHASED]");
+        drawText(g2d,150,500, SettingsManager.kingUpgradeText);
         g2d.setColor(Color.WHITE);
         g2d.setFont(gameFontTiny);
-        drawText(g2d,155,550, "Purchase two more guards for the king - allowing him to attack 3 rows at once");
+        drawText(g2d,155,550, SettingsManager.kingUpgradeDescriptionText);
 
         g2d.setFont(gameFontSmall);
         if (hoveringShopItemThree){
@@ -457,11 +418,11 @@ public class MenuPanel extends JPanel {
         } else {
             g2d.setColor(Color.WHITE);
         }
-        drawText(g2d,150,650, "Queen upgrade [LOCKED]");
+        drawText(g2d,150,650, SettingsManager.queenUpgradeText);
         g2d.setColor(Color.WHITE);
         g2d.setFont(gameFontTiny);
-        drawText(g2d,155,700, "Purchase an ancient talisman for the queen - allowing her to heal on enemies");
-        drawText(g2d, 0, 950, "Press ESCAPE to return to the main menu");
+        drawText(g2d,155,700, SettingsManager.queenUpgradeDescriptionText);
+        drawText(g2d, 0, 950, SettingsManager.pressEscapeText);
     }
 
     private void drawSettings(Graphics2D g2d){
@@ -472,7 +433,7 @@ public class MenuPanel extends JPanel {
 
         g2d.setFont(gameFont);
         g2d.setColor(Color.WHITE);
-        drawText(g2d,0,230, "Settings");
+        drawText(g2d,0,230, SettingsManager.settingsText);
 
         g2d.setFont(gameFontSmall);
         // Music button
@@ -482,9 +443,9 @@ public class MenuPanel extends JPanel {
             g2d.setColor(Color.WHITE);
         }
         if(SettingsManager.musicOff){
-            drawText(g2d,0,400, musicOffText);
+            drawText(g2d,0,400, SettingsManager.musicOffText);
         } else {
-            drawText(g2d,0,400, musicOnText);
+            drawText(g2d,0,400, SettingsManager.musicOnText);
         }
 
         // Language button
@@ -494,9 +455,9 @@ public class MenuPanel extends JPanel {
             g2d.setColor(Color.WHITE);
         }
         if(SettingsManager.languageGerman){
-            drawText(g2d,0,500, languageGermanText);
+            drawText(g2d,0,500, SettingsManager.languageGermanText);
         } else {
-            drawText(g2d,0,500, languageEnglishText);
+            drawText(g2d,0,500, SettingsManager.languageEnglishText);
         }
         // Debugmode button
         if(hoveringDebugSettingButton){
@@ -505,13 +466,13 @@ public class MenuPanel extends JPanel {
             g2d.setColor(Color.WHITE);
         }
         if(SettingsManager.debugMode){
-            drawText(g2d,0,600, debugOnText);
+            drawText(g2d,0,600, SettingsManager.debugOnText);
         } else {
-            drawText(g2d,0,600, debugOffText);
+            drawText(g2d,0,600, SettingsManager.debugOffText);
         }
         g2d.setColor(Color.WHITE);
         g2d.setFont(gameFontTiny);
-        drawText(g2d, 0, 950, "Press ESCAPE to return to the main menu");
+        drawText(g2d, 0, 950, SettingsManager.pressEscapeText);
     }
 
     private int currentHelpPage = 0;
@@ -522,64 +483,64 @@ public class MenuPanel extends JPanel {
 
         g2d.setFont(gameFont);
         g2d.setColor(Color.WHITE);
-        drawText(g2d,0,230, "Help");
+        drawText(g2d,0,230, SettingsManager.helpText);
 
         if (currentHelpPage % 3 == 0){
             g2d.setFont(gameFontSmall);
-            drawText(g2d, 155, 320, "Welcome to Chess Defense!");
+            drawText(g2d, 155, 320, SettingsManager.welcomeText);
             g2d.setColor(Color.WHITE);
             g2d.setFont(gameFontTiny);
-            drawText(g2d,155,375, "The enemy Chess Pieces have started an assault on your castle and you must hold");
-            drawText(g2d,155,425, "them off for as long as possible! Will you be strong enough?");
+            drawText(g2d,155,375, SettingsManager.helpTextArray[0]);
+            drawText(g2d,155,425, SettingsManager.helpTextArray[1]);
             g2d.setFont(gameFontSmall);
-            drawText(g2d, 155, 540, "Controls:");
+            drawText(g2d, 155, 540, SettingsManager.controlsText);
             g2d.setFont(gameFontTiny);
-            drawText(g2d,155,595, "Use the WASD or Arrow-Keys to move your pieces. ");
-            drawText(g2d,155,645, "Press SPACE to perform an attack. Each piece has it's own unique attack.");
-            drawText(g2d,155,695, "Press ESC to open the Pause menu.");
+            drawText(g2d,155,595, SettingsManager.helpTextArray[2]);
+            drawText(g2d,155,645, SettingsManager.helpTextArray[3]);
+            drawText(g2d,155,695, SettingsManager.helpTextArray[4]);
 
-            drawText(g2d,155,800, "Remember. Every few seconds your piece gets automatically switched.");
-            drawText(g2d,155,845, "Be prepared.");
+            drawText(g2d,155,800, SettingsManager.helpTextArray[5]);
+            drawText(g2d,155,845, SettingsManager.helpTextArray[6]);
 
-            drawText(g2d, 155, 950, "Press <- to view previous page");
-            drawText(g2d, 1250, 950, "Press -> to view next page");
+            drawText(g2d, 155, 950, SettingsManager.pressLeftText);
+            drawText(g2d, 1250, 950, SettingsManager.pressRightText);
 
         } else if (currentHelpPage % 3 == 1){
             g2d.setFont(gameFontSmall);
-            drawText(g2d, 155, 320, "Piece Overview:");
+            drawText(g2d, 155, 320, SettingsManager.piecesText);
 
-            drawText(g2d,155,405, "The Rook:");
+            drawText(g2d,155,405, SettingsManager.rookNameText);
             g2d.setFont(gameFontTiny);
-            drawText(g2d,155,450, "Having mastered artillery - the rook has proven to be a reliable range option,");
-            drawText(g2d,155,500, "capable of defeating his enemies from a safe distance.");
+            drawText(g2d,155,450, SettingsManager.helpTextArray[7]);
+            drawText(g2d,155,500, SettingsManager.helpTextArray[8]);
             g2d.setFont(gameFontSmall);
-            drawText(g2d, 155, 600, "The Knight:");
+            drawText(g2d, 155, 600, SettingsManager.knightNameText);
             g2d.setFont(gameFontTiny);
-            drawText(g2d,155,645, "Having lost his sword - the knight relies on his mighty stead to strike fear");
-            drawText(g2d, 155, 695, "into his enemies.");
+            drawText(g2d,155,645, SettingsManager.helpTextArray[9]);
+            drawText(g2d, 155, 695, SettingsManager.helpTextArray[10]);
 
             g2d.setFont(gameFontSmall);
-            drawText(g2d, 155, 790, "The Bishop:");
+            drawText(g2d, 155, 790, SettingsManager.bishopNameText);
             g2d.setFont(gameFontTiny);
             drawText(g2d,155,835, "Having found strength in his faith - the Bishop is ready to take up arms and ");
             drawText(g2d, 155, 885, "fight for his faith.");
 
-            drawText(g2d, 155, 950, "Press <- to view previous page");
-            drawText(g2d, 1250, 950, "Press -> to view next page");
+            drawText(g2d, 155, 950, SettingsManager.pressLeftText);
+            drawText(g2d, 1250, 950, SettingsManager.pressRightText);
         } else {
             g2d.setFont(gameFontSmall);
-            drawText(g2d, 155, 320, "The Queen:");
+            drawText(g2d, 155, 320, SettingsManager.queenNameText);
             g2d.setFont(gameFontTiny);
             drawText(g2d, 155, 365, "Having been secretly trained in the art of sword fighting - the queen is as mobile");
             drawText(g2d, 155, 410, "as she is deadly, striking down those, who dare cross her way.");
 
             g2d.setFont(gameFontSmall);
-            drawText(g2d, 155, 500, "The King:");
+            drawText(g2d, 155, 500, SettingsManager.kingNameText);
             g2d.setFont(gameFontTiny);
             drawText(g2d, 155, 545, "Having served his people for many years - the King utilizes his royal guard ");
             drawText(g2d, 155, 590, "to defeat those who dare attack him.");
 
-            drawText(g2d, 0, 950, "Press ESCAPE to return to the main menu");
+            drawText(g2d, 0, 950, SettingsManager.pressEscapeText);
         }
         g2d.setFont(gameFontSmall);
 
@@ -600,7 +561,7 @@ public class MenuPanel extends JPanel {
         } else {
             g2d.setColor(Color.WHITE);
         }
-        drawText(g2d,leftSpace,500, playText);
+        drawText(g2d,leftSpace,500, SettingsManager.playText);
 
         g2d.setFont(gameFontSmall);
         // Shop button
@@ -609,21 +570,21 @@ public class MenuPanel extends JPanel {
         } else {
             g2d.setColor(Color.WHITE);
         }
-        drawText(g2d,leftSpace,580, shopText);
+        drawText(g2d,leftSpace,580, SettingsManager.shopText);
 
         if(hoveringSettings){
             g2d.setColor(Color.YELLOW);
         } else {
             g2d.setColor(Color.WHITE);
         }
-        drawText(g2d, leftSpace, 660, settingsText);
+        drawText(g2d, leftSpace, 660, SettingsManager.settingsText);
 
         if(hoveringHelp){
             g2d.setColor(Color.YELLOW);
         } else {
             g2d.setColor(Color.WHITE);
         }
-        drawText(g2d,leftSpace,740, helpText);
+        drawText(g2d,leftSpace,740, SettingsManager.helpText);
 
         // Quit button
         if(hoveringQuit){
@@ -631,7 +592,7 @@ public class MenuPanel extends JPanel {
         } else {
             g2d.setColor(Color.WHITE);
         }
-        drawText(g2d,leftSpace,820, quitText);
+        drawText(g2d,leftSpace,820, SettingsManager.quitText);
 
     }
 
