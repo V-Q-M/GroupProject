@@ -129,7 +129,7 @@ public class GamePanel extends JPanel{
     this.loadImages();
     this.loadFonts();
     soundManager.loadSounds();
-    applySettings();
+    getSettings();
 
     // Builds the pawnwall on the left
     buildWall();
@@ -140,9 +140,31 @@ public class GamePanel extends JPanel{
     new Timer(16, e -> update()).start(); // ~60 FPS
   }
 
+  private void getSettings(){
+    if (SettingsManager.musicOff){
+      soundManager.stopMusic();
+      System.out.println("MUSIC OFF");
+    } else {
+      soundManager.startMusic();
+      System.out.println("MUSIC ON");
+    }
+    if (SettingsManager.languageGerman){
+      startingText = "Starte in: ";
+      swappingSoonText = "Wechsele bald!";
+      scoreText = "Punkte:";
+      gameOverText = "Verloren!";
+      quitGameText = "Spiel verlassen?";
+      restartText = "Neustarten?";
+      resumeText = "Fortfahren?";
+    }
+
+    if (SettingsManager.debugMode){
+      DEBUG_MODE = true;
+    }
+  }
   // Reads the settings from a txt file and overwrites the default values
   private void applySettings(){
-    String[] line = readLinesFromResource("settings.txt");
+    String[] line = FileManager.readLinesFromTempFile();
     System.out.println(line[0]);
     if (line[0].equals("music off")) {
       soundManager.stopMusic();
@@ -165,26 +187,6 @@ public class GamePanel extends JPanel{
     }
   }
 
-  // Helper method for reading files
-  public String[] readLinesFromResource(String resourceName) {
-    try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream(resourceName);
-         BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
-
-      List<String> lines = new ArrayList<>();
-      String line;
-
-      while ((line = reader.readLine()) != null) {
-        lines.add(line);
-      }
-
-      return lines.toArray(new String[0]);
-
-    } catch (IOException | NullPointerException e) {
-      JOptionPane.showMessageDialog(this, "Failed to read resource: " + resourceName);
-      e.printStackTrace();
-      return null;
-    }
-  }
 
   // The pawn wall on the left, including the two turrets /rooks
   private void buildWall(){
@@ -678,25 +680,25 @@ public class GamePanel extends JPanel{
       g2d.drawImage(knightImage, xPos + 129, yPos, size, size, this);
     } else {
       g2d.setColor(Color.RED);
-      g2d.fillRect(xPos, yPos + 129, size, size);
+      g2d.fillRect(xPos + 129, yPos, size, size);
     }
     if (player.kingAlive){
       g2d.drawImage(kingImage, xPos + 259, yPos, size, size, this);
     } else {
       g2d.setColor(Color.RED);
-      g2d.fillRect(xPos, yPos + 259, size, size);
+      g2d.fillRect(xPos + 259, yPos, size, size);
     }
     if (player.queenAlive){
       g2d.drawImage(queenImage, xPos + 387, yPos, size, size, this);
     } else {
       g2d.setColor(Color.RED);
-      g2d.fillRect(xPos, yPos + 387, size, size);
+      g2d.fillRect(xPos + 387, yPos, size, size);
     }
     if (player.bishopAlive){
       g2d.drawImage(bishopImage, xPos + 516, yPos, size, size, this);
     } else {
       g2d.setColor(Color.RED);
-      g2d.fillRect(xPos, yPos + 516, size, size);
+      g2d.fillRect(xPos + 516, yPos , size, size);
     }
   }
 

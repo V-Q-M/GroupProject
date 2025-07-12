@@ -1,17 +1,20 @@
 package Menu;
 
+import main.FileManager;
 import main.Main;
+import main.SettingsManager;
 import main.SoundManager;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.List;
 
 public class MenuPanel extends JPanel {
     MenuKeyHandler keyHandler = new MenuKeyHandler(this);
@@ -22,7 +25,6 @@ public class MenuPanel extends JPanel {
     Font gameFontSmall;
     Font gameFontTiny;
 
-    private int buttonIndexX = 100000;
     private int buttonIndexY = 100000;
 
 
@@ -57,8 +59,8 @@ public class MenuPanel extends JPanel {
     private String musicOffText = "Music off";
     private String languageEnglishText = "Language English";
     private String languageGermanText = "Language German";
-    private String debugOffText = "Debugmode off";
-    private String debugOnText = "Debugmode on";
+    private String debugOffText = "Hitboxes off";
+    private String debugOnText = "Hitboxes on (developer mode)";
 
     // Window size
     public MenuPanel() {
@@ -71,63 +73,87 @@ public class MenuPanel extends JPanel {
         this.loadFonts();
         soundManager.loadSounds();
         //soundManager.startMenuMusic();
-        applySettings();
+        initializeSettings();
+        readSettings();
 
         // Refreshrate. Might have to improve that
         new Timer(16, e -> update()).start(); // ~60 FPS
     }
 
-    // Reads the settings from a txt file and overwrites the default values
-    private void applySettings(){
-        String[] line = readLinesFromResource("settings.txt");
-        System.out.println(line[0]);
-        if (line[0].equals("music off")) {
-            soundManager.stopMusic();
-            musicOff = true;
-        } else {
-            soundManager.startMenuMusic();
-            musicOff = false;
-        }
-        if (line[1].equals("language german")) {
-            languageGerman = true;
-            playText = "Start";
-            shopText = "Shop";
-            quitText = "Verlassen";
-            settingsText = "Einstellungen";
-            helpText = "Hilfe";
+    private void initializeSettings() {
+        Path tempFilePath = Paths.get(System.getProperty("java.io.tmpdir"), "settings.txt");
 
-            musicOnText = "Musik an";
-            musicOffText = "Musik aus";
-            languageEnglishText = "Sprache Englisch";
-            languageGermanText = "Sprache Deutsch";
-            debugOffText = "Debugmodus aus";
-            debugOnText = "Debugmodus an";
-        }
-        if (line[2].equals("debug on")){
-            debugMode = true;
-        }
-    }
-
-    // Helper method for reading files
-    public String[] readLinesFromResource(String resourceName) {
-        try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream(resourceName);
-             BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
-
-            java.util.List<String> lines = new ArrayList<>();
+        try (BufferedReader reader = Files.newBufferedReader(tempFilePath)) {
+            List<String> lines = new ArrayList<>();
             String line;
-
             while ((line = reader.readLine()) != null) {
                 lines.add(line);
             }
 
-            return lines.toArray(new String[0]);
+            // Use the settings if needed
+            System.out.println("Loaded settings:");
+            lines.forEach(System.out::println);
 
-        } catch (IOException | NullPointerException e) {
-            JOptionPane.showMessageDialog(this, "Failed to read resource: " + resourceName);
-            e.printStackTrace();
-            return null;
+        } catch (IOException e) {
+            // File not found or failed to read — create default settings
+            String[] defaultSettings = { "music off", "language german", "debug on" };
+            FileManager.writeLinesToTempFile(defaultSettings);
+
+            System.out.println("Default settings written to temp file.");
         }
     }
+
+    // Reads the settings from a txt file and overwrites the default values
+    private void readSettings(){
+        String[] line = FileManager.readLinesFromTempFile();
+        if (line != null) {
+            System.out.println(line[0]);
+            if (line[0].equals("music off")) {
+                soundManager.stopMusic();
+                SettingsManager.musicOff = true;
+            } else {
+                soundManager.startMenuMusic();
+                SettingsManager.musicOff = false;
+            }
+            if (line[1].equals("language german")) {
+                SettingsManager.languageGerman = true;
+                playText = "Start";
+                shopText = "Shop";
+                quitText = "Verlassen";
+                settingsText = "Einstellungen";
+                helpText = "Hilfe";
+
+                musicOnText = "Musik an";
+                musicOffText = "Musik aus";
+                languageEnglishText = "Sprache Englisch";
+                languageGermanText = "Sprache Deutsch";
+                debugOffText = "Hitboxen aus";
+                debugOnText = "Hitboxen an (Entwicklermodus)";
+            } else {
+                SettingsManager.languageGerman = false;
+                playText = "Play";
+                shopText = "Shop";
+                quitText = "Quit";
+                settingsText = "Settings";
+                helpText = "Help";
+
+                musicOnText = "Music on";
+                musicOffText = "Music off";
+                languageEnglishText = "Language English";
+                languageGermanText = "Language German";
+                debugOffText = "Hitboxes off";
+                debugOnText = "Hitboxes on (developer mode)";
+            }
+            if (line[2].equals("debug on")) {
+                SettingsManager.debugMode = true;
+            } else {
+                SettingsManager.debugMode = false;
+            }
+        }
+    }
+
+
+
 
     private void update(){
         updateMenuState();
@@ -191,9 +217,6 @@ public class MenuPanel extends JPanel {
         }
     }
 
-    private boolean musicOff = false;
-    private boolean languageGerman = false;
-    private boolean debugMode = false;
 
     private void updateSettingsMenu(){
         if (keyHandler.escapePressed){
@@ -216,18 +239,27 @@ public class MenuPanel extends JPanel {
             keyHandler.enterPressed = false;
             keyHandler.spacePressed = false;
             soundManager.playClip(soundManager.buttonClickClip);
+            //String newSettings[] = {"music off", "language german", "debug on"};
+
+            String newSettings[] = new String[3];
 
             if (buttonIndexY % 3 == 0) {
                 System.out.println("MusicSetting");
-                musicOff = !musicOff;
+                SettingsManager.musicOff = !SettingsManager.musicOff;
             } else if (buttonIndexY % 3 == 1) {
                 System.out.println("LanguageSetting");
-                languageGerman = !languageGerman;
+                SettingsManager.languageGerman = !SettingsManager.languageGerman;
 
             } else if (buttonIndexY % 3 == 2) {
                 System.out.println("DebugSetting");
-                debugMode = !debugMode;
+                SettingsManager.debugMode = !SettingsManager.debugMode;
             }
+
+            SettingsManager.writeSettings();
+            readSettings();
+            System.out.println("APPLY SETTINGS");
+
+
         }
         // Hover effect
         resetButtons();
@@ -449,7 +481,7 @@ public class MenuPanel extends JPanel {
         } else {
             g2d.setColor(Color.WHITE);
         }
-        if(musicOff){
+        if(SettingsManager.musicOff){
             drawText(g2d,0,400, musicOffText);
         } else {
             drawText(g2d,0,400, musicOnText);
@@ -461,7 +493,7 @@ public class MenuPanel extends JPanel {
         } else {
             g2d.setColor(Color.WHITE);
         }
-        if(languageGerman){
+        if(SettingsManager.languageGerman){
             drawText(g2d,0,500, languageGermanText);
         } else {
             drawText(g2d,0,500, languageEnglishText);
@@ -472,7 +504,7 @@ public class MenuPanel extends JPanel {
         } else {
             g2d.setColor(Color.WHITE);
         }
-        if(debugMode){
+        if(SettingsManager.debugMode){
             drawText(g2d,0,600, debugOnText);
         } else {
             drawText(g2d,0,600, debugOffText);
