@@ -227,7 +227,7 @@ public class GamePanel extends JPanel{
 
       Font baseFont = Font.createFont(Font.TRUETYPE_FONT, fontStream);
       gameFont = baseFont.deriveFont(80f);
-      gameFontTiny = baseFont.deriveFont(20f);
+      gameFontTiny = baseFont.deriveFont(25f);
     } catch (FontFormatException | IOException e) {
       e.printStackTrace();
       gameFont = new Font("Monospaced", Font.BOLD, 80); // fallback
@@ -381,10 +381,10 @@ public class GamePanel extends JPanel{
 
   // Helper method for building health-bars
   private void createHealthBar(Graphics2D g2d, int x, int y, int width, int height, int health, int maxHealth){
-    g2d.setColor(Color.red);
+    g2d.setColor(new Color (200,10,10));
     g2d.fillRect(x, y - height * 2, width, height);
     int greenWidth= (int) (width * health / maxHealth);
-    g2d.setColor(Color.green);
+    g2d.setColor(new Color(0,200,50));
     g2d.fillRect(x, y - height * 2, greenWidth, height);
   }
 
@@ -509,6 +509,8 @@ public class GamePanel extends JPanel{
 
     // Castle healthbar
     createHealthBar(g2d, 350, 60, 1200, 20, castleHealth, 100);
+    g2d.setColor(Color.YELLOW);
+    drawText(g2d, 0, 75, gameFontTiny, "Castle health");
   }
 
 
@@ -537,16 +539,42 @@ public class GamePanel extends JPanel{
     }
 
     if (almostLost){
-      g2d.setColor(new Color(200, 0 ,0, 40));
+      g2d.setColor(new Color(200, 0 ,0, 50));
       g2d.fillRect(0,0, Main.WIDTH, Main.HEIGHT);
     }
   }
 
   private void drawBottomBar(Graphics2D g2d){
+    int xPos = 653;
+    int yPos = Main.HEIGHT- 110;
+    int size = 96;
+    int crossSize = 116;
+
     g2d.drawImage(bottomBarImage,0, Main.HEIGHT - 56,  this);
 
     g2d.setColor(Color.WHITE);
     drawText(g2d, 10, Main.HEIGHT -12, gameFontTiny, scoreText + score);
+
+    g2d.drawImage(rookImage, xPos, yPos, size, size, this);
+    g2d.drawImage(knightImage, xPos + 129, yPos, size, size, this);
+    g2d.drawImage(kingImage, xPos + 259, yPos, size, size, this);
+    g2d.drawImage(queenImage, xPos + 387, yPos, size, size, this);
+    g2d.drawImage(bishopImage, xPos + 516, yPos, size, size, this);
+    if (!player.rookAlive){
+      g2d.drawImage(unavailablePieceImage, xPos-10, yPos -5, crossSize, crossSize, this);
+    }
+    if (!player.knightAlive){
+      g2d.drawImage(unavailablePieceImage, xPos + 119, yPos - 5, crossSize, crossSize, this);
+    }
+    if (!player.kingAlive){
+      g2d.drawImage(unavailablePieceImage, xPos + 249, yPos - 5, crossSize, crossSize, this);
+    }
+    if (!player.queenAlive){
+      g2d.drawImage(unavailablePieceImage, xPos + 377, yPos - 5, crossSize, crossSize, this);
+    }
+    if (!player.bishopAlive){
+      g2d.drawImage(unavailablePieceImage, xPos + 505, yPos - 5, crossSize, crossSize, this);
+    }
   }
 
   private void drawGameOverScreen(Graphics2D g2d){
@@ -630,33 +658,6 @@ public class GamePanel extends JPanel{
   }
 
   private void drawAbilityBar(Graphics2D g2d){
-    // A bit of a dumb solution. If the piece is dead it gets drawn beneath the bar
-    // making it appear greyed out. If its alive its drawn above the bar, looking active
-    int xPos = 653;
-    int yPos = Main.HEIGHT- 110;
-    int size = 96;
-    int crossSize = 116;
-
-    g2d.drawImage(rookImage, xPos, yPos, size, size, this);
-    g2d.drawImage(knightImage, xPos + 129, yPos, size, size, this);
-    g2d.drawImage(kingImage, xPos + 259, yPos, size, size, this);
-    g2d.drawImage(queenImage, xPos + 387, yPos, size, size, this);
-    g2d.drawImage(bishopImage, xPos + 516, yPos, size, size, this);
-    if (player.rookAlive){
-      g2d.drawImage(unavailablePieceImage, xPos-10, yPos -5, crossSize, crossSize, this);
-    }
-    if (!player.knightAlive){
-      g2d.drawImage(unavailablePieceImage, xPos + 119, yPos - 5, crossSize, crossSize, this);
-    }
-    if (!player.kingAlive){
-      g2d.drawImage(unavailablePieceImage, xPos + 249, yPos - 5, crossSize, crossSize, this);
-    }
-    if (!player.queenAlive){
-      g2d.drawImage(unavailablePieceImage, xPos + 377, yPos - 5, crossSize, crossSize, this);
-    }
-    if (!player.bishopAlive){
-      g2d.drawImage(unavailablePieceImage, xPos + 506, yPos - 5, crossSize, crossSize, this);
-    }
   }
 
   // Helper method for rendering formatted text
