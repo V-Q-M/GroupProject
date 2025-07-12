@@ -323,7 +323,7 @@ public class Player extends livingBeing {
            } else {
                queenDashing = false;
                queenDashingCounter = 0;
-               isInvulnerable = false;
+               //isInvulnerable = false;
                speed = BASE_MOVE_SPEED;
            }
         }
