@@ -12,7 +12,12 @@ import Allies.*;
 import enemies.Enemy;
 import entities.Projectile;
 
-public class GamePanel extends JPanel{
+public class GamePanel extends JPanel implements Runnable{
+
+  private Thread gameThread;
+  private boolean running = false;
+  private final int FPS = 60;
+  private final long FRAME_TIME = 1000000000 / FPS;
 
   // Game variables
   private boolean DEBUG_MODE = false;
@@ -136,8 +141,38 @@ public class GamePanel extends JPanel{
     player.selectPiece(PieceType.ROOK);
 
     // Refreshrate. Might have to improve that
-    new Timer(16, e -> update()).start(); // ~60 FPS
+    //new Timer(16, e -> update()).start(); // ~60 FPS
+
+    running = true;
+    gameThread = new Thread(this);
+    gameThread.start();
   }
+
+  @Override
+  public void run(){
+    long lastTime = System.nanoTime();
+
+    while(running){
+      long now = System.nanoTime();
+      long elapsed = now - lastTime;
+
+      if(elapsed >= FRAME_TIME){
+        update();
+        repaint();
+        lastTime = now;
+      } else {
+        try {
+          long sleepTime = (FRAME_TIME - elapsed) / 1000000;
+          if (sleepTime > 0) Thread.sleep(sleepTime);
+        } catch (InterruptedException e){
+          e.printStackTrace();
+        }
+      }
+    }
+  }
+
+
+
 
   private void getSettings(){
     if (SettingsManager.musicOff){
@@ -305,7 +340,7 @@ public class GamePanel extends JPanel{
       keyHandler.escapePressed = false;
       gamePaused = !gamePaused;
     }
-    repaint();
+    //repaint();
   }
 
   int gameStartCounter = 0;
