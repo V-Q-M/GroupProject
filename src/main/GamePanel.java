@@ -80,6 +80,7 @@ public class GamePanel extends JPanel{
 
   // Builds the background
   private BufferedImage tileImage;
+  private BufferedImage bottomBarImage;
 
   // This will hold the actual player.Player piece
   public BufferedImage selectedPiece;
@@ -201,6 +202,7 @@ public class GamePanel extends JPanel{
   private void loadImages() {
     try {
       tileImage = ImageIO.read(getClass().getResourceAsStream("/background/earth.png"));
+      bottomBarImage = ImageIO.read(getClass().getResourceAsStream("/background/BottomBar.png"));
 
       rookImage = ImageIO.read(getClass().getResourceAsStream("/chess-pieces/white/rook.png"));
       rookHurtImage = ImageIO.read(getClass().getResourceAsStream("/chess-pieces/white/rook_hurt.png"));
@@ -533,11 +535,11 @@ public class GamePanel extends JPanel{
   }
 
 
-  private int pauseMenuIndex;
+  private int pauseMenuIndex = 100000;
   void drawUI(Graphics2D g2d) {
     g2d.setFont(gameFont);
 
-    drawScoreBar(g2d);
+    drawBottomBar(g2d);
     drawAbilityBar(g2d);
 
     if (gameOver) {
@@ -563,16 +565,17 @@ public class GamePanel extends JPanel{
     }
   }
 
-  private int nextLevelGoal = 50000;
-  private void drawScoreBar(Graphics2D g2d){
-    int progress = (int) (690 * (float) score / nextLevelGoal);
-    g2d.setColor(Color.BLACK);
-    g2d.fillRect(0,Main.HEIGHT - 53, Main.WIDTH, 53);
+  //private int nextLevelGoal = 50000;
+  private void drawBottomBar(Graphics2D g2d){
+   // int progress = (int) (690 * (float) score / nextLevelGoal);
+    //g2d.setColor(Color.DARK_GRAY);
+    //g2d.fillRect(0,Main.HEIGHT - 56, Main.WIDTH, 56);
+    g2d.drawImage(bottomBarImage,0, Main.HEIGHT - 56,  this);
 
-    g2d.setColor(Color.GRAY);
-    g2d.fillRect(700, Main.HEIGHT -15, Main.WIDTH - 1400, 5);
-    g2d.setColor(Color.WHITE);
-    g2d.fillOval(700 + progress, Main.HEIGHT -20, 15, 15);
+    //g2d.setColor(Color.GRAY);
+    //g2d.fillRect(700, Main.HEIGHT -15, Main.WIDTH - 1400, 5);
+    //g2d.setColor(Color.WHITE);
+    //g2d.fillOval(700 + progress, Main.HEIGHT -20, 15, 15);
 
     g2d.setColor(Color.WHITE);
     drawText(g2d, 10, Main.HEIGHT -12, gameFontTiny, scoreText + score);
@@ -583,7 +586,7 @@ public class GamePanel extends JPanel{
     g2d.fillRect(0,0,Main.WIDTH, Main.HEIGHT);
 
     g2d.setColor(Color.RED);
-    drawText(g2d,0,340, gameFont, gameOverText);
+    drawText(g2d,0,420, gameFont, gameOverText);
 
     if(pauseMenuIndex % 2 == 0){
       g2d.setColor(Color.YELLOW);
@@ -661,42 +664,39 @@ public class GamePanel extends JPanel{
   private void drawAbilityBar(Graphics2D g2d){
     // A bit of a dumb solution. If the piece is dead it gets drawn beneath the bar
     // making it appear greyed out. If its alive its drawn above the bar, looking active
-    int xPos = 645;
-    int yPos = Main.HEIGHT - 132;
-
-    if (!player.rookAlive){
-      g2d.drawImage(rookImage, xPos, yPos, 100, 100, this);
-    }
-    if (!player.knightAlive){
-      g2d.drawImage(knightImage, xPos + 132, yPos, 100, 100, this);
-    }
-    if (!player.kingAlive){
-      g2d.drawImage(kingImage, xPos + 264, yPos, 100, 100, this);
-    }
-    if (!player.queenAlive){
-      g2d.drawImage(queenImage, xPos + 402, yPos, 100, 100, this);
-    }
-    if (!player.bishopAlive){
-      g2d.drawImage(bishopImage, xPos + 534, yPos, 100, 100, this);
-    }
-
-    g2d.setColor(new Color(50,50,50,200));
-    g2d.fillRect(xPos, yPos, Main.WIDTH - 1290, 100);
+    int xPos = 654;
+    int yPos = Main.HEIGHT- 112;
+    int size = 96;
 
     if (player.rookAlive){
-      g2d.drawImage(rookImage, xPos, yPos, 100, 100, this);
+      g2d.drawImage(rookImage, xPos, yPos, size, size, this);
+    } else {
+      g2d.setColor(Color.RED);
+      g2d.fillRect(xPos, yPos, size, size);
     }
     if (player.knightAlive){
-      g2d.drawImage(knightImage, xPos + 132, yPos, 100, 100, this);
+      g2d.drawImage(knightImage, xPos + 128, yPos, size, size, this);
+    } else {
+      g2d.setColor(Color.RED);
+      g2d.fillRect(xPos, yPos + 128, size, size);
     }
     if (player.kingAlive){
-      g2d.drawImage(kingImage, xPos + 264, yPos, 100, 100, this);
+      g2d.drawImage(kingImage, xPos + 256, yPos, size, size, this);
+    } else {
+      g2d.setColor(Color.RED);
+      g2d.fillRect(xPos, yPos + 256, size, size);
     }
     if (player.queenAlive){
-      g2d.drawImage(queenImage, xPos + 402, yPos, 100, 100, this);
+      g2d.drawImage(queenImage, xPos + 384, yPos, size, size, this);
+    } else {
+      g2d.setColor(Color.RED);
+      g2d.fillRect(xPos, yPos + 384, size, size);
     }
     if (player.bishopAlive){
-      g2d.drawImage(bishopImage, xPos + 534, yPos, 100, 100, this);
+      g2d.drawImage(bishopImage, xPos + 512, yPos, size, size, this);
+    } else {
+      g2d.setColor(Color.RED);
+      g2d.fillRect(xPos, yPos + 512, size, size);
     }
   }
 
