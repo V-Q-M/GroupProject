@@ -81,6 +81,7 @@ public class GamePanel extends JPanel{
   // Builds the background
   private BufferedImage tileImage;
   private BufferedImage bottomBarImage;
+  private BufferedImage unavailablePieceImage;
 
   public int PIECE_HEIGHT = 4 * 32;
 
@@ -132,7 +133,7 @@ public class GamePanel extends JPanel{
     // Builds the pawnwall on the left
     buildWall();
 
-    player.selectPiece(PieceType.BISHOP);
+    player.selectPiece(PieceType.ROOK);
 
     // Refreshrate. Might have to improve that
     new Timer(16, e -> update()).start(); // ~60 FPS
@@ -178,6 +179,7 @@ public class GamePanel extends JPanel{
     try {
       tileImage = ImageIO.read(getClass().getResourceAsStream("/background/earth.png"));
       bottomBarImage = ImageIO.read(getClass().getResourceAsStream("/background/BottomBar.png"));
+      unavailablePieceImage = ImageIO.read(getClass().getResourceAsStream("/background/unavailable.png"));
 
       rookImage = ImageIO.read(getClass().getResourceAsStream("/chess-pieces/white/rook.png"));
       rookHurtImage = ImageIO.read(getClass().getResourceAsStream("/chess-pieces/white/rook_hurt.png"));
@@ -254,7 +256,6 @@ public class GamePanel extends JPanel{
   }
 
   public void update() {
-    score+=1;
 
     if (castleHealth <= 20) {
       almostLost = true;
@@ -263,6 +264,7 @@ public class GamePanel extends JPanel{
     }
 
     if (!gameOver && !gamePaused) {
+      score+=1;
       simpleAnimation();
 
       if (!player.isDead) {
@@ -633,36 +635,27 @@ public class GamePanel extends JPanel{
     int xPos = 653;
     int yPos = Main.HEIGHT- 110;
     int size = 96;
+    int crossSize = 116;
 
+    g2d.drawImage(rookImage, xPos, yPos, size, size, this);
+    g2d.drawImage(knightImage, xPos + 129, yPos, size, size, this);
+    g2d.drawImage(kingImage, xPos + 259, yPos, size, size, this);
+    g2d.drawImage(queenImage, xPos + 387, yPos, size, size, this);
+    g2d.drawImage(bishopImage, xPos + 516, yPos, size, size, this);
     if (player.rookAlive){
-      g2d.drawImage(rookImage, xPos, yPos, size, size, this);
-    } else {
-      g2d.setColor(Color.RED);
-      g2d.fillRect(xPos, yPos, size, size);
+      g2d.drawImage(unavailablePieceImage, xPos-10, yPos -5, crossSize, crossSize, this);
     }
-    if (player.knightAlive){
-      g2d.drawImage(knightImage, xPos + 129, yPos, size, size, this);
-    } else {
-      g2d.setColor(Color.RED);
-      g2d.fillRect(xPos + 129, yPos, size, size);
+    if (!player.knightAlive){
+      g2d.drawImage(unavailablePieceImage, xPos + 119, yPos - 5, crossSize, crossSize, this);
     }
-    if (player.kingAlive){
-      g2d.drawImage(kingImage, xPos + 259, yPos, size, size, this);
-    } else {
-      g2d.setColor(Color.RED);
-      g2d.fillRect(xPos + 259, yPos, size, size);
+    if (!player.kingAlive){
+      g2d.drawImage(unavailablePieceImage, xPos + 249, yPos - 5, crossSize, crossSize, this);
     }
-    if (player.queenAlive){
-      g2d.drawImage(queenImage, xPos + 387, yPos, size, size, this);
-    } else {
-      g2d.setColor(Color.RED);
-      g2d.fillRect(xPos + 387, yPos, size, size);
+    if (!player.queenAlive){
+      g2d.drawImage(unavailablePieceImage, xPos + 377, yPos - 5, crossSize, crossSize, this);
     }
-    if (player.bishopAlive){
-      g2d.drawImage(bishopImage, xPos + 516, yPos, size, size, this);
-    } else {
-      g2d.setColor(Color.RED);
-      g2d.fillRect(xPos + 516, yPos , size, size);
+    if (!player.bishopAlive){
+      g2d.drawImage(unavailablePieceImage, xPos + 506, yPos - 5, crossSize, crossSize, this);
     }
   }
 

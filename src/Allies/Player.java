@@ -48,12 +48,12 @@ public class Player extends livingBeing {
     public boolean kingAlive = true;
 
     // Base health constants
-    public static final int ROOK_BASE_HEALTH = 25;
-    public static final int KNIGHT_BASE_HEALTH = 50;
-    public static final int BISHOP_BASE_HEALTH = 20;
-    public static final int QUEEN_BASE_HEALTH = 50;
-    public static final int KING_BASE_HEALTH = 30;
-    public static final int PAWN_BASE_HEALTH = 10;
+    public final int ROOK_BASE_HEALTH = 25;
+    public final int KNIGHT_BASE_HEALTH = 50;
+    public final int BISHOP_BASE_HEALTH = 20;
+    public final int QUEEN_BASE_HEALTH = 50;
+    public final int KING_BASE_HEALTH = 30;
+    public final int PAWN_BASE_HEALTH = 10;
 
     // Mutable health values
     public int rookHealth = ROOK_BASE_HEALTH;
@@ -88,7 +88,7 @@ public class Player extends livingBeing {
     ));
     PieceType lastPiece;
 
-    public Player(GamePanel gamePanel, KeyHandler keyHandler, SoundManager soundManager,  CollisionHandler collisionHandler, int startPositionX, int startPositionY){
+    public Player(GamePanel gamePanel, KeyHandler keyHandler, SoundManager soundManager, CollisionHandler collisionHandler, int startPositionX, int startPositionY){
         this.gamePanel = gamePanel;
         this.keyHandler = keyHandler;
         this.soundManager = soundManager;

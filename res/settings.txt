@@ -1,3 +1,0 @@
-music on
-language english
-debug off

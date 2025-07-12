@@ -1,9 +1,7 @@
 package Allies;
 
-import enemies.Enemy;
 import main.CollisionHandler;
 import main.GamePanel;
-import main.Main;
 import main.SoundManager;
 
 public class AllyPawn extends Ally {
