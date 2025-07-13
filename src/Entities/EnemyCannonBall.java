@@ -14,7 +14,7 @@ public class EnemyCannonBall extends Projectile {
         this.health = 200;
         this.speed = speed;
         this.damage = damage;
-        this.skin = gamePanel.cannonBallImage;
+        this.skin = gamePanel.cannonBallEnemyImage;
     }
 
     @Override

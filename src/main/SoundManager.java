@@ -21,6 +21,7 @@ public class SoundManager {
     public Clip buttonHoverClip;
     public Clip buttonClickClip;
     public Clip summonClip;
+    public Clip healClip;
 
     public Clip menuTheme;
     public Clip mainTheme;
@@ -73,6 +74,7 @@ public class SoundManager {
         mainTheme = loadClip("/sounds/mainTheme2.wav");
         buttonHoverClip = loadClip("/sounds/buttonHover.wav");
         buttonClickClip = loadClip("/sounds/buttonClick.wav");
+        healClip = loadClip("/sounds/heal.wav");
     }
 
     private Clip loadClip(String path) {

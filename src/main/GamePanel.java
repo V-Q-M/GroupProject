@@ -57,6 +57,7 @@ public class GamePanel extends JPanel implements Runnable{
 
   // Projectile textures
   public BufferedImage cannonBallImage;
+  public BufferedImage cannonBallEnemyImage;
   public BufferedImage explosionImage;
   public BufferedImage queenParticleImageUp;
   public BufferedImage queenParticleImageDown;
@@ -241,7 +242,8 @@ public class GamePanel extends JPanel implements Runnable{
       enemyPawnImage = ImageIO.read(getClass().getResourceAsStream("/chess-pieces/black/pawn.png"));
       enemyPawnHurtImage = ImageIO.read(getClass().getResourceAsStream("/chess-pieces/black/pawn_hurt.png"));
 
-      cannonBallImage = ImageIO.read(getClass().getResourceAsStream("/particles/cannonball2.png"));
+      cannonBallImage = ImageIO.read(getClass().getResourceAsStream("/particles/cannonball.png"));
+      cannonBallEnemyImage = ImageIO.read(getClass().getResourceAsStream("/particles/cannonballEnemy.png"));
       explosionImage = ImageIO.read(getClass().getResourceAsStream("/particles/explosion.png"));
       queenParticleImageUp = ImageIO.read(getClass().getResourceAsStream("/particles/queenParticlesUp.png"));
       queenParticleImageDown = ImageIO.read(getClass().getResourceAsStream("/particles/queenParticlesDown.png"));
@@ -318,8 +320,9 @@ public class GamePanel extends JPanel implements Runnable{
     }
 
     // Revive everyone but the king as there is only one true king
-    if (score >=5000 * reviveCount){
+    if (score >=10000 * reviveCount){
       reviveCount++;
+      soundManager.playClip(soundManager.healClip);
       piecesGotRevived = true;
       blueFlashScreen = true;
       player.rookAlive = true;
@@ -344,7 +347,7 @@ public class GamePanel extends JPanel implements Runnable{
 
   public int scoreIncreaseElapsedTime = 0;
   public void update() {
-    if (scoreIncreaseElapsedTime > FPS){
+    if (scoreIncreaseElapsedTime > 6){
       scoreIncreaseElapsedTime = 0;
       score++;
     } else {
