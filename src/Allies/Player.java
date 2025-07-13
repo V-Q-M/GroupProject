@@ -66,7 +66,7 @@ public class Player extends livingBeing {
     // Used in the swap feature
     public int swapCounter = 0;
 
-    public String facingDirection = "down";
+    public String facingDirection = "right";
     public String facingDirectionX = "right";
 
     private boolean hasAttacked = false;
@@ -232,6 +232,8 @@ public class Player extends livingBeing {
             targetX += deltaX;
             targetY += deltaY;
             isMoving = true;
+        } else {
+            //facingDirection = "right";
         }
 
         // Set facing direction based on input (last key pressed takes priority)
@@ -416,11 +418,6 @@ public class Player extends livingBeing {
     }
 
     void performAttack() {
-        // should be obsolete
-        //x = ((x + 127) / 128) * 128;
-        //y = ((y + 127) / 128) * 128;
-        //targetX=x;
-        //targetY=y;
         switch (gamePanel.selectedPieceType) {
             // Add new characters here
             case ROOK   -> gamePanel.entityManager.spawnCannonBall(x, y, facingDirection);
@@ -460,28 +457,37 @@ public class Player extends livingBeing {
         isInvulnerable = true;
         switch(facingDirection){
             case "up" -> {
-                if (targetY - 3 * gamePanel.pieceHeight >= 0) {
+                if (targetY - 3 * gamePanel.PIECE_HEIGHT >= 0) {
                     targetY -= gamePanel.PIECE_HEIGHT * 3;
-                    skin = gamePanel.queenParticleImageUp;
+                } else {
+                   targetY = 0;
                 }
+                skin = gamePanel.queenParticleImageUp;
             }
             case "down" -> {
-                if (targetY + 3 * gamePanel.pieceHeight < Main.HEIGHT - gamePanel.pieceHeight - 56) {
+                if (targetY + 3 * gamePanel.PIECE_HEIGHT < Main.HEIGHT - gamePanel.PIECE_HEIGHT - 56) {
                     targetY += gamePanel.PIECE_HEIGHT * 3;
-                    skin = gamePanel.queenParticleImageDown;
+                } else {
+                    targetY = Main.HEIGHT - gamePanel.PIECE_HEIGHT - 56;
                 }
+                skin = gamePanel.queenParticleImageDown;
             }
             case "left" -> {
-                if (targetX - 2 * gamePanel.pieceHeight >= 0) {
+                if (targetX - 3 * gamePanel.pieceHeight >= 0) {
                     targetX -= gamePanel.PIECE_HEIGHT * 3;
-                    skin = gamePanel.queenParticleImageLeft;
+                } else {
+                    targetX = 0;
                 }
+                skin = gamePanel.queenParticleImageLeft;
             }
             default -> {
-                if (targetX + 2 * gamePanel.pieceHeight < Main.WIDTH - gamePanel.pieceHeight) {
+                if (targetX + 3 * gamePanel.pieceHeight < Main.WIDTH - gamePanel.pieceHeight) {
                     targetX += gamePanel.PIECE_HEIGHT * 3;
-                    skin = gamePanel.queenParticleImageRight;
+                } else {
+                    targetX = Main.WIDTH - gamePanel.PIECE_HEIGHT;
+
                 }
+                skin = gamePanel.queenParticleImageRight;
             }
         }
 
@@ -513,6 +519,7 @@ public class Player extends livingBeing {
                 } else {
                     targetX = 0;
                 }
+                x = targetX;
             }
             default -> {
                 if (targetX + 2 * gamePanel.pieceHeight < Main.WIDTH - gamePanel.pieceHeight){

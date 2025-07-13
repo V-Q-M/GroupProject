@@ -84,7 +84,7 @@ public class MenuPanel extends JPanel {
 
         } catch (IOException e) {
             // File not found or failed to read — create default settings
-            String[] defaultSettings = { "music off", "language german", "debug on" };
+            String[] defaultSettings = { "music on", "language english", "debug off" };
             FileManager.writeLinesToTempFile(defaultSettings);
 
             System.out.println("Default settings written to temp file.");

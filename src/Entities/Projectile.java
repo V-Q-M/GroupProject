@@ -22,7 +22,6 @@ public abstract class Projectile {
         switch (direction) {
             case "up" -> y -= speed;
             case "down" -> y += speed;
-            case "right" -> x += speed;
             case "left" -> x -= speed;
             default -> x += speed;
         }
