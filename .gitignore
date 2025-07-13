@@ -2,10 +2,6 @@
 out/
 !**/src/main/**/out/
 !**/src/test/**/out/
-META-INF/
-MANIFEST.MF
-/.idea/
-/GroupProject.iml
 /res/sketch
 
 ### Eclipse ###
