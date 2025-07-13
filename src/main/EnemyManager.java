@@ -39,6 +39,12 @@ public class EnemyManager {
         adjustDifficulty();
     }
 
+    public void spawnKing(){
+        int X = Main.WIDTH;
+        int randomY = (int)(Math.random() * (Main.HEIGHT / size)) * size;
+        spawnEnemy(X, randomY, size, size, PieceType.KING);
+    }
+
     private int difficultyThreshold = 3;
 
     private void adjustDifficulty() {

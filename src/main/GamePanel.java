@@ -144,8 +144,10 @@ public class GamePanel extends JPanel implements Runnable{
     buildWall();
 
     player.selectPiece(PieceType.QUEEN);
+    enemyManager.spawnKing();
+    soundManager.playClip(soundManager.kingSpawnClip);
 
-    // Refreshrate. Might have to improve that
+    // Refreshrate. Might have to improve that. Edit: I did in fact improve it
     //new Timer(16, e -> update()).start(); // ~60 FPS
 
     running = true;
@@ -300,7 +302,8 @@ public class GamePanel extends JPanel implements Runnable{
   int lastHealedCounter = 0;
   int castleHitElapsedTime = 0;
   int pieceRevivedElapsedTime = 0;
-  int reviveCount = 1;
+  int levelCounter = 1;
+  public boolean enemyKingSlain = false;
 
   private void castleLogic(){
     if (lastHealedCounter > 180 && castleHealth < 100){
@@ -310,39 +313,54 @@ public class GamePanel extends JPanel implements Runnable{
       lastHealedCounter++;
     }
 
-    if (castleHitElapsedTime > 20) {
-      castleGotHit = false;
-      castleHitElapsedTime = 0;
-      redFlashScreen = false;
-    } else if (castleGotHit){
-      redFlashScreen = true;
-      castleHitElapsedTime++;
+
+   if (castleGotHit) {
+
+     if (!redFlashScreen){
+       redFlashScreen = true;
+       soundManager.playClip(soundManager.castleHitClip);
+     }
+     if (castleHitElapsedTime > 20) {
+       castleGotHit = false;
+       castleHitElapsedTime = 0;
+       redFlashScreen = false;
+     } else {
+       castleHitElapsedTime++;
+     }
+   }
+
+
+    if (score > 3000 * levelCounter){
+      levelCounter++;
+      enemyManager.spawnKing();
+      soundManager.playClip(soundManager.kingSpawnClip);
     }
 
     // Revive everyone but the king as there is only one true king
-    if (score >=10000 * reviveCount){
-      reviveCount++;
-      soundManager.playClip(soundManager.healClip);
-      piecesGotRevived = true;
-      blueFlashScreen = true;
-      player.rookAlive = true;
-      player.queenAlive = true;
-      player.bishopAlive = true;
-      player.knightAlive = true;
-      player.rookHealth = player.ROOK_BASE_HEALTH;
-      player.bishopHealth = player.BISHOP_BASE_HEALTH;
-      player.knightHealth = player.KNIGHT_BASE_HEALTH;
-      player.queenHealth = player.QUEEN_BASE_HEALTH;
-    } else if (pieceRevivedElapsedTime > 60){
-      piecesGotRevived = false;
-      pieceRevivedElapsedTime = 0;
-      blueFlashScreen = false;
-    } else if (piecesGotRevived){
-      pieceRevivedElapsedTime++;
+    if (enemyKingSlain){
+      if (!piecesGotRevived){
+        piecesGotRevived = true;
+        soundManager.playClip(soundManager.healClip);
+        blueFlashScreen = true;
+        player.rookAlive = true;
+        player.queenAlive = true;
+        player.bishopAlive = true;
+        player.knightAlive = true;
+        player.rookHealth = player.ROOK_BASE_HEALTH;
+        player.bishopHealth = player.BISHOP_BASE_HEALTH;
+        player.knightHealth = player.KNIGHT_BASE_HEALTH;
+        player.queenHealth = player.QUEEN_BASE_HEALTH;
+      }
+
+      if (pieceRevivedElapsedTime > 60){
+        enemyKingSlain = false;
+        piecesGotRevived = false;
+        pieceRevivedElapsedTime = 0;
+        blueFlashScreen = false;
+      } else {
+        pieceRevivedElapsedTime++;
+      }
     }
-
-
-
   }
 
   public int scoreIncreaseElapsedTime = 0;
@@ -471,13 +489,14 @@ public class GamePanel extends JPanel implements Runnable{
     }
   }
 
+  private final Color LIME = new Color(0,200,50);
   // Helper method for building health-bars
-  private void createHealthBar(Graphics2D g2d, int x, int y, int width, int height, int health, int maxHealth){
+  private void createHealthBar(Graphics2D g2d, int x, int y, int width, int height, int health, int maxHealth, Color healthColor){
     g2d.setColor(new Color (200,10,10));
-    g2d.fillRect(x, y - height * 2, width, height);
+    g2d.fillRect(x, y - height - 5, width, height);
     int greenWidth= (int) (width * health / maxHealth);
-    g2d.setColor(new Color(0,200,50));
-    g2d.fillRect(x, y - height * 2, greenWidth, height);
+    g2d.setColor(healthColor);
+    g2d.fillRect(x, y - height - 5, greenWidth, height);
   }
 
   int animationOffset = 2;
@@ -558,14 +577,18 @@ public class GamePanel extends JPanel implements Runnable{
   void drawHealthBars(Graphics2D g2d){
     // Personal choice - only show health-bar when not at full health
     for (Enemy enemy : enemies) {
-      if (enemy.health != enemy.maxHealth) {
-        createHealthBar(g2d, enemy.x, enemy.y, enemy.width, 15, enemy.health, enemy.maxHealth);
+      if (enemy.isKing){
+        createHealthBar(g2d, enemy.x, enemy.y, enemy.width, 20, enemy.health, enemy.maxHealth, Color.YELLOW);
       }
+      else if (enemy.health != enemy.maxHealth) {
+        createHealthBar(g2d, enemy.x, enemy.y, enemy.width, 15, enemy.health, enemy.maxHealth, LIME);
+      }
+
     }
 
     for (Ally ally : allies){
       if (ally.health != ally.maxHealth){
-        createHealthBar(g2d, ally.x, ally.y, ally.width, 15, ally.health, ally.maxHealth);
+        createHealthBar(g2d, ally.x, ally.y, ally.width, 15, ally.health, ally.maxHealth, LIME);
       }
     }
 
@@ -596,11 +619,11 @@ public class GamePanel extends JPanel implements Runnable{
 
     // player.Player health-bar always on top
     if (!player.isDead) {
-      createHealthBar(g2d, player.x, player.y, pieceWidth, 20, playerHealth, playerMaxHealth);
+      createHealthBar(g2d, player.x, player.y, pieceWidth, 20, playerHealth, playerMaxHealth, LIME);
     }
 
     // Castle healthbar
-    createHealthBar(g2d, 350, 60, 1200, 20, castleHealth, 100);
+    createHealthBar(g2d, 350, 60, 1200, 20, castleHealth, 100, Color.GRAY);
     g2d.setColor(Color.YELLOW);
     drawText(g2d, 0, 75, gameFontTiny, castleHealthText);
   }

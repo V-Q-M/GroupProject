@@ -14,6 +14,7 @@ public class SoundManager {
     public Clip shootClip;
     public Clip sliceClip;
     public Clip hitClip;
+    public Clip castleHitClip;
     public Clip smashClip;
     public Clip holyClip;
     public Clip deathClip;
@@ -22,6 +23,8 @@ public class SoundManager {
     public Clip buttonClickClip;
     public Clip summonClip;
     public Clip healClip;
+    public Clip kingSpawnClip;
+
 
     public Clip menuTheme;
     public Clip mainTheme;
@@ -65,6 +68,7 @@ public class SoundManager {
         shootClip = loadClip("/sounds/shoot.wav");
         sliceClip = loadClip("/sounds/slice1.wav");
         hitClip   = loadClip("/sounds/hit.wav");
+        castleHitClip = loadClip("/sounds/castleHit.wav");
         smashClip = loadClip("/sounds/smash.wav");
         holyClip = loadClip("/sounds/holyLance.wav");
         deathClip = loadClip("/sounds/death.wav");
@@ -75,6 +79,7 @@ public class SoundManager {
         buttonHoverClip = loadClip("/sounds/buttonHover.wav");
         buttonClickClip = loadClip("/sounds/buttonClick.wav");
         healClip = loadClip("/sounds/heal.wav");
+        kingSpawnClip = loadClip("/sounds/kingSpawn.wav");
     }
 
     private Clip loadClip(String path) {

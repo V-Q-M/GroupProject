@@ -17,7 +17,6 @@ public class EnemyRook extends Enemy{
         this.skin = baseSkin;
         this.attackCoolDown = 300;
         this.attackCoolDownCounter = 0;
-        this.recoveryTime = 45;
     }
 
     boolean allowAttack = false;

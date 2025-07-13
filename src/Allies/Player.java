@@ -506,9 +506,7 @@ public class Player extends livingBeing {
     private void performKingAttack(){
         soundManager.playClip(soundManager.summonClip);
         gamePanel.entityManager.spawnPawns(x , y - gamePanel.pieceHeight);
-        soundManager.playClip(soundManager.summonClip);
         gamePanel.entityManager.spawnPawns(x + gamePanel.pieceWidth, y);
-        soundManager.playClip(soundManager.summonClip);
         gamePanel.entityManager.spawnPawns(x , y + gamePanel.pieceHeight);
     }
 }
