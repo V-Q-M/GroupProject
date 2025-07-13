@@ -522,8 +522,8 @@ public class MenuPanel extends JPanel {
             g2d.setFont(gameFontSmall);
             drawText(g2d, 155, 790, SettingsManager.bishopNameText);
             g2d.setFont(gameFontTiny);
-            drawText(g2d,155,835, "Having found strength in his faith - the Bishop is ready to take up arms and ");
-            drawText(g2d, 155, 885, "fight for his faith.");
+            drawText(g2d,155,835, SettingsManager.helpTextArray[11]);
+            drawText(g2d, 155, 885, SettingsManager.helpTextArray[12]);
 
             drawText(g2d, 155, 950, SettingsManager.pressLeftText);
             drawText(g2d, 1250, 950, SettingsManager.pressRightText);
@@ -531,14 +531,14 @@ public class MenuPanel extends JPanel {
             g2d.setFont(gameFontSmall);
             drawText(g2d, 155, 320, SettingsManager.queenNameText);
             g2d.setFont(gameFontTiny);
-            drawText(g2d, 155, 365, "Having been secretly trained in the art of sword fighting - the queen is as mobile");
-            drawText(g2d, 155, 410, "as she is deadly, striking down those, who dare cross her way.");
+            drawText(g2d, 155, 365, SettingsManager.helpTextArray[13]);
+            drawText(g2d, 155, 410, SettingsManager.helpTextArray[14]);
 
             g2d.setFont(gameFontSmall);
             drawText(g2d, 155, 500, SettingsManager.kingNameText);
             g2d.setFont(gameFontTiny);
-            drawText(g2d, 155, 545, "Having served his people for many years - the King utilizes his royal guard ");
-            drawText(g2d, 155, 590, "to defeat those who dare attack him.");
+            drawText(g2d, 155, 545, SettingsManager.helpTextArray[15]);
+            drawText(g2d, 155, 590, SettingsManager.helpTextArray[16]);
 
             drawText(g2d, 0, 950, SettingsManager.pressEscapeText);
         }

@@ -74,6 +74,7 @@ public class GamePanel extends JPanel implements Runnable{
   private String quitGameText = "Quit Game?";
   private String restartText = "Restart?";
   private String resumeText = "Resume?";
+  private String castleHealthText = "Castle health";
 
   private boolean almostLost = false;
 
@@ -190,6 +191,7 @@ public class GamePanel extends JPanel implements Runnable{
       quitGameText = "Spiel verlassen?";
       restartText = "Neustarten?";
       resumeText = "Fortfahren?";
+      castleHealthText = "Schloss Zustand";
     }
 
     if (SettingsManager.debugMode){
@@ -545,7 +547,7 @@ public class GamePanel extends JPanel implements Runnable{
     // Castle healthbar
     createHealthBar(g2d, 350, 60, 1200, 20, castleHealth, 100);
     g2d.setColor(Color.YELLOW);
-    drawText(g2d, 0, 75, gameFontTiny, "Castle health");
+    drawText(g2d, 0, 75, gameFontTiny, castleHealthText);
   }
 
 

@@ -50,10 +50,14 @@ public class SettingsManager {
                                             "capable of defeating his enemies from a safe distance.",
                                             "Having lost his sword - the knight relies on his mighty stead to strike fear",
                                             "into his enemies.",
-                                            "",
+                                            "Having found strength in his faith - the Bishop is ready to take up arms and",
+                                            "fight for his faith.",
+                                            "Having been secretly trained in the art of sword fighting - the queen is as mobile",
+                                            "as she is deadly, striking down those, who dare cross her way.",
+                                            "Having served his people for many years - the King utilizes his royal guard",
+                                            "to defeat those who dare attack him."
 
     };
-
 
     public static boolean musicOff = false;
     public static boolean languageGerman = false;
@@ -125,10 +129,16 @@ public class SettingsManager {
         helpTextArray[4] = "Drücke ESC um zu pausieren.";
         helpTextArray[5] = "Denke daran, dass alle paar Sekunden deine Figur gewechselt wird!";
         helpTextArray[6] = "Sei vorbereitet.";
-        helpTextArray[7] = "Als ein Meister der Artillery hat der Turm sich als eine zuverlässige Fernkampfeinheit";
-        helpTextArray[8] = "bewiesen, welche aus sicherer Distanz seine Feinde besiegen kann";
-        helpTextArray[9] = "Seitdem der Springer sein Schwert verloren hat ist er auf sein mächtiges Ross angewiesen,";
-        helpTextArray[10] = "welches seinen Feinden Furcht und Schrecken bereitet.";
+        helpTextArray[7] = "Als ein Meister der Artillery hat der Turm sich als eine zuverlässige";
+        helpTextArray[8] = "Fernkampfeinheit bewiesen, welche aus sicherer Distanz seine Feinde besiegen kann";
+        helpTextArray[9] = "Seitdem der Springer sein Schwert verloren hat ist er auf sein mächtiges Ross ";
+        helpTextArray[10] = "angewiesen, welches seinen Feinden Furcht und Schrecken bereitet.";
+        helpTextArray[11] = "Sein Glaube brachte dem Läufer Stärke. Nun ist er bereit für";
+        helpTextArray[12] = "seinen Glauben zu kämpfen";
+        helpTextArray[13] = "Durch ihr heimliches Training im Schwertkampf ist die Dame sowohl flink";
+        helpTextArray[14] = "als auch tödlich und besiegt jeden, der sich ihr in den Weg stellt.";
+        helpTextArray[15] = "Als ein hoch angesehener Herrscher, nutzt der König seine persönliche Garde";
+        helpTextArray[16] = "um jene zu besiegen, welche es wagen ihn anzugreifen.";
     }
     public static void switchToEnglish(){
         languageGerman = false;
@@ -178,5 +188,11 @@ public class SettingsManager {
         helpTextArray[8] = "capable of defeating his enemies from a safe distance.";
         helpTextArray[9] = "Having lost his sword - the knight relies on his mighty stead to strike fear";
         helpTextArray[10] = "into his enemies.";
+        helpTextArray[11] = "Having found strength in his faith - the Bishop is ready to take up arms and ";
+        helpTextArray[12] = "fight for his faith.";
+        helpTextArray[13] = "Having been secretly trained in the art of sword fighting - the queen is as mobile";
+        helpTextArray[14] = "as she is deadly, striking down those, who dare cross her way.";
+        helpTextArray[15] = "Having served his people for many years - the King utilizes his royal guard";
+        helpTextArray[16] = "to defeat those who dare attack him.";
     }
 }
