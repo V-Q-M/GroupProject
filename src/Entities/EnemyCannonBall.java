@@ -48,6 +48,7 @@ public class EnemyCannonBall extends Projectile {
         if (x < 0){ // Has hit the castle
             isDead = true;
             gamePanel.castleHealth -= 10;
+            gamePanel.castleGotHit = true;
         }
     }
 }

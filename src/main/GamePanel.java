@@ -22,6 +22,8 @@ public class GamePanel extends JPanel implements Runnable{
   // Game variables
   private boolean DEBUG_MODE = false;
   public boolean gamePaused = false;
+  public boolean castleGotHit = false;
+  private boolean piecesGotRevived = false;
   public int score = 0;
 
   boolean gameStart = true;
@@ -76,7 +78,8 @@ public class GamePanel extends JPanel implements Runnable{
   private String resumeText = "Resume?";
   private String castleHealthText = "Castle health";
 
-  private boolean almostLost = false;
+  private boolean redFlashScreen = false;
+  private boolean blueFlashScreen = false;
 
   // uses the enum
   public PieceType selectedPieceType;
@@ -292,16 +295,65 @@ public class GamePanel extends JPanel implements Runnable{
     }
   }
 
-  public void update() {
+  int lastHealedCounter = 0;
+  int castleHitElapsedTime = 0;
+  int pieceRevivedElapsedTime = 0;
+  int reviveCount = 1;
 
-    if (castleHealth <= 20) {
-      almostLost = true;
+  private void castleLogic(){
+    if (lastHealedCounter > 180 && castleHealth < 100){
+      castleHealth++;
+      lastHealedCounter = 0;
     } else {
-      almostLost = false;
+      lastHealedCounter++;
     }
 
+    if (castleHitElapsedTime > 20) {
+      castleGotHit = false;
+      castleHitElapsedTime = 0;
+      redFlashScreen = false;
+    } else if (castleGotHit){
+      redFlashScreen = true;
+      castleHitElapsedTime++;
+    }
+
+    // Revive everyone but the king as there is only one true king
+    if (score >=5000 * reviveCount){
+      reviveCount++;
+      piecesGotRevived = true;
+      blueFlashScreen = true;
+      player.rookAlive = true;
+      player.queenAlive = true;
+      player.bishopAlive = true;
+      player.knightAlive = true;
+      player.rookHealth = player.ROOK_BASE_HEALTH;
+      player.bishopHealth = player.BISHOP_BASE_HEALTH;
+      player.knightHealth = player.KNIGHT_BASE_HEALTH;
+      player.queenHealth = player.QUEEN_BASE_HEALTH;
+    } else if (pieceRevivedElapsedTime > 60){
+      piecesGotRevived = false;
+      pieceRevivedElapsedTime = 0;
+      blueFlashScreen = false;
+    } else if (piecesGotRevived){
+      pieceRevivedElapsedTime++;
+    }
+
+
+
+  }
+
+  public int scoreIncreaseElapsedTime = 0;
+  public void update() {
+    if (scoreIncreaseElapsedTime > FPS){
+      scoreIncreaseElapsedTime = 0;
+      score++;
+    } else {
+      scoreIncreaseElapsedTime ++;
+    }
+
+    castleLogic();
+
     if (!gameOver && !gamePaused) {
-      score+=1;
       simpleAnimation();
 
       if (!player.isDead) {
@@ -575,8 +627,12 @@ public class GamePanel extends JPanel implements Runnable{
       drawText(g2d,0,0, gameFont, swappingSoonText);
     }
 
-    if (almostLost){
-      g2d.setColor(new Color(200, 0 ,0, 50));
+    if (!blueFlashScreen && redFlashScreen){
+      g2d.setColor(new Color(255, 100 ,100, 50));
+      g2d.fillRect(0,0, Main.WIDTH, Main.HEIGHT);
+    }
+    if (blueFlashScreen){
+      g2d.setColor(new Color(100, 145 ,255, 100));
       g2d.fillRect(0,0, Main.WIDTH, Main.HEIGHT);
     }
   }

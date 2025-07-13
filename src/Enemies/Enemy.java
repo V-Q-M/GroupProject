@@ -39,6 +39,7 @@ public abstract class Enemy extends livingBeing {
         if (x < 0){
             health = 0;
             gamePanel.castleHealth -= damage / 3;
+            gamePanel.castleGotHit = true;
         } else {
             x -= speed;
         }
