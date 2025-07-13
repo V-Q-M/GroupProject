@@ -12,7 +12,7 @@ public class EnemyKing extends Enemy{
         this.baseSkin = gamePanel.enemyKingImage;
         this.hurtSkin = gamePanel.enemyKingHurtImage;
         this.skin = baseSkin;
-        this.attackCoolDown = 1000;
+        this.attackCoolDown = 600;
         this.attackCoolDownCounter = 0;
         this.isKing = true;
     }

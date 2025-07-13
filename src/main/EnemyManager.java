@@ -30,6 +30,7 @@ public class EnemyManager {
         }
 
         if (shouldSpawnGuard){
+            shouldSpawnGuard = false;
             gamePanel.enemies.add(new EnemyPawn(gamePanel, gamePanel.soundManager, gamePanel.collisionHandler, kingsX, kingsY, kingsSize, kingsSize));
             gamePanel.soundManager.playClip(gamePanel.soundManager.summonClip);
         }
