@@ -22,7 +22,7 @@ public class SettingsManager {
     public static String wallUpgradeDescriptionText = "Purchase two turrets defending their rows with cannonballs";
     public static String kingUpgradeText = "King upgrade [PURCHASED]";
     public static String kingUpgradeDescriptionText = "Purchase two more guards for the king - allowing him to attack 3 rows at once";
-    public static String queenUpgradeText = "Queen upgrade [PURCHASED]";
+    public static String queenUpgradeText = "Queen upgrade [LOCKED]";
     public static String queenUpgradeDescriptionText = "Purchase an ancient talisman for the queen - allowing her to heal on enemies";
 
     // General UI text
@@ -159,7 +159,7 @@ public class SettingsManager {
         wallUpgradeDescriptionText = "Purchase two turrets defending their rows with cannonballs";
         kingUpgradeText = "King upgrade [PURCHASED]";
         kingUpgradeDescriptionText = "Purchase two more guards for the king - allowing him to attack 3 rows at once";
-        queenUpgradeText = "Queen upgrade [PURCHASED]";
+        queenUpgradeText = "Queen upgrade [LOCKED]";
         queenUpgradeDescriptionText = "Purchase an ancient talisman for the queen - allowing her to heal on enemies";
 
         // General UI text

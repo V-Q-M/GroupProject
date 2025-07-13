@@ -328,7 +328,7 @@ public class GamePanel extends JPanel implements Runnable{
    }
 
 
-    if (score > 5000 * levelCounter){
+    if (score > 4500 * levelCounter){
       levelCounter++;
       enemyManager.spawnKing();
       soundManager.playClip(soundManager.kingSpawnClip);
@@ -363,16 +363,16 @@ public class GamePanel extends JPanel implements Runnable{
 
   public int scoreIncreaseElapsedTime = 0;
   public void update() {
-    if (scoreIncreaseElapsedTime > 6){
-      scoreIncreaseElapsedTime = 0;
-      score++;
-    } else {
-      scoreIncreaseElapsedTime ++;
-    }
-
-    castleLogic();
-
     if (!gameOver && !gamePaused) {
+      castleLogic();
+
+      if (scoreIncreaseElapsedTime > 6){
+        scoreIncreaseElapsedTime = 0;
+        score++;
+      } else {
+        scoreIncreaseElapsedTime ++;
+      }
+
       simpleAnimation();
 
       if (!player.isDead) {
@@ -646,7 +646,7 @@ public class GamePanel extends JPanel implements Runnable{
       g2d.setColor(Color.WHITE);
       drawText(g2d,0,0, gameFont, startMessage);
     }
-    if (swapSoon && !gamePaused){
+    if (swapSoon && !gamePaused && !gameOver){
       g2d.setColor(Color.YELLOW);
       drawText(g2d,0,0, gameFont, swappingSoonText);
     }
