@@ -111,17 +111,27 @@ public class Player extends livingBeing {
         prepareForcedSwap();
     }
 
-    private void forceSwap(){
-        if (lastPiece != null && availablePieces.size() >= 1){
+    private void forceSwap() {
+        if (lastPiece != null && availablePieces.size() > 1) {
+            availablePieces.add(lastPiece); // Add last piece back only if >1 options
+        } else if (lastPiece != null && availablePieces.size() == 1) {
+            // If only 1 available, allow repeat since no other choice
             availablePieces.add(lastPiece);
         }
-        int index = random.nextInt(availablePieces.size()); // Pick a random index
-        PieceType randomValue = availablePieces.get(index); // Access by index
+
+        PieceType randomValue;
+        do {
+            int index = random.nextInt(availablePieces.size());
+            randomValue = availablePieces.get(index);
+        } while (availablePieces.size() > 1 && randomValue == lastPiece);
+
         lastPiece = randomValue;
         System.out.println("Random Enum: " + randomValue);
-        if (availablePieces.size() >= 2){
-           availablePieces.remove(randomValue);
+
+        if (availablePieces.size() >= 2) {
+            availablePieces.remove(randomValue); // Temporarily remove it
         }
+
         selectPiece(randomValue);
         swapCounter = 0;
         attackCoolDownCounter = 0;

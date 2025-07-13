@@ -119,7 +119,7 @@ public class GamePanel extends JPanel implements Runnable{
 
   // Rest of managers and player
   Player player = new Player(this, keyHandler, soundManager, collisionHandler, startX, startY);
-  EnemyManager enemyManager = new EnemyManager(this);
+  public EnemyManager enemyManager = new EnemyManager(this);
   public EntityManager entityManager = new EntityManager(this, keyHandler, soundManager, player);
 
   // Upgrades. Available in the shop
@@ -143,7 +143,7 @@ public class GamePanel extends JPanel implements Runnable{
     // Builds the pawnwall on the left
     buildWall();
 
-    player.selectPiece(PieceType.QUEEN);
+    player.selectPiece(PieceType.ROOK);
 
     // Refreshrate. Might have to improve that. Edit: I did in fact improve it
     //new Timer(16, e -> update()).start(); // ~60 FPS

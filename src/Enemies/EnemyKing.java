@@ -1,9 +1,6 @@
 package enemies;
 
-import main.CollisionHandler;
-import main.GamePanel;
-import main.Main;
-import main.SoundManager;
+import main.*;
 
 public class EnemyKing extends Enemy{
     public EnemyKing(GamePanel gamePanel, SoundManager soundManager, CollisionHandler collisionHandler, int x, int y, int width, int height) {
@@ -15,7 +12,8 @@ public class EnemyKing extends Enemy{
         this.baseSkin = gamePanel.enemyKingImage;
         this.hurtSkin = gamePanel.enemyKingHurtImage;
         this.skin = baseSkin;
-        this.attackCoolDown = 80;
+        this.attackCoolDown = 260;
+        this.attackCoolDownCounter = 0;
         this.isKing = true;
     }
 
@@ -30,10 +28,11 @@ public class EnemyKing extends Enemy{
         }
     }
 
+    boolean allowAttack = false;
     @Override
     public void move(){
         if (x < Main.WIDTH - 382){
-            //allowAttack = true;
+            allowAttack = true;
         } else {
             x -= speed;
         }
@@ -44,4 +43,41 @@ public class EnemyKing extends Enemy{
             y = 8 * gamePanel.PIECE_HEIGHT;
         }
     }
+
+
+    @Override
+    public void update(){
+        checkAlive();
+        move();
+        checkPlayerCollision();
+        checkPawnWallCollision();
+        updateCooldowns();
+    }
+
+    @Override
+    void updateCooldowns(){
+
+        if (isInvulnerable){
+            if (invulnerableCounter >= recoveryTime){
+                isInvulnerable = false;
+                invulnerableCounter = 0;
+            } else if (invulnerableCounter > recoveryMarkerTime) {
+                this.skin = baseSkin;
+            }
+            invulnerableCounter ++;
+        }
+
+        if (attackCoolDownCounter > attackCoolDown){
+            performAttack();
+            hasAttacked = false;
+            attackCoolDownCounter = 0;
+        } else {
+            attackCoolDownCounter++;
+        }
+    }
+
+    private void performAttack() {
+        gamePanel.enemyManager.spawnKingsGuard(x-128,y,width);
+    }
+
 }

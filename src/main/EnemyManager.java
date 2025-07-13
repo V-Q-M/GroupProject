@@ -8,6 +8,15 @@ public class EnemyManager {
     private int spawnCoolDown = 240;
     private int difficultyScalar = 0;
     private int size = 4 * 32;
+
+
+    // Special logic for enemy king
+    private int kingsX;
+    private int kingsY;
+    private int kingsSize;
+    private boolean shouldSpawnGuard = false;
+
+
     public EnemyManager(GamePanel gamePanel){
 
         this.gamePanel = gamePanel;
@@ -19,6 +28,18 @@ public class EnemyManager {
             case PieceType.ROOK   -> gamePanel.enemies.add(new EnemyRook(gamePanel, gamePanel.soundManager, gamePanel.collisionHandler, x, y, width, height));
             case PieceType.KING   -> gamePanel.enemies.add(new EnemyKing(gamePanel, gamePanel.soundManager, gamePanel.collisionHandler, x, y, width, height));
         }
+
+        if (shouldSpawnGuard){
+            gamePanel.enemies.add(new EnemyPawn(gamePanel, gamePanel.soundManager, gamePanel.collisionHandler, kingsX, kingsY, kingsSize, kingsSize));
+            gamePanel.soundManager.playClip(gamePanel.soundManager.summonClip);
+        }
+    }
+    public void spawnKingsGuard(int x, int y, int size){
+
+        kingsX = x;
+        kingsY = y;
+        kingsSize = size;
+        shouldSpawnGuard = true;
     }
 
     void updateSpawner(){
@@ -51,8 +72,8 @@ public class EnemyManager {
         if (difficultyScalar > difficultyThreshold) {
             difficultyThreshold += 2;
 
-            // Reduce cooldown by 10%, with a minimum floor
-            spawnCoolDown *= 0.9;
+            // Reduce cooldown by 5%, with a minimum floor
+            spawnCoolDown *= 0.95;
 
             if (spawnCoolDown < 100) {
                 spawnCoolDown = 100; // Set a lower bound
