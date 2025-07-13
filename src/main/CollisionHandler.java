@@ -24,6 +24,20 @@ public class CollisionHandler {
             case "right" -> {
                 return (playerX + playerWidth + speed >= Main.WIDTH);
             }
+            case "up-right" -> {
+                return (playerY - speed <= 0) || (playerX + playerWidth + speed >= Main.WIDTH);
+            }
+            case "up-left" -> {
+                return (playerY - speed <= 0) || (playerX - speed <= 0);
+            }
+            case "down-right" -> {
+                return (playerY + playerHeight + speed >= Main.HEIGHT - 56) ||
+                        (playerX + playerWidth + speed >= Main.WIDTH);
+            }
+            case "down-left" -> {
+                return (playerY + playerHeight + speed >= Main.HEIGHT - 56) ||
+                        (playerX - speed <= 0);
+            }
         }
         return false;
     }

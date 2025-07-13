@@ -12,7 +12,7 @@ public class EnemyKing extends Enemy{
         this.baseSkin = gamePanel.enemyKingImage;
         this.hurtSkin = gamePanel.enemyKingHurtImage;
         this.skin = baseSkin;
-        this.attackCoolDown = 260;
+        this.attackCoolDown = 460;
         this.attackCoolDownCounter = 0;
         this.isKing = true;
     }
@@ -67,12 +67,12 @@ public class EnemyKing extends Enemy{
             invulnerableCounter ++;
         }
 
-        if (attackCoolDownCounter > attackCoolDown){
+        if (this.attackCoolDownCounter > this.attackCoolDown){
             performAttack();
             hasAttacked = false;
-            attackCoolDownCounter = 0;
+            this.attackCoolDownCounter = 0;
         } else {
-            attackCoolDownCounter++;
+            this.attackCoolDownCounter++;
         }
     }
 
