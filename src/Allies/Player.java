@@ -453,27 +453,35 @@ public class Player extends livingBeing {
     }
 
     private void performQueenAttack(){
-        BufferedImage skin;
+        BufferedImage skin = gamePanel.queenParticleImageRight;
 
         speed = DASH_SPEED;
         queenDashing = true;
         isInvulnerable = true;
         switch(facingDirection){
             case "up" -> {
-                targetY -= gamePanel.PIECE_HEIGHT * 3;
-                skin = gamePanel.queenParticleImageUp;
+                if (targetY - 3 * gamePanel.pieceHeight >= 0) {
+                    targetY -= gamePanel.PIECE_HEIGHT * 3;
+                    skin = gamePanel.queenParticleImageUp;
+                }
             }
             case "down" -> {
-                targetY += gamePanel.PIECE_HEIGHT * 3;
-                skin = gamePanel.queenParticleImageDown;
+                if (targetY + 3 * gamePanel.pieceHeight < Main.HEIGHT - gamePanel.pieceHeight - 56) {
+                    targetY += gamePanel.PIECE_HEIGHT * 3;
+                    skin = gamePanel.queenParticleImageDown;
+                }
             }
             case "left" -> {
-                targetX -= gamePanel.PIECE_HEIGHT * 3;
-                skin = gamePanel.queenParticleImageLeft;
+                if (targetX - 2 * gamePanel.pieceHeight >= 0) {
+                    targetX -= gamePanel.PIECE_HEIGHT * 3;
+                    skin = gamePanel.queenParticleImageLeft;
+                }
             }
             default -> {
-                targetX += gamePanel.PIECE_HEIGHT * 3;
-                skin = gamePanel.queenParticleImageRight;
+                if (targetX + 2 * gamePanel.pieceHeight < Main.WIDTH - gamePanel.pieceHeight) {
+                    targetX += gamePanel.PIECE_HEIGHT * 3;
+                    skin = gamePanel.queenParticleImageRight;
+                }
             }
         }
 
@@ -484,19 +492,34 @@ public class Player extends livingBeing {
 
         switch (facingDirection){
             case "up" -> {
-                targetY -= 2 * gamePanel.pieceHeight;
+                if (targetY - 2 * gamePanel.pieceHeight >= 0){
+                    targetY -= 2 * gamePanel.pieceHeight;
+                } else {
+                    targetY = 0;
+                }
                 y = targetY;
             }
             case "down" -> {
-                targetY += 2 * gamePanel.pieceHeight;
+                if (targetY + 2 * gamePanel.pieceHeight < Main.HEIGHT - gamePanel.pieceHeight - 56){
+                    targetY += 2 * gamePanel.pieceHeight;
+                } else {
+                    targetY = Main.HEIGHT - gamePanel.pieceHeight - 56;
+                }
                 y = targetY;
             }
             case "left" -> {
-                targetX -= 2 * gamePanel.pieceHeight;
-                x = targetX;
+                if (targetX - 2 * gamePanel.pieceHeight >= 0){
+                    targetX -= 2 * gamePanel.pieceHeight;
+                } else {
+                    targetX = 0;
+                }
             }
-            case "right" -> {
-                targetX += 2 * gamePanel.pieceHeight;
+            default -> {
+                if (targetX + 2 * gamePanel.pieceHeight < Main.WIDTH - gamePanel.pieceHeight){
+                    targetX += 2 * gamePanel.pieceHeight;
+                } else {
+                    targetX = Main.WIDTH - gamePanel.pieceHeight;
+                }
                 x = targetX;
             }
         }

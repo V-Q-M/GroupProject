@@ -16,7 +16,7 @@ public class CollisionHandler {
                 return (playerY - speed <= 0);
             }
             case "down" -> {
-                return (playerY + playerHeight + speed >= Main.HEIGHT);
+                return (playerY + playerHeight + speed >= Main.HEIGHT - 56);
             }
             case "left" -> {
                 return (playerX - speed <= 0);

@@ -144,8 +144,6 @@ public class GamePanel extends JPanel implements Runnable{
     buildWall();
 
     player.selectPiece(PieceType.QUEEN);
-    enemyManager.spawnKing();
-    soundManager.playClip(soundManager.kingSpawnClip);
 
     // Refreshrate. Might have to improve that. Edit: I did in fact improve it
     //new Timer(16, e -> update()).start(); // ~60 FPS
@@ -330,7 +328,7 @@ public class GamePanel extends JPanel implements Runnable{
    }
 
 
-    if (score > 3000 * levelCounter){
+    if (score > 5000 * levelCounter){
       levelCounter++;
       enemyManager.spawnKing();
       soundManager.playClip(soundManager.kingSpawnClip);
@@ -625,7 +623,7 @@ public class GamePanel extends JPanel implements Runnable{
     // Castle healthbar
     createHealthBar(g2d, 350, 60, 1200, 20, castleHealth, 100, Color.GRAY);
     g2d.setColor(Color.YELLOW);
-    drawText(g2d, 0, 75, gameFontTiny, castleHealthText);
+    drawText(g2d, 0, 90, gameFontTiny, castleHealthText);
   }
 
 
