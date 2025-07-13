@@ -27,7 +27,7 @@ public class Player extends livingBeing {
     // Ability Cooldowns
     private final int ROOK_ABILITY_COOLDOWN = 50;
     private final int KNIGHT_ABILITY_COOLDOWN = 150;
-    private final int QUEEN_ABILITY_COOLDOWN = 30;
+    private final int QUEEN_ABILITY_COOLDOWN = 35;
     private final int KING_ABILITY_COOLDOWN = 250;
 
     // Initializes it
@@ -318,7 +318,7 @@ public class Player extends livingBeing {
         }
 
         if (queenDashing){
-           if (queenDashingCounter <= 20) {
+           if (queenDashingCounter <= 30) {
                queenDashingCounter ++;
            } else {
                queenDashing = false;
@@ -460,19 +460,19 @@ public class Player extends livingBeing {
         isInvulnerable = true;
         switch(facingDirection){
             case "up" -> {
-                targetY -= gamePanel.PIECE_HEIGHT * 2;
+                targetY -= gamePanel.PIECE_HEIGHT * 3;
                 skin = gamePanel.queenParticleImageUp;
             }
             case "down" -> {
-                targetY += gamePanel.PIECE_HEIGHT * 2;
+                targetY += gamePanel.PIECE_HEIGHT * 3;
                 skin = gamePanel.queenParticleImageDown;
             }
             case "left" -> {
-                targetX -= gamePanel.PIECE_HEIGHT * 2;
+                targetX -= gamePanel.PIECE_HEIGHT * 3;
                 skin = gamePanel.queenParticleImageLeft;
             }
             default -> {
-                targetX += gamePanel.PIECE_HEIGHT * 2;
+                targetX += gamePanel.PIECE_HEIGHT * 3;
                 skin = gamePanel.queenParticleImageRight;
             }
         }

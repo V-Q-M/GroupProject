@@ -143,7 +143,7 @@ public class GamePanel extends JPanel implements Runnable{
     // Builds the pawnwall on the left
     buildWall();
 
-    player.selectPiece(PieceType.ROOK);
+    player.selectPiece(PieceType.QUEEN);
 
     // Refreshrate. Might have to improve that
     //new Timer(16, e -> update()).start(); // ~60 FPS

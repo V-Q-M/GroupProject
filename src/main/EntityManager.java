@@ -16,7 +16,7 @@ public class EntityManager {
     final int DEFAULT_LANCE_SPEED = 10;
     final int DEFAULT_QUEEN_PARTICLE_SPEED = 20;
 
-    final int DEFAULT_TIME_TO_DECAY_QUEEN = 20;
+    final int DEFAULT_TIME_TO_DECAY_QUEEN = 30;
     final int DEFAULT_TIME_TO_DECAY_KNIGHT = 44;
 
     final int DEFAULT_CANNON_BALL_DMG = 50;
